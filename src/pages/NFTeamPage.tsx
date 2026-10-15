@@ -56,12 +56,26 @@ const TeamMemberPhoto: React.FC<{
 
   if (src && !imgFailed) {
     return (
-      <div className="relative w-full aspect-square rounded-2xl overflow-hidden border border-slate-700/50 shadow-inner group-hover:border-amber-400/60 transition-colors">
+      <div
+        className={`relative w-full h-full min-h-[220px] sm:min-h-full rounded-2xl overflow-hidden border shadow-inner transition-colors duration-300 ${
+          isDark
+            ? 'border-slate-700/60 group-hover:border-amber-400/50 bg-[#09152b]'
+            : 'border-slate-200 group-hover:border-sky-400/50 bg-slate-100'
+        }`}
+      >
         <img
           src={src}
           alt={name}
           onError={() => setImgFailed(true)}
-          className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+          className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
+        />
+        {/* Subtle bottom vignette gradient to anchor the portrait */}
+        <div
+          className={`absolute inset-0 pointer-events-none transition-opacity duration-300 ${
+            isDark
+              ? 'bg-gradient-to-t from-[#0a1832]/60 via-transparent to-transparent'
+              : 'bg-gradient-to-t from-slate-900/15 via-transparent to-transparent'
+          }`}
         />
       </div>
     );
@@ -69,7 +83,7 @@ const TeamMemberPhoto: React.FC<{
 
   return (
     <div
-      className={`relative w-full aspect-square rounded-2xl border flex flex-col items-center justify-center p-4 transition-all duration-300 group-hover:border-amber-400/60 ${
+      className={`relative w-full h-full min-h-[220px] sm:min-h-full rounded-2xl border flex flex-col items-center justify-center p-4 transition-all duration-300 group-hover:border-amber-400/60 ${
         isDark
           ? 'bg-gradient-to-b from-[#0f2347] via-[#09172f] to-[#061021] border-sky-500/30 text-slate-300 shadow-inner'
           : 'bg-gradient-to-b from-slate-100 via-sky-50 to-slate-200 border-slate-300 text-slate-600 shadow-inner'
@@ -179,7 +193,7 @@ export const NFTeamPage: React.FC = () => {
       focus:
         'Executive venture leadership, strategic institutional partnerships, turnkey incubation deployment, and startup venture syndication.',
       responsibilities: ['Venture Creation Strategy', 'Institutional Governance', 'Investor Syndication'],
-      gridPlacement: 'lg:col-span-2',
+      gridPlacement: 'col-span-1',
       animDelay: '0.05s',
     },
     {
@@ -192,7 +206,7 @@ export const NFTeamPage: React.FC = () => {
       focus:
         'Operational infrastructure rollout, campus incubation operations, turnkey execution, and defense / deep-tech program orchestration.',
       responsibilities: ['Turnkey Lab Rollout', 'Operations Governance', 'Defense & Deep-Tech Cohorts'],
-      gridPlacement: 'lg:col-span-2',
+      gridPlacement: 'col-span-1',
       animDelay: '0.12s',
     },
     {
@@ -205,7 +219,7 @@ export const NFTeamPage: React.FC = () => {
       focus:
         'Financial governance, fiscal strategy, venture grant allocation, statutory compliance, and capital structuring for student & faculty startups.',
       responsibilities: ['Fiscal Strategy & Audits', 'Venture Grant Allocation', 'Capital Structuring'],
-      gridPlacement: 'lg:col-span-2',
+      gridPlacement: 'col-span-1',
       animDelay: '0.19s',
     },
     {
@@ -218,7 +232,7 @@ export const NFTeamPage: React.FC = () => {
       focus:
         'Ecosystem positioning, institutional partner outreach, student innovator recruitment, commercialization funnels, and corporate alliances.',
       responsibilities: ['Ecosystem Marketing', 'Institutional Alliances', 'Founder Acquisition'],
-      gridPlacement: 'lg:col-span-2 lg:col-start-2',
+      gridPlacement: 'col-span-1',
       animDelay: '0.26s',
     },
     {
@@ -231,13 +245,12 @@ export const NFTeamPage: React.FC = () => {
       focus:
         'Venture talent sourcing, human resource administration, founder-team formation, internship fellowship programs, and organizational culture.',
       responsibilities: ['Talent Sourcing & Culture', 'Team Formation Support', 'Fellowship Cohorts'],
-      gridPlacement: 'lg:col-span-2 md:col-span-2 md:max-w-md md:mx-auto w-full lg:max-w-none',
+      gridPlacement: 'col-span-1 lg:col-span-2 lg:max-w-[calc(50%-0.75rem)] lg:mx-auto w-full',
       animDelay: '0.33s',
     },
   ];
 
   // 2. EXECUTIVE MESSAGES DATA (Role/Title only — NO names, photos, or avatars)
-  // Shortened to ~20 authoritative words per prompt specification
   const executiveMessages: ExecutiveMessage[] = [
     {
       id: 'msg-president',
@@ -250,7 +263,7 @@ export const NFTeamPage: React.FC = () => {
         ? 'border-amber-400/40 hover:border-amber-400/70 shadow-amber-950/20'
         : 'border-amber-200 hover:border-amber-400 shadow-amber-100',
       message:
-        'Strong institutions create the environment where ideas become impact, innovation becomes opportunity, and ambition translates into lasting institutional value.',
+        'Welcome to NF Venture Studio, an initiative focused on strengthening innovation and creating meaningful opportunities for students, researchers, and institutions. At Naree Care Foundation, we believe that education becomes more powerful when knowledge is supported by practical experience and the freedom to explore new ideas. Our vision is to create an environment where creativity, collaboration, and entrepreneurship can flourish. Through our efforts, we aim to empower institutions and innovators to develop solutions that address real-world challenges and contribute to lasting social and economic progress.',
     },
     {
       id: 'msg-ceo',
@@ -263,7 +276,7 @@ export const NFTeamPage: React.FC = () => {
         ? 'border-sky-400/40 hover:border-sky-400/70 shadow-sky-950/30'
         : 'border-sky-200 hover:border-sky-400 shadow-sky-100',
       message:
-        'We build disciplined pathways that transform promising ideas into scalable ventures through strategic guidance, execution excellence, and strong ecosystem partnerships.',
+        'Welcome to NF Venture Studio, where we work to transform promising ideas into practical solutions and sustainable ventures. We understand that every innovation begins with a vision, but turning that vision into reality requires the right guidance, resources, and partnerships. Our focus is on helping students, researchers, and aspiring entrepreneurs move forward with confidence through structured incubation, mentorship, and industry connections. By bringing academic knowledge and real-world opportunities together, we aim to build a supportive ecosystem where innovators can develop their ideas, overcome challenges, and create ventures with lasting value.',
     },
     {
       id: 'msg-coo',
@@ -276,7 +289,7 @@ export const NFTeamPage: React.FC = () => {
         ? 'border-emerald-400/40 hover:border-emerald-400/70 shadow-emerald-950/20'
         : 'border-emerald-200 hover:border-emerald-400 shadow-emerald-100',
       message:
-        'Operational excellence turns innovation into measurable outcomes through structured execution, accountable processes, and partnerships built for sustainable growth.',
+        'At NF Venture Studio, we believe that successful innovation depends on turning good ideas into well-executed action. Our focus is on building the systems, processes, and infrastructure that help institutions and innovators move from planning to implementation. From establishing incubation facilities to coordinating programmes and supporting venture development, we work to make the innovation journey organised, practical, and effective. Through teamwork, clear processes, and consistent execution, we aim to provide a dependable foundation that allows students, researchers, and entrepreneurs to focus on what matters most: developing solutions and bringing their ideas to life.',
     },
   ];
 
@@ -414,9 +427,9 @@ export const NFTeamPage: React.FC = () => {
               </span>
             </div>
 
-            {/* Grid Layout: Desktop (3 top, 2 centered bottom), Tablet (2 cols), Mobile (1 col) */}
+            {/* Grid Layout: 2 Columns on Desktop, 1 Column on Tablet & Mobile */}
             <div
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 items-stretch"
+              className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch"
               style={{ opacity: 1, visibility: 'visible' }}
             >
               {corePillars.map((member) => (
@@ -428,88 +441,99 @@ export const NFTeamPage: React.FC = () => {
                     transform: 'none',
                     animationDelay: member.animDelay,
                   }}
-                  className={`${member.gridPlacement} animate-fade-in rounded-3xl border p-5 sm:p-6 transition-all duration-300 hover:scale-[1.015] shadow-xl relative group flex flex-col justify-between ${
+                  className={`${member.gridPlacement} animate-fade-in rounded-3xl border p-4 sm:p-5 lg:p-6 transition-all duration-300 hover:shadow-2xl hover:-translate-y-0.5 relative group flex flex-col sm:flex-row items-stretch gap-4 sm:gap-6 ${
                     isDark
-                      ? 'bg-[#0a1832]/95 border-sky-500/30 hover:border-amber-400/60 shadow-sky-950/40'
-                      : 'bg-white border-slate-200 hover:border-sky-300 shadow-slate-200/60'
+                      ? 'bg-[#0a1832]/95 border-sky-500/25 hover:border-amber-400/50 shadow-xl shadow-sky-950/30'
+                      : 'bg-white border-slate-200/90 hover:border-sky-300 shadow-md shadow-slate-200/50'
                   }`}
                 >
-                  <div className="space-y-4">
-                    {/* Top: Photo Container with Placeholder / Image Fallback */}
-                    <TeamMemberPhoto
-                      src={member.imageSrc}
-                      name={member.name}
-                      initials={member.initials}
-                      isDark={isDark}
-                    />
+                  {/* Left Column: Executive Photograph (Approx 30-35% width) */}
+                  <div className="w-full sm:w-[34%] shrink-0 flex items-stretch">
+                    <div className="w-full h-56 sm:h-full min-h-[220px]">
+                      <TeamMemberPhoto
+                        src={member.imageSrc}
+                        name={member.name}
+                        initials={member.initials}
+                        isDark={isDark}
+                      />
+                    </div>
+                  </div>
 
-                    {/* Member Details */}
-                    <div>
+                  {/* Right Column: Executive Information (Approx 65-70% width) */}
+                  <div className="w-full sm:w-[66%] flex flex-col justify-between py-1">
+                    <div className="space-y-2.5">
+                      {/* Top Role Badge Row */}
                       <div className="flex items-center justify-between gap-2">
                         <span
-                          className={`text-[10px] font-mono font-bold uppercase px-2.5 py-0.5 rounded-full border ${
+                          className={`inline-flex items-center gap-1.5 text-[10px] sm:text-[11px] font-mono font-bold uppercase px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full border tracking-wide ${
                             isDark
                               ? 'bg-sky-400/10 text-sky-300 border-sky-400/30'
                               : 'bg-sky-50 text-[#0284c7] border-sky-200'
                           }`}
                         >
+                          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
                           {member.shortRole}
                         </span>
-                        <span className={`text-[10px] font-mono ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                        <span
+                          className={`text-[10px] sm:text-[11px] font-mono font-medium ${
+                            isDark ? 'text-slate-400' : 'text-slate-500'
+                          }`}
+                        >
                           NFVS Executive
                         </span>
                       </div>
 
-                      {/* Full Name */}
-                      <h3
-                        className={`text-lg sm:text-xl font-black uppercase tracking-tight mt-2 leading-tight ${
-                          isDark ? 'text-white' : 'text-[#081c3b]'
-                        }`}
-                      >
-                        {member.name}
-                      </h3>
-
-                      {/* Official Designation */}
-                      <div
-                        className={`text-xs sm:text-sm font-bold mt-1 tracking-wide ${
-                          isDark ? 'text-amber-300' : 'text-amber-700'
-                        }`}
-                      >
-                        {member.designation}
+                      {/* Executive Name & Official Designation */}
+                      <div>
+                        <h3
+                          className={`text-lg sm:text-xl md:text-2xl font-black uppercase tracking-tight leading-snug ${
+                            isDark ? 'text-white' : 'text-[#081c3b]'
+                          }`}
+                        >
+                          {member.name}
+                        </h3>
+                        <div
+                          className={`text-xs sm:text-sm font-bold mt-1 tracking-wide ${
+                            isDark ? 'text-amber-400' : 'text-amber-600'
+                          }`}
+                        >
+                          {member.designation}
+                        </div>
                       </div>
 
-                      {/* Separator */}
-                      <div className="h-px bg-slate-800/80 my-3" />
-
-                      {/* Core Scope / Focus */}
+                      {/* Focus Description Paragraph */}
                       <p
-                        className={`text-xs leading-relaxed font-normal ${
+                        className={`text-xs sm:text-[13px] leading-relaxed font-normal ${
                           isDark ? 'text-slate-300' : 'text-slate-600'
                         }`}
                       >
                         {member.focus}
                       </p>
                     </div>
-                  </div>
 
-                  {/* Responsibilities Tags Footer */}
-                  <div className="pt-4 mt-4 border-t border-slate-800/60 space-y-1.5">
-                    <div className="text-[10px] font-mono uppercase font-bold text-sky-400">
-                      Core Functional Scope:
-                    </div>
-                    <div className="flex flex-wrap gap-1.5">
-                      {member.responsibilities.map((resp, idx) => (
-                        <span
-                          key={idx}
-                          className={`text-[10px] font-mono px-2 py-0.5 rounded-md border ${
-                            isDark
-                              ? 'bg-slate-900/90 text-slate-300 border-slate-700'
-                              : 'bg-slate-100 text-slate-700 border-slate-200'
-                          }`}
-                        >
-                          {resp}
-                        </span>
-                      ))}
+                    {/* Divider and Core Functional Scope Responsibilities */}
+                    <div className="pt-3 sm:pt-4 mt-3 sm:mt-4 border-t border-slate-700/50 dark:border-slate-800 space-y-2">
+                      <div
+                        className={`text-[10px] font-mono uppercase tracking-wider font-bold ${
+                          isDark ? 'text-sky-400' : 'text-[#0284c7]'
+                        }`}
+                      >
+                        Core Functional Scope:
+                      </div>
+                      <div className="flex flex-wrap gap-1.5">
+                        {member.responsibilities.map((resp, idx) => (
+                          <span
+                            key={idx}
+                            className={`text-[10px] sm:text-[11px] font-mono font-medium px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg border transition-colors ${
+                              isDark
+                                ? 'bg-slate-900/90 text-slate-300 border-slate-700/80 hover:border-sky-400/40'
+                                : 'bg-slate-50 text-slate-700 border-slate-200 hover:border-sky-300'
+                            }`}
+                          >
+                            {resp}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -599,7 +623,7 @@ export const NFTeamPage: React.FC = () => {
                     {/* Gradient Divider */}
                     <div className="h-px bg-gradient-to-r from-sky-400/30 via-amber-400/20 to-transparent" />
 
-                    {/* Executive Strategic Message Text (Concise ~20 words) */}
+                    {/* Executive Leadership Message Text */}
                     <p
                       className={`text-sm sm:text-base leading-relaxed italic ${
                         isDark ? 'text-slate-200' : 'text-slate-700'
