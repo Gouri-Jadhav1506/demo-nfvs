@@ -1,274 +1,198 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, ArrowRight, ShieldCheck, Rocket, ChevronRight, BarChart3, Zap } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Rocket, Zap, Building2, Layers, CheckCircle2, Phone, MapPin } from 'lucide-react';
 
 interface NFHeroSectionProps {
   onOpenApplication: (track?: string) => void;
   isDark?: boolean;
 }
 
-const TYPING_WORDS = [
-  'From Lab to Market.',
-  'From Idea to Impact.',
-  'From Campus to Capital.',
-  'From Research to Revenue.',
-];
-
-// Small floating particles for the hero background
-const PARTICLES = [
-  { size: 4, x: '10%', y: '20%', delay: '0s', duration: '6s', color: 'rgba(56,189,248,0.6)' },
-  { size: 6, x: '80%', y: '15%', delay: '1s', duration: '8s', color: 'rgba(245,158,11,0.5)' },
-  { size: 3, x: '25%', y: '75%', delay: '2s', duration: '5s', color: 'rgba(56,189,248,0.4)' },
-  { size: 5, x: '65%', y: '60%', delay: '0.5s', duration: '7s', color: 'rgba(245,158,11,0.4)' },
-  { size: 3, x: '45%', y: '30%', delay: '1.5s', duration: '9s', color: 'rgba(99,102,241,0.4)' },
-  { size: 4, x: '90%', y: '50%', delay: '3s', duration: '6s', color: 'rgba(52,211,153,0.4)' },
-  { size: 2, x: '5%', y: '55%', delay: '2.5s', duration: '10s', color: 'rgba(56,189,248,0.5)' },
-  { size: 5, x: '70%', y: '85%', delay: '1.2s', duration: '7.5s', color: 'rgba(245,158,11,0.3)' },
-];
-
 export const NFHeroSection: React.FC<NFHeroSectionProps> = ({
   onOpenApplication,
-  isDark = true,
+  isDark = false,
 }) => {
-  const [typingIndex, setTypingIndex] = useState(0);
-  const [displayText, setDisplayText] = useState('');
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [charIndex, setCharIndex] = useState(0);
+  const [activeStep, setActiveStep] = useState<number>(0);
+  const [isAutoPaused, setIsAutoPaused] = useState<boolean>(false);
 
-  // Typing animation
+  // Gentle, unobtrusive auto-cycle through the 3 incubation stages
   useEffect(() => {
-    const currentWord = TYPING_WORDS[typingIndex];
-    let timeout: ReturnType<typeof setTimeout>;
+    if (isAutoPaused) return;
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (mediaQuery.matches) return;
 
-    if (!isDeleting && charIndex <= currentWord.length) {
-      timeout = setTimeout(() => {
-        setDisplayText(currentWord.slice(0, charIndex));
-        setCharIndex((c) => c + 1);
-      }, charIndex === 0 ? 600 : 60);
-    } else if (!isDeleting && charIndex > currentWord.length) {
-      // Pause then start deleting
-      timeout = setTimeout(() => setIsDeleting(true), 2200);
-    } else if (isDeleting && charIndex > 0) {
-      timeout = setTimeout(() => {
-        setDisplayText(currentWord.slice(0, charIndex - 1));
-        setCharIndex((c) => c - 1);
-      }, 35);
-    } else if (isDeleting && charIndex === 0) {
-      setIsDeleting(false);
-      setTypingIndex((i) => (i + 1) % TYPING_WORDS.length);
-    }
+    const timer = setInterval(() => {
+      setActiveStep((prev) => (prev + 1) % 3);
+    }, 4200);
 
-    return () => clearTimeout(timeout);
-  }, [charIndex, isDeleting, typingIndex]);
+    return () => clearInterval(timer);
+  }, [isAutoPaused]);
 
   return (
     <section
-      className={`relative overflow-hidden pt-6 sm:pt-8 pb-12 sm:pb-16 border-b transition-colors duration-300 ${
-        isDark ? 'bg-[#060f1e] border-sky-500/20' : 'bg-slate-50 border-slate-200'
+      className={`relative pt-6 pb-10 sm:pt-12 sm:pb-20 border-b overflow-hidden transition-colors duration-200 ${
+        isDark ? 'bg-[#0B1F3A] border-slate-800 text-white' : 'bg-[#F7F9FC] border-[#DCE3EC] text-[#172334]'
       }`}
     >
-      {/* Background High-Tech Circuit & Grid Overlay */}
-      <div className={`absolute inset-0 bg-tech-grid pointer-events-none ${isDark ? 'opacity-75' : 'opacity-40'}`} />
-      <div className="absolute inset-0 bg-radial-vignette pointer-events-none" />
-
-      {/* Floating Particles */}
-      {isDark && PARTICLES.map((p, i) => (
+      {/* ================= SUBTLE BACKGROUND GRAPHICS ================= */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden select-none" aria-hidden="true">
+        {/* Soft radial tint */}
         <div
-          key={i}
-          className="particle"
-          style={{
-            width: p.size,
-            height: p.size,
-            left: p.x,
-            top: p.y,
-            background: p.color,
-            boxShadow: `0 0 ${p.size * 2}px ${p.color}`,
-            animationDuration: p.duration,
-            animationDelay: p.delay,
-          }}
+          className={`absolute inset-0 ${
+            isDark
+              ? 'bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,rgba(56,189,248,0.06),transparent_70%)]'
+              : 'bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,rgba(18,59,115,0.04),transparent_70%)]'
+          }`}
         />
-      ))}
 
-      {/* Ambient Pulsing Glow Orbs */}
-      <div className={`absolute -top-20 left-1/3 w-72 sm:w-96 h-72 sm:h-96 rounded-full blur-3xl pointer-events-none animate-pulse-glow ${
-        isDark ? 'bg-sky-600/15' : 'bg-sky-400/15'
-      }`} />
-      <div className={`absolute top-1/2 right-4 sm:right-10 w-60 sm:w-80 h-60 sm:h-80 rounded-full blur-3xl pointer-events-none animate-float ${
-        isDark ? 'bg-amber-500/10' : 'bg-amber-400/15'
-      }`} />
+        {/* Thin architectural grid in the top-right corner */}
+        <svg
+          className="absolute -top-10 -right-10 w-[420px] h-[420px] opacity-[0.03] dark:opacity-[0.05] text-[#123B73] dark:text-sky-300"
+          fill="none"
+          viewBox="0 0 400 400"
+        >
+          <defs>
+            <pattern id="arch-grid" width="32" height="32" patternUnits="userSpaceOnUse">
+              <path d="M 32 0 L 0 0 0 32" fill="none" stroke="currentColor" strokeWidth="0.8" />
+              <circle cx="32" cy="32" r="1" fill="currentColor" opacity="0.6" />
+            </pattern>
+          </defs>
+          <rect width="400" height="400" fill="url(#arch-grid)" />
+        </svg>
 
-      <div className="section-shell">
+        {/* Slowly drifting outlined circles (low opacity, ambient) */}
+        <div className="absolute -top-24 right-1/4 w-96 h-96 rounded-full border border-[#123B73]/5 dark:border-sky-400/10 pointer-events-none animate-slowDrift" />
+        <div className="absolute top-1/2 -left-20 w-72 h-72 rounded-full border border-[#D9A72E]/10 dark:border-[#D9A72E]/15 pointer-events-none animate-slowDriftAlt" />
+      </div>
 
-        {/* Top Tagline Pill Banner */}
-        <div className="flex justify-center mb-5 sm:mb-6 reveal">
-          <div
-            className={`inline-flex items-center gap-2 sm:gap-2.5 px-4 sm:px-6 py-1.5 sm:py-2 rounded-full shadow-xl border backdrop-blur-md max-w-full transition-all duration-300 transform hover:scale-[1.02] animate-badge-pulse ${
-              isDark
-                ? 'bg-[#0b1d3a]/90 text-white border-sky-400/40 hover:border-amber-400/70'
-                : 'bg-white text-[#081c3b] border-slate-200 shadow-md hover:border-amber-400/70'
-            }`}
-          >
-            <span className="relative flex h-2 w-2 sm:h-2.5 sm:w-2.5 flex-shrink-0">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 sm:h-2.5 sm:w-2.5 bg-amber-400" />
-            </span>
-            <span
-              className={`text-[10px] sm:text-xs md:text-sm font-black tracking-wider sm:tracking-widest uppercase font-mono text-center leading-tight text-balance ${
-                isDark
-                  ? 'text-transparent bg-clip-text bg-gradient-to-r from-sky-200 via-white to-amber-300'
-                  : 'text-[#081c3b]'
-              }`}
-            >
-              NF VENTURE STUDIO · A NAREE FOUNDATION INITIATIVE · PUNE, MAHARASHTRA
-            </span>
-            <span className="relative flex h-2 w-2 sm:h-2.5 sm:w-2.5 flex-shrink-0">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 sm:h-2.5 sm:w-2.5 bg-sky-400" />
-            </span>
-          </div>
-        </div>
-
-        {/* Main Hero Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-center">
-
-          {/* Left Column: Tech & Business Venture Engine (7 cols) */}
-          <div className="lg:col-span-7 space-y-5 sm:space-y-6">
-            <div className="space-y-3.5 sm:space-y-4">
-              {/* Main headline with static part + typing effect */}
-              <div className="reveal delay-1">
-                <h1
-                  className={`text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.15] text-balance ${
-                    isDark ? 'text-white' : 'text-[#081c3b]'
-                  }`}
-                >
-                  Building Scalable Pipelines for Academia &amp; Beyond
-                </h1>
-                {/* Layout-locked row using CSS Grid so the typing animation never pushes or shifts content below */}
-                <div className="relative mt-2 grid items-center">
-                  {/* Invisible placeholder of the longest phrase to reserve exact height across all viewports */}
-                  <span
-                    aria-hidden="true"
-                    className="col-start-1 row-start-1 invisible select-none pointer-events-none text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight leading-snug"
-                  >
-                    — From Research to Revenue.
-                  </span>
-                  <span
-                    className={`col-start-1 row-start-1 text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight leading-snug ${
-                      isDark
-                        ? 'text-transparent bg-clip-text bg-gradient-to-r from-[#38bdf8] via-[#60a5fa] to-[#fbbf24] animate-gradient-text typing-cursor'
-                        : 'text-transparent bg-clip-text bg-gradient-to-r from-[#0284c7] via-[#0369a1] to-[#d97706] animate-gradient-text typing-cursor'
-                    }`}
-                  >
-                    — {displayText || '\u00A0'}
-                  </span>
-                </div>
-              </div>
-
-              {/* Strapline inside High-Tech Capsule */}
-              <div className="reveal delay-2">
-                <div
-                  className={`p-4 sm:p-5 rounded-2xl glass-card border shadow-xl relative overflow-hidden group ${
-                    isDark ? 'border-sky-500/30' : 'border-slate-200 bg-white'
-                  }`}
-                >
-                  <div className="absolute top-0 left-0 bottom-0 w-1.5 bg-gradient-to-b from-[#fbbf24] via-[#38bdf8] to-[#0284c7]" />
-                  <p
-                    className={`text-sm sm:text-base md:text-lg font-normal leading-relaxed pl-1.5 sm:pl-2 text-pretty ${
-                      isDark ? 'text-slate-200' : 'text-slate-700'
-                    }`}
-                  >
-                    Partnering with institutions to transform academic research, student innovation, and faculty IP into{' '}
-                    <strong className={isDark ? 'text-amber-300 font-semibold' : 'text-amber-700 font-bold'}>
-                      scalable, investable ventures
-                    </strong>.
-                  </p>
-                </div>
+      <div className="section-shell relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
+          
+          {/* Left Column: Institutional Messaging & Actions (7 cols) */}
+          <div className="lg:col-span-7">
+            
+            {/* Understated Eyebrow Badge without decorative dash and with pulsing gold dot */}
+            <div className="flex items-center mb-4">
+              <div
+                className={`inline-flex items-center gap-2 sm:gap-2.5 px-3 sm:px-3.5 py-1.5 rounded-2xl sm:rounded-full text-xs font-semibold border transition-all duration-200 max-w-full flex-wrap ${
+                  isDark
+                    ? 'bg-slate-900 text-slate-200 border-slate-700'
+                    : 'bg-white text-[#0B1F3A] border-[#DCE3EC] shadow-xs'
+                }`}
+              >
+                <span className="w-2 h-2 rounded-full bg-[#D9A72E] shrink-0 animate-indicator-pulse" aria-hidden="true" />
+                <span className="leading-snug">NF Venture Studio · Naree Care Foundation Initiative</span>
               </div>
             </div>
 
-            {/* Responsive CTA Buttons */}
-            <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 pt-1 reveal delay-3">
+            {/* Main Headline with Navy & Gold Accent and subtle entrance motion */}
+            <h1
+              className={`animate-heroFadeUp font-extrabold tracking-tight leading-[1.2] sm:leading-[1.16] text-balance mb-4 sm:mb-5 break-words ${
+                isDark ? 'text-white' : 'text-[#0B1F3A]'
+              }`}
+              style={{ fontSize: 'clamp(1.5rem, 4vw + 0.5rem, 2.8rem)' }}
+            >
+              Building Scalable Pipelines for <span className="text-[#D9A72E]">Academia &amp; Beyond</span>
+            </h1>
+
+            {/* Supporting Statement with selective restrained emphasis */}
+            <p
+              className={`text-sm sm:text-base lg:text-lg leading-relaxed font-normal max-w-2xl text-pretty mb-6 sm:mb-8 ${
+                isDark ? 'text-slate-300' : 'text-[#475569]'
+              }`}
+            >
+              Partnering with institutions to transform <span className="font-semibold text-slate-800 dark:text-slate-100">academic research, student innovation, and faculty IP</span> into{' '}
+              <strong className={isDark ? 'text-white font-semibold' : 'text-[#123B73] font-semibold'}>
+                scalable, investable ventures
+              </strong>.
+            </p>
+
+            {/* Primary & Secondary CTAs */}
+            <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 sm:gap-3.5 mb-7 sm:mb-9">
               <button
                 onClick={() => onOpenApplication('student')}
-                className="relative group overflow-hidden px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl font-black text-xs sm:text-sm text-white bg-gradient-to-r from-[#0284c7] via-[#0369a1] to-[#081c3b] hover:from-[#0ea5e9] hover:to-[#0284c7] shadow-xl shadow-sky-600/30 border border-sky-400/50 transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2 animate-shimmer cursor-pointer btn-neon-blue min-h-11"
+                className="group w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-semibold text-sm text-white bg-[#123B73] hover:bg-[#0B1F3A] active:bg-[#0B1F3A] shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer border border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123B73] focus-visible:ring-offset-2"
               >
-                <Rocket className="w-4 h-4 text-amber-300 group-hover:rotate-12 transition-transform flex-shrink-0" />
+                <Rocket className="w-4 h-4 text-[#D9A72E] flex-shrink-0 transition-transform duration-200 group-hover:scale-110" />
                 <span>Apply for Incubation Center</span>
-                <ArrowRight className="w-4 h-4 text-sky-200 group-hover:translate-x-1 transition-transform flex-shrink-0" />
+                <ArrowRight className="w-4 h-4 text-white/80 flex-shrink-0 transition-transform duration-200 group-hover:translate-x-1" />
               </button>
 
               <button
                 onClick={() => onOpenApplication('institutional')}
-                className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-3 sm:py-3.5 rounded-xl font-bold text-xs sm:text-sm text-[#081c3b] bg-gradient-to-r from-[#fbbf24] via-[#f59e0b] to-[#d97706] hover:brightness-110 shadow-lg border border-amber-300 transition-all text-center cursor-pointer btn-neon-amber min-h-11"
+                className={`group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl font-semibold text-sm transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer border shadow-xs hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123B73] focus-visible:ring-offset-2 ${
+                  isDark
+                    ? 'bg-slate-800 text-slate-100 border-slate-700 hover:bg-slate-700 hover:text-white'
+                    : 'bg-white text-[#123B73] border-[#DCE3EC] hover:bg-slate-50 hover:border-slate-300'
+                }`}
               >
-                <ShieldCheck className="w-4 h-4 text-[#081c3b]" />
+                <ShieldCheck className="w-4 h-4 text-[#D9A72E] transition-transform duration-200 group-hover:scale-110" />
                 <span>Schedule Campus Assessment</span>
               </button>
 
               <a
                 href="#tracks"
-                className={`inline-flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2 sm:py-3.5 rounded-xl font-mono text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-colors text-center hover-underline ${
-                  isDark ? 'text-amber-400 hover:text-amber-300' : 'text-amber-700 hover:text-amber-800'
+                className={`group inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold tracking-wide transition-colors duration-200 self-center sm:self-auto ${
+                  isDark ? 'text-sky-300 hover:text-sky-200' : 'text-[#123B73] hover:text-[#0B1F3A]'
                 }`}
               >
                 <span>Explore Tracks</span>
-                <ChevronRight className="w-3.5 h-3.5" />
+                <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" />
               </a>
             </div>
 
-            {/* Three Engines Strip */}
-            <div className="pt-2 reveal delay-4">
-              <div
-                className={`text-[10px] sm:text-[11px] font-mono font-bold uppercase tracking-widest mb-2.5 flex items-center gap-2 ${
-                  isDark ? 'text-sky-400' : 'text-[#0284c7]'
-                }`}
-              >
-                <span className="w-2 h-2 rounded-full bg-amber-400" />
-                <span>THREE VENTURE ENGINES</span>
+            {/* Venture Engines: Three Simple, Well-Aligned Cards with Subtle Hover & Pale Blue Icon Container */}
+            <div className="pt-6 sm:pt-7 border-t border-slate-200 dark:border-slate-800">
+              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider mb-3.5 text-slate-500 dark:text-slate-400">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#123B73] dark:bg-sky-400" />
+                <span>Three Venture Engines</span>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 reveal-stagger">
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
                 {[
                   {
                     icon: Rocket,
-                    color: 'text-sky-500',
-                    label: 'INCUBATE',
-                    sub: 'Pre-incubation · Prototypes · Seed',
-                    desc: 'Cohorts, hackathons, PoC micro-grants',
-                    cardClass: isDark ? 'border-sky-500/25 hover:border-sky-400/60' : 'border-slate-200 bg-white hover:border-sky-400 shadow-xs',
+                    label: 'Incubate',
+                    sub: 'Pre-incubation & Prototypes',
+                    desc: 'Cohorts, hackathons, and PoC micro-grants for emerging innovators.',
                   },
                   {
                     icon: Zap,
-                    color: 'text-amber-500',
-                    label: 'BUILD',
-                    sub: 'MVP · Tech-for-Equity · GTM',
-                    desc: 'MVP build, validation, and investor readiness',
-                    cardClass: isDark ? 'border-amber-500/30 hover:border-amber-400/60' : 'border-amber-200 bg-amber-50/40 hover:border-amber-400 shadow-xs',
-                    isGold: true,
+                    label: 'Build',
+                    sub: 'MVP & Venture Creation',
+                    desc: 'Venture studio engineering, validation, and investor readiness.',
                   },
                   {
-                    icon: BarChart3,
-                    color: 'text-emerald-500',
-                    label: 'EMBED',
+                    icon: Building2,
+                    label: 'Embed',
                     sub: 'Incubator-in-a-Box',
-                    desc: 'Campus setup, NIRF/IIC alignment, handover',
-                    cardClass: isDark ? 'border-emerald-500/30 hover:border-emerald-400/60' : 'border-emerald-200 bg-emerald-50/40 hover:border-emerald-400 shadow-xs',
+                    desc: 'End-to-end campus center setup, NIRF & IIC policy alignment.',
                   },
-                ].map((engine, i) => {
+                ].map((engine, idx) => {
                   const Icon = engine.icon;
                   return (
                     <div
-                      key={i}
-                      className={`p-3 rounded-xl border transition-all tilt-card ${
-                        engine.isGold ? 'glass-card-gold' : 'glass-card'
-                      } ${engine.cardClass}`}
+                      key={idx}
+                      className={`group p-3.5 sm:p-4 rounded-xl border min-w-0 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-sm hover:border-l-2 hover:border-l-[#D9A72E] ${
+                        isDark
+                          ? 'bg-slate-900/80 border-slate-800 hover:border-slate-700 hover:bg-slate-900'
+                          : 'bg-white border-[#DCE3EC] hover:border-slate-300 hover:shadow-xs'
+                      }`}
                     >
-                      <div className={`flex items-center gap-1.5 text-xs font-mono font-black uppercase ${engine.color}`}>
-                        <Icon className={`w-3.5 h-3.5 flex-shrink-0 ${engine.color}`} />
-                        <span>{engine.label}</span>
+                      <div className="flex items-center gap-2.5 mb-2">
+                        <div
+                          className={`w-7 h-7 rounded-lg flex items-center justify-center transition-colors duration-200 shrink-0 ${
+                            isDark
+                              ? 'bg-slate-800 text-sky-400 group-hover:bg-[#123B73] group-hover:text-white'
+                              : 'bg-[#EAF1F9] text-[#123B73] group-hover:bg-[#123B73] group-hover:text-white'
+                          }`}
+                        >
+                          <Icon className="w-4 h-4" />
+                        </div>
+                        <span className="font-bold text-sm text-slate-900 dark:text-white truncate">{engine.label}</span>
                       </div>
-                    <div className={`text-[10px] font-bold mt-1 safe-wrap ${isDark ? 'text-amber-300' : 'text-amber-700'}`}>
+                      <div className="text-xs font-semibold text-[#D9A72E] mb-1 break-words">
                         {engine.sub}
                       </div>
-                      <p className={`text-[10px] mt-0.5 leading-snug ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                      <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-300 break-words">
                         {engine.desc}
                       </p>
                     </div>
@@ -276,125 +200,146 @@ export const NFHeroSection: React.FC<NFHeroSectionProps> = ({
                 })}
               </div>
             </div>
+
           </div>
 
-          {/* Right Column: High-Tech "IDEA TO IMPACT" Visual Engine (5 cols) */}
-          <div className="lg:col-span-5 flex justify-center w-full reveal delay-2">
+          {/* Right Column: Institutional Overview Card (5 cols) with subtle stage connector */}
+          <div className="lg:col-span-5 flex justify-center w-full min-w-0">
             <div
-              className={`relative w-full max-w-sm sm:max-w-md rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-7 glass-card border-2 shadow-2xl overflow-hidden group transition-all tilt-card animate-glow-ring ${
-                isDark ? 'border-sky-500/40' : 'border-sky-200 bg-white'
+              onMouseEnter={() => setIsAutoPaused(true)}
+              onMouseLeave={() => setIsAutoPaused(false)}
+              className={`w-full max-w-lg rounded-2xl border p-4 sm:p-6 md:p-7 shadow-sm transition-all duration-200 hover:shadow-md min-w-0 ${
+                isDark
+                  ? 'bg-slate-900 border-slate-800 hover:border-slate-700 text-white'
+                  : 'bg-white border-[#DCE3EC] hover:border-slate-300 text-[#172334]'
               }`}
             >
-              {/* Animated Corner Tech Gradients */}
-              <div className="absolute top-0 right-0 w-28 sm:w-36 h-28 sm:h-36 bg-gradient-to-br from-amber-400/20 to-sky-400/20 rounded-bl-full pointer-events-none blur-lg" />
-              {/* Rotating ring accent */}
-              <div className={`absolute -top-6 -left-6 w-24 h-24 rounded-full border-2 border-dashed pointer-events-none animate-rotate ${
-                isDark ? 'border-sky-500/20' : 'border-sky-200'
-              }`} />
-              <div className={`absolute -bottom-4 -right-4 w-16 h-16 rounded-full border border-dashed pointer-events-none animate-rotate-reverse ${
-                isDark ? 'border-amber-400/20' : 'border-amber-200'
-              }`} />
-
-              <div className="space-y-4 sm:space-y-5 relative z-10">
-                {/* Tech Bar Header */}
-                <div
-                  className={`flex items-center justify-between border-b pb-2.5 sm:pb-3 ${
-                    isDark ? 'border-slate-800' : 'border-slate-200'
-                  }`}
-                >
-                  <div className="flex items-center gap-1.5 sm:gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
-                    <span className={`text-[11px] sm:text-xs font-mono font-bold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                      INCUBATION_FLOW
-                    </span>
+              {/* Card Header */}
+              <div className="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-9 h-9 rounded-xl bg-[#EAF1F9] dark:bg-slate-800 flex items-center justify-center text-[#123B73] dark:text-sky-400 shadow-xs shrink-0">
+                    <Layers className="w-4 h-4 text-[#D9A72E]" />
                   </div>
-                  <span
-                    className={`text-[9px] sm:text-[10px] font-mono font-black uppercase tracking-widest px-2 py-0.5 rounded border ${
-                      isDark
-                        ? 'text-amber-300 bg-amber-400/15 border-amber-400/30'
-                        : 'text-amber-700 bg-amber-50 border-amber-200'
-                    }`}
-                  >
-                    DEEP-TECH
-                  </span>
+                  <div className="min-w-0">
+                    <h3 className="text-sm font-bold leading-tight text-slate-900 dark:text-white truncate">Incubation Framework</h3>
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 truncate">From Research to Market Readiness</p>
+                  </div>
                 </div>
+                <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border border-[#D9A72E]/40 text-[#D9A72E] bg-[#D9A72E]/10 shrink-0">
+                  Institutional
+                </span>
+              </div>
 
-                {/* Central Diagram: Idea to Impact High-Tech Journey */}
-                <div className="relative py-2 sm:py-3 flex flex-col items-center justify-center">
+              {/* Step Sequence with clear vertical connector line & active stage indicator */}
+              <div className="relative py-4 sm:py-5 space-y-3">
+                {/* Thin visual connector line linking the 3 stage badges */}
+                <div
+                  className="absolute left-[25px] sm:left-[27px] top-6 bottom-6 w-0.5 bg-slate-200 dark:bg-slate-700 pointer-events-none"
+                  aria-hidden="true"
+                />
 
-                  {/* Glowing 3D Lightbulb with Tech Gear Matrix */}
-                  <div className="relative z-10 w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-[#f59e0b] via-[#0284c7] to-[#081c3b] p-1 shadow-2xl flex items-center justify-center animate-pulse-glow">
+                {[
+                  {
+                    step: '01',
+                    phase: 'Phase 01',
+                    title: 'Ideate & Filter',
+                    detail: 'Screen academic research, student projects, and faculty patents for commercial viability.',
+                  },
+                  {
+                    step: '02',
+                    phase: 'Phase 02',
+                    title: 'Incubate & Prototype',
+                    detail: 'Access deep-tech prototyping labs, technical mentorship, and regulatory guidance.',
+                  },
+                  {
+                    step: '03',
+                    phase: 'Phase 03',
+                    title: 'Scale & Commercialize',
+                    detail: 'Establish corporate tie-ups, venture capital access, and spin-off licensing models.',
+                  },
+                ].map((item, idx) => {
+                  const isActive = activeStep === idx;
+                  return (
                     <div
-                      className={`w-full h-full rounded-xl flex flex-col items-center justify-center border ${
-                        isDark
-                          ? 'bg-[#060f1e] text-amber-300 border-sky-400/40'
-                          : 'bg-white text-amber-600 border-sky-200 shadow-inner'
+                      key={idx}
+                      onMouseEnter={() => setActiveStep(idx)}
+                      onClick={() => setActiveStep(idx)}
+                      className={`relative z-10 group flex items-start gap-3 sm:gap-3.5 p-3 sm:p-3.5 rounded-xl border transition-all duration-200 cursor-pointer ${
+                        isActive
+                          ? isDark
+                            ? 'bg-slate-800 border-sky-400/50 shadow-sm border-l-4 border-l-[#D9A72E]'
+                            : 'bg-white border-[#123B73]/40 shadow-sm border-l-4 border-l-[#D9A72E]'
+                          : isDark
+                            ? 'bg-slate-800/40 border-slate-700/80 hover:border-slate-600 hover:bg-slate-800/70'
+                            : 'bg-slate-50/80 border-[#E2E8F0] hover:border-slate-300 hover:bg-white'
                       }`}
                     >
-                      <Sparkles className="w-6 h-6 sm:w-8 sm:h-8 text-amber-400" />
-                      <span
-                        className={`text-[8px] sm:text-[9px] font-mono font-bold uppercase tracking-widest mt-0.5 sm:mt-1 ${
-                          isDark ? 'text-sky-300' : 'text-[#0284c7]'
+                      <div
+                        className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold shrink-0 transition-all duration-200 ${
+                          isActive
+                            ? 'bg-[#123B73] text-white ring-2 ring-[#D9A72E] shadow-xs'
+                            : 'bg-[#123B73] text-white'
                         }`}
                       >
-                        INNOVATE
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Connected High-Tech Road Pathway */}
-                  <div className="w-full my-4 sm:my-5 relative">
-                    <div className="h-2.5 sm:h-3 bg-gradient-to-r from-[#f59e0b] via-[#0ea5e9] to-[#081c3b] rounded-full shadow-inner animate-border-beam" />
-
-                    <div
-                      className={`absolute -top-3.5 left-1/2 transform -translate-x-1/2 text-[10px] sm:text-[11px] font-mono font-black tracking-widest uppercase px-3 sm:px-4 py-0.5 sm:py-1 rounded-full border-2 shadow-2xl flex items-center gap-1.5 sm:gap-2 whitespace-nowrap ${
-                        isDark
-                          ? 'bg-[#060f1e] text-white border-amber-400'
-                          : 'bg-white text-[#081c3b] border-amber-400 shadow-md'
-                      }`}
-                    >
-                      <span className={isDark ? 'text-sky-300' : 'text-[#0284c7]'}>IDEA</span>
-                      <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-400" />
-                      <span className={isDark ? 'text-amber-400' : 'text-amber-600'}>IMPACT</span>
-                    </div>
-                  </div>
-
-                  {/* 3 Tech Milestones */}
-                  <div className="w-full grid grid-cols-3 gap-1.5 sm:gap-2.5 text-center pt-1 reveal-stagger">
-                    {[
-                      { num: '01', label: 'Ideate', sub: 'Students & Faculty', color: isDark ? 'text-sky-400' : 'text-[#0284c7]', bg: isDark ? 'bg-[#0b1c38] border-sky-500/30' : 'bg-sky-50/70 border-sky-200' },
-                      { num: '02', label: 'Incubate', sub: 'Labs & Mentors', color: isDark ? 'text-amber-400' : 'text-amber-700', bg: isDark ? 'bg-[#0b1c38] border-amber-500/30' : 'bg-amber-50/70 border-amber-200' },
-                      { num: '03', label: 'Scale', sub: 'Venture Funds', color: isDark ? 'text-emerald-400' : 'text-emerald-700', bg: isDark ? 'bg-[#0b1c38] border-emerald-500/30' : 'bg-emerald-50/70 border-emerald-200' },
-                    ].map((m, i) => (
-                      <div key={i} className={`p-2 sm:p-2.5 rounded-xl border shadow-xs transition-all hover:scale-105 cursor-default ${m.bg}`}>
-                        <div className={`text-[9px] sm:text-[10px] font-mono font-bold uppercase truncate ${m.color}`}>
-                          {m.num}. {m.label}
+                        {item.step}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between gap-2">
+                          <div
+                            className={`text-xs font-bold transition-colors duration-200 ${
+                              isActive
+                                ? 'text-[#123B73] dark:text-sky-300'
+                                : 'text-slate-900 dark:text-white'
+                            }`}
+                          >
+                            {item.title}
+                          </div>
+                          <span
+                            className={`text-[10px] font-semibold px-1.5 py-0.5 rounded transition-colors duration-200 shrink-0 ${
+                              isActive
+                                ? 'bg-[#D9A72E] text-slate-950 font-bold'
+                                : 'text-[#D9A72E]'
+                            }`}
+                          >
+                            {item.phase}
+                          </span>
                         </div>
-                        <div className={`text-[8px] sm:text-[9px] mt-0.5 truncate ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                          {m.sub}
+                        <div className="text-xs text-slate-600 dark:text-slate-300 mt-0.5 leading-relaxed break-words">
+                          {item.detail}
                         </div>
                       </div>
-                    ))}
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Institutional Assurance Strip */}
+              <div className="pt-4 border-t border-slate-200 dark:border-slate-800 space-y-3">
+                <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 gap-2 text-xs">
+                  <div className="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-medium">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                    <span>NIRF &amp; IIC Compliant</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-medium">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                    <span>Hardware &amp; IoT Labs</span>
                   </div>
                 </div>
 
-                {/* Bottom Trust & Helpline Strip */}
-                <div
-                  className={`pt-2.5 sm:pt-3 border-t flex flex-wrap items-center justify-between gap-1 text-[11px] sm:text-xs font-mono ${
-                    isDark ? 'border-slate-800 text-slate-300' : 'border-slate-200 text-slate-600'
-                  }`}
-                >
-                  <div className={`flex items-center gap-1 sm:gap-1.5 font-bold truncate ${isDark ? 'text-sky-300' : 'text-[#0284c7]'}`}>
-                    <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400 flex-shrink-0" />
+                <div className="flex flex-col xs:flex-row sm:flex-row items-start xs:items-center justify-between gap-2 pt-3 text-xs text-slate-500 dark:text-slate-400 border-t border-dashed border-slate-200 dark:border-slate-800">
+                  <div className="flex items-center gap-1.5">
+                    <MapPin className="w-3.5 h-3.5 text-[#123B73] dark:text-sky-400 shrink-0" />
                     <span className="truncate">Nigdi, Pune · Maharashtra</span>
                   </div>
-                  <div className={`flex items-center gap-2 font-bold ${isDark ? 'text-amber-400' : 'text-amber-700'}`}>
-                    <a href="tel:8379879846" className="hover:underline">8379879846</a>
-                    <span>|</span>
-                    <a href="tel:9209112577" className="hover:underline">9209112577</a>
+                  <div className="flex items-center gap-1.5">
+                    <Phone className="w-3.5 h-3.5 text-[#D9A72E] shrink-0" />
+                    <a href="tel:8379879846" className="hover:underline font-semibold text-slate-700 dark:text-slate-300 transition-colors">
+                      8379879846
+                    </a>
                   </div>
                 </div>
               </div>
+
             </div>
           </div>
 

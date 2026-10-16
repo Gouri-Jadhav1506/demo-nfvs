@@ -6,7 +6,6 @@ import { NFApplicationModal } from '../components/nf/NFApplicationModal';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import {
   Users,
-  Sparkles,
   Quote,
   ArrowRight,
   ShieldCheck,
@@ -29,16 +28,12 @@ interface PillarMember {
   initials: string;
   focus: string;
   responsibilities: string[];
-  gridPlacement: string;
-  animDelay: string;
 }
 
 interface ExecutiveMessage {
   id: string;
   title: string;
   roleBadge: string;
-  badgeStyle: string;
-  cardBorder: string;
   message: string;
 }
 
@@ -57,25 +52,16 @@ const TeamMemberPhoto: React.FC<{
   if (src && !imgFailed) {
     return (
       <div
-        className={`relative w-full h-full min-h-[220px] sm:min-h-full rounded-2xl overflow-hidden border shadow-inner transition-colors duration-300 ${
-          isDark
-            ? 'border-slate-700/60 group-hover:border-amber-400/50 bg-[#09152b]'
-            : 'border-slate-200 group-hover:border-sky-400/50 bg-slate-100'
-        }`}
+        className={`relative w-full h-full min-h-[220px] sm:min-h-full rounded-xl overflow-hidden border transition-colors ${isDark
+            ? 'border-slate-700 bg-slate-800'
+            : 'border-[#DCE3EC] bg-slate-100'
+          }`}
       >
         <img
           src={src}
           alt={name}
           onError={() => setImgFailed(true)}
-          className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
-        />
-        {/* Subtle bottom vignette gradient to anchor the portrait */}
-        <div
-          className={`absolute inset-0 pointer-events-none transition-opacity duration-300 ${
-            isDark
-              ? 'bg-gradient-to-t from-[#0a1832]/60 via-transparent to-transparent'
-              : 'bg-gradient-to-t from-slate-900/15 via-transparent to-transparent'
-          }`}
+          className="w-full h-full object-cover object-top"
         />
       </div>
     );
@@ -83,48 +69,25 @@ const TeamMemberPhoto: React.FC<{
 
   return (
     <div
-      className={`relative w-full h-full min-h-[220px] sm:min-h-full rounded-2xl border flex flex-col items-center justify-center p-4 transition-all duration-300 group-hover:border-amber-400/60 ${
-        isDark
-          ? 'bg-gradient-to-b from-[#0f2347] via-[#09172f] to-[#061021] border-sky-500/30 text-slate-300 shadow-inner'
-          : 'bg-gradient-to-b from-slate-100 via-sky-50 to-slate-200 border-slate-300 text-slate-600 shadow-inner'
-      }`}
+      className={`relative w-full h-full min-h-[220px] sm:min-h-full rounded-xl border flex flex-col items-center justify-center p-4 ${isDark
+          ? 'bg-slate-800 border-slate-700 text-slate-300'
+          : 'bg-slate-100 border-[#DCE3EC] text-slate-600'
+        }`}
     >
-      {/* Subtle radial pattern for high-tech aesthetic */}
-      <div className="absolute inset-0 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:16px_16px] opacity-15 pointer-events-none rounded-2xl" />
-
-      {/* Silhouette & Initials Emblem */}
       <div
-        className={`relative z-10 w-20 h-20 sm:w-24 sm:h-24 rounded-2xl border flex flex-col items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-105 ${
-          isDark
-            ? 'bg-gradient-to-br from-sky-900/60 to-slate-900 border-sky-400/40 text-sky-300 shadow-sky-950/50'
-            : 'bg-gradient-to-br from-white to-sky-100 border-sky-300 text-[#0284c7] shadow-slate-300/60'
-        }`}
-      >
-        <span className="font-mono font-black text-2xl sm:text-3xl tracking-wider">
-          {initials}
-        </span>
-      </div>
-
-      {/* Photo Placeholder Pill Badge */}
-      <div className="relative z-10 mt-3 sm:mt-4 text-center">
-        <span
-          className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] sm:text-[11px] font-mono font-bold tracking-wider uppercase border shadow-xs ${
-            isDark
-              ? 'bg-amber-400/15 text-amber-300 border-amber-400/35'
-              : 'bg-amber-100 text-amber-800 border-amber-300'
+        className={`w-16 h-16 rounded-xl border flex items-center justify-center text-xl font-bold ${isDark
+            ? 'bg-slate-900 border-slate-700 text-sky-400'
+            : 'bg-white border-[#DCE3EC] text-[#123B73]'
           }`}
-        >
-          <Camera className="w-3 h-3 text-amber-400" />
-          PHOTO PLACEHOLDER
-        </span>
+      >
+        {initials}
       </div>
 
-      <div
-        className={`relative z-10 text-[10px] font-mono mt-1.5 opacity-70 text-center ${
-          isDark ? 'text-slate-400' : 'text-slate-500'
-        }`}
-      >
-        Official Photograph Coming Soon
+      <div className="mt-3 text-center">
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-semibold border border-[#DCE3EC] dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300">
+          <Camera className="w-3 h-3 text-[#D9A72E]" />
+          Official Portrait
+        </span>
       </div>
     </div>
   );
@@ -133,14 +96,13 @@ const TeamMemberPhoto: React.FC<{
 export const NFTeamPage: React.FC = () => {
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
     const saved = localStorage.getItem('nf-theme');
-    return saved === 'light' || saved === 'dark' ? saved : 'dark';
+    return saved === 'light' || saved === 'dark' ? saved : 'light';
   });
 
   const [isAppModalOpen, setIsAppModalOpen] = useState(false);
   const [selectedTrack, setSelectedTrack] = useState('student');
   const [showScrollTop, setShowScrollTop] = useState(false);
 
-  // Activate scroll-reveal animations across general elements
   useScrollReveal();
 
   useEffect(() => {
@@ -181,7 +143,7 @@ export const NFTeamPage: React.FC = () => {
 
   const isDark = theme === 'dark';
 
-  // 1. CORE WORKING PILLARS DATA (5 Executive Members)
+  // 1. Core Working Pillars Data (5 Executive Members)
   const corePillars: PillarMember[] = [
     {
       id: 'ashok-patil',
@@ -193,8 +155,6 @@ export const NFTeamPage: React.FC = () => {
       focus:
         'Executive venture leadership, strategic institutional partnerships, turnkey incubation deployment, and startup venture syndication.',
       responsibilities: ['Venture Creation Strategy', 'Institutional Governance', 'Investor Syndication'],
-      gridPlacement: 'col-span-1',
-      animDelay: '0.05s',
     },
     {
       id: 'rahul-more',
@@ -206,8 +166,6 @@ export const NFTeamPage: React.FC = () => {
       focus:
         'Operational infrastructure rollout, campus incubation operations, turnkey execution, and defense / deep-tech program orchestration.',
       responsibilities: ['Turnkey Lab Rollout', 'Operations Governance', 'Defense & Deep-Tech Cohorts'],
-      gridPlacement: 'col-span-1',
-      animDelay: '0.12s',
     },
     {
       id: 'pallavi-shirke',
@@ -219,8 +177,6 @@ export const NFTeamPage: React.FC = () => {
       focus:
         'Financial governance, fiscal strategy, venture grant allocation, statutory compliance, and capital structuring for student & faculty startups.',
       responsibilities: ['Fiscal Strategy & Audits', 'Venture Grant Allocation', 'Capital Structuring'],
-      gridPlacement: 'col-span-1',
-      animDelay: '0.19s',
     },
     {
       id: 'mohammad-ashparaz',
@@ -232,8 +188,6 @@ export const NFTeamPage: React.FC = () => {
       focus:
         'Ecosystem positioning, institutional partner outreach, student innovator recruitment, commercialization funnels, and corporate alliances.',
       responsibilities: ['Ecosystem Marketing', 'Institutional Alliances', 'Founder Acquisition'],
-      gridPlacement: 'col-span-1',
-      animDelay: '0.26s',
     },
     {
       id: 'sayali-kale',
@@ -245,23 +199,15 @@ export const NFTeamPage: React.FC = () => {
       focus:
         'Venture talent sourcing, human resource administration, founder-team formation, internship fellowship programs, and organizational culture.',
       responsibilities: ['Talent Sourcing & Culture', 'Team Formation Support', 'Fellowship Cohorts'],
-      gridPlacement: 'col-span-1 lg:col-span-2 lg:max-w-[calc(50%-0.75rem)] lg:mx-auto w-full',
-      animDelay: '0.33s',
     },
   ];
 
-  // 2. EXECUTIVE MESSAGES DATA (Role/Title only — NO names, photos, or avatars)
+  // 2. Executive Messages Data
   const executiveMessages: ExecutiveMessage[] = [
     {
       id: 'msg-president',
       title: 'Message from the President',
       roleBadge: 'Office of the President',
-      badgeStyle: isDark
-        ? 'bg-amber-400/15 text-amber-300 border-amber-400/40'
-        : 'bg-amber-100 text-amber-800 border-amber-300',
-      cardBorder: isDark
-        ? 'border-amber-400/40 hover:border-amber-400/70 shadow-amber-950/20'
-        : 'border-amber-200 hover:border-amber-400 shadow-amber-100',
       message:
         'Welcome to NF Venture Studio, an initiative focused on strengthening innovation and creating meaningful opportunities for students, researchers, and institutions. At Naree Care Foundation, we believe that education becomes more powerful when knowledge is supported by practical experience and the freedom to explore new ideas. Our vision is to create an environment where creativity, collaboration, and entrepreneurship can flourish. Through our efforts, we aim to empower institutions and innovators to develop solutions that address real-world challenges and contribute to lasting social and economic progress.',
     },
@@ -269,12 +215,6 @@ export const NFTeamPage: React.FC = () => {
       id: 'msg-ceo',
       title: 'Message from the CEO',
       roleBadge: 'Office of the Chief Executive Officer',
-      badgeStyle: isDark
-        ? 'bg-sky-400/15 text-sky-300 border-sky-400/40'
-        : 'bg-sky-100 text-[#0284c7] border-sky-300',
-      cardBorder: isDark
-        ? 'border-sky-400/40 hover:border-sky-400/70 shadow-sky-950/30'
-        : 'border-sky-200 hover:border-sky-400 shadow-sky-100',
       message:
         'Welcome to NF Venture Studio, where we work to transform promising ideas into practical solutions and sustainable ventures. We understand that every innovation begins with a vision, but turning that vision into reality requires the right guidance, resources, and partnerships. Our focus is on helping students, researchers, and aspiring entrepreneurs move forward with confidence through structured incubation, mentorship, and industry connections. By bringing academic knowledge and real-world opportunities together, we aim to build a supportive ecosystem where innovators can develop their ideas, overcome challenges, and create ventures with lasting value.',
     },
@@ -282,12 +222,6 @@ export const NFTeamPage: React.FC = () => {
       id: 'msg-coo',
       title: 'Message from the COO',
       roleBadge: 'Office of the Chief Operating Officer',
-      badgeStyle: isDark
-        ? 'bg-emerald-400/15 text-emerald-300 border-emerald-400/40'
-        : 'bg-emerald-100 text-emerald-800 border-emerald-300',
-      cardBorder: isDark
-        ? 'border-emerald-400/40 hover:border-emerald-400/70 shadow-emerald-950/20'
-        : 'border-emerald-200 hover:border-emerald-400 shadow-emerald-100',
       message:
         'At NF Venture Studio, we believe that successful innovation depends on turning good ideas into well-executed action. Our focus is on building the systems, processes, and infrastructure that help institutions and innovators move from planning to implementation. From establishing incubation facilities to coordinating programmes and supporting venture development, we work to make the innovation journey organised, practical, and effective. Through teamwork, clear processes, and consistent execution, we aim to provide a dependable foundation that allows students, researchers, and entrepreneurs to focus on what matters most: developing solutions and bringing their ideas to life.',
     },
@@ -295,161 +229,140 @@ export const NFTeamPage: React.FC = () => {
 
   return (
     <div
-      className={`min-h-screen flex flex-col font-sans selection:bg-[#0284c7] selection:text-white relative overflow-x-hidden transition-colors duration-300 animate-fadeIn ${
-        isDark ? 'bg-[#060f1e] text-slate-100' : 'bg-slate-50 text-[#081c3b]'
-      }`}
+      className={`min-h-screen flex flex-col font-sans transition-colors duration-200 ${isDark ? 'bg-[#081528] text-slate-100' : 'bg-[#F7F9FC] text-[#172334]'
+        }`}
     >
-      {/* Background Ambient Glows aligned to brand Gold & Blue */}
-      <div
-        className={`fixed top-0 left-1/4 w-72 sm:w-[600px] h-72 sm:h-[600px] rounded-full blur-3xl pointer-events-none -z-10 transition-opacity duration-500 ${
-          isDark
-            ? 'bg-gradient-to-br from-sky-500/10 via-amber-400/5 to-transparent opacity-100'
-            : 'bg-gradient-to-br from-sky-300/20 via-amber-300/15 to-transparent opacity-80'
-        }`}
-      />
-      <div
-        className={`fixed bottom-1/3 right-4 sm:right-10 w-60 sm:w-[500px] h-60 sm:h-[500px] rounded-full blur-3xl pointer-events-none -z-10 transition-opacity duration-500 ${
-          isDark
-            ? 'bg-gradient-to-tl from-amber-400/10 via-blue-600/10 to-transparent opacity-100'
-            : 'bg-gradient-to-tl from-amber-300/20 via-blue-400/15 to-transparent opacity-80'
-        }`}
-      />
-
-      {/* Top Navbar */}
       <NFNavbar
         onOpenApplication={handleOpenApplication}
         theme={theme}
         onToggleTheme={toggleTheme}
       />
 
-      <main className="flex-1 w-full pt-20 sm:pt-24 pb-12 sm:pb-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14 sm:space-y-20">
+      <main className="flex-1 w-full pt-20 sm:pt-28 pb-14 sm:pb-20">
+        <div className="section-shell space-y-12 sm:space-y-16">
 
-          {/* ========================================================= */}
-          {/* 1. Page Header (Strategic, Institutional, Inspiring)       */}
-          {/* ========================================================= */}
-          <section className="text-center pt-4 sm:pt-8 animate-fade-in" style={{ opacity: 1, visibility: 'visible' }}>
-            <div className="flex justify-center mb-3">
-              <div
-                className={`inline-flex items-center gap-2 px-3.5 py-1 rounded-full border text-xs font-mono font-bold uppercase tracking-wider ${
-                  isDark
-                    ? 'bg-[#0b1d3a] border-sky-400/40 text-sky-300'
-                    : 'bg-white border-slate-300 text-[#0369a1] shadow-xs'
-                }`}
-              >
-                <Users className="w-3.5 h-3.5 text-amber-400" />
-                <span>Executive Leadership & Operations • NF Venture Studio</span>
-              </div>
+          {/* 1. Header */}
+          <section className="text-center pt-8 sm:pt-12 max-w-4xl mx-auto">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold border mb-4 bg-[#EAF1F9] dark:bg-slate-800 text-[#123B73] dark:text-sky-300 border-[#DCE3EC] dark:border-slate-700">
+              <Users className="w-3.5 h-3.5 text-[#D9A72E]" />
+              <span>Executive Leadership &amp; Operations · NF Venture Studio</span>
             </div>
 
             <h1
-              className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-tight max-w-4xl mx-auto leading-tight ${
-                isDark
-                  ? 'text-transparent bg-clip-text bg-gradient-to-r from-white via-sky-100 to-amber-200'
-                  : 'text-[#081c3b]'
-              }`}
+              className="font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight"
+              style={{ fontSize: 'clamp(1.75rem, 4vw + 0.5rem, 3rem)' }}
             >
-              Unified by Purpose, Driven by Deep-Tech Innovation
+              Institutional Leadership &amp; <span className="text-[#D9A72E]">Core Working Pillars</span>
             </h1>
 
-            <p
-              className={`text-sm sm:text-base md:text-lg max-w-2xl mx-auto mt-3.5 leading-relaxed font-normal ${
-                isDark ? 'text-slate-300' : 'text-slate-600'
-              }`}
-            >
-              At NF Venture Studio, our strength lies in cross-disciplinary execution and institutional rigor.
-              We unite educators, engineers, operators, and researchers to transform campus ideas
-              into commercial breakthroughs and sustainable deep-tech enterprises.
+            <p className="mt-4 text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl mx-auto">
+              Our multidisciplinary leadership team unites academic administrators, venture operators, research directors, and engineering builders to translate campus research into viable commercial enterprises.
             </p>
 
-            {/* Core Values / Team Culture Pillars */}
-            <div className="mt-5 flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-xs sm:text-sm font-mono font-bold">
-              <span
-                className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-xl border ${
-                  isDark
-                    ? 'bg-amber-500/10 border-amber-400/30 text-amber-300'
-                    : 'bg-amber-50 border-amber-200 text-amber-800'
-                }`}
-              >
-                <Target className="w-3.5 h-3.5 text-amber-400" />
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-xs font-semibold">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#DCE3EC] dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+                <Target className="w-3.5 h-3.5 text-[#D9A72E]" />
                 Shared Mission
               </span>
-              <span
-                className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-xl border ${
-                  isDark
-                    ? 'bg-sky-500/10 border-sky-400/30 text-sky-300'
-                    : 'bg-sky-50 border-sky-200 text-[#0284c7]'
-                }`}
-              >
-                <Compass className="w-3.5 h-3.5 text-sky-400" />
-                Collaborative Rigor
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#DCE3EC] dark:border-slate-700 bg-white dark:bg-slate-800 text-[#123B73] dark:text-sky-300">
+                <Compass className="w-3.5 h-3.5 text-[#123B73] dark:text-sky-400" />
+                Collaborative Execution
               </span>
-              <span
-                className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-xl border ${
-                  isDark
-                    ? 'bg-emerald-500/10 border-emerald-400/30 text-emerald-300'
-                    : 'bg-emerald-50 border-emerald-200 text-emerald-700'
-                }`}
-              >
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#DCE3EC] dark:border-slate-700 bg-white dark:bg-slate-800 text-emerald-600 dark:text-emerald-400">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                 Institutional Integrity
               </span>
             </div>
           </section>
 
-          {/* ========================================================= */}
-          {/* 2. CORE WORKING PILLARS SECTION                           */}
-          {/*    Guaranteed immediate visibility on page load           */}
-          {/* ========================================================= */}
-          <section
-            className="space-y-8"
-            style={{ opacity: 1, visibility: 'visible', transform: 'none' }}
-          >
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b pb-4 border-slate-800">
-              <div>
-                <div className="text-xs font-mono font-bold uppercase tracking-widest text-amber-400">
-                  Institutional Leadership & Operations
-                </div>
-                <h2
-                  className={`text-xl sm:text-2xl md:text-3xl font-black uppercase tracking-tight ${
-                    isDark ? 'text-white' : 'text-[#081c3b]'
-                  }`}
+          {/* 2. FIRST: Executive Messages (Approved Leadership Paragraphs - Center-Aligned Heading) */}
+          <section id="executive-messages" className="space-y-6 sm:space-y-8 reveal">
+            <div className="text-center max-w-2xl mx-auto space-y-2 border-b pb-5 border-slate-200 dark:border-slate-800">
+              <div className="text-xs font-semibold text-[#123B73] dark:text-sky-400 uppercase tracking-wider">
+                Institutional Leadership Addresses
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">
+                Executive <span className="text-[#D9A72E]">Messages</span>
+              </h2>
+              <p className="text-xs font-medium text-slate-500 dark:text-slate-400">
+                Governance &amp; Vision
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+              {executiveMessages.map((msg) => (
+                <div
+                  key={msg.id}
+                  className={`p-6 sm:p-7 rounded-2xl border flex flex-col justify-between transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${isDark
+                      ? 'bg-slate-900 border-slate-800 hover:border-slate-700'
+                      : 'bg-white border-[#DCE3EC] hover:border-slate-300'
+                    }`}
                 >
-                  CORE WORKING PILLARS
+                  <div className="space-y-4">
+                    <div className="flex items-start sm:items-center justify-between gap-2 flex-wrap">
+                      <span className="text-[10px] font-semibold px-2.5 py-0.5 rounded-full border border-[#DCE3EC] dark:border-slate-700 bg-[#EAF1F9] dark:bg-slate-800 text-[#123B73] dark:text-sky-300 uppercase tracking-wider">
+                        {msg.roleBadge}
+                      </span>
+                      <div className="w-7 h-7 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500">
+                        <Quote className="w-3.5 h-3.5" />
+                      </div>
+                    </div>
+
+                    <div>
+                      <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white leading-snug">
+                        {msg.title}
+                      </h3>
+                      <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                        NF Venture Studio · Institutional Governance
+                      </div>
+                    </div>
+
+                    <div className="border-t border-slate-200 dark:border-slate-800" />
+
+                    <p className="text-xs sm:text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+                      "{msg.message}"
+                    </p>
+                  </div>
+
+                  <div className="pt-4 mt-5 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400">
+                    <span className="text-[#D9A72E] font-medium">
+                      Official Institutional Policy
+                    </span>
+                    <span>Naree Care Foundation</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* 3. SECOND: Core Working Pillars (Full-Width Horizontal Leadership Cards Stacked Vertically) */}
+          <section id="core-working-pillars" className="space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b pb-4 border-slate-200 dark:border-slate-800">
+              <div>
+                <div className="text-xs font-semibold text-[#D9A72E] uppercase tracking-wider mb-1">
+                  Executive Leadership Team
+                </div>
+                <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">
+                  Core <span className="text-[#D9A72E]">Working Pillars</span>
                 </h2>
               </div>
-              <span
-                className={`text-xs font-mono ${
-                  isDark ? 'text-slate-400' : 'text-slate-500'
-                }`}
-              >
-                5 Key Executive Pillars
+              <span className="text-xs text-slate-500 dark:text-slate-400">
+                5 Key Executive Profiles
               </span>
             </div>
 
-            {/* Grid Layout: 2 Columns on Desktop, 1 Column on Tablet & Mobile */}
-            <div
-              className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch"
-              style={{ opacity: 1, visibility: 'visible' }}
-            >
+            <div className="space-y-6 sm:space-y-8 reveal-stagger">
               {corePillars.map((member) => (
-                <div
+                <article
                   key={member.id}
-                  style={{
-                    opacity: 1,
-                    visibility: 'visible',
-                    transform: 'none',
-                    animationDelay: member.animDelay,
-                  }}
-                  className={`${member.gridPlacement} animate-fade-in rounded-3xl border p-4 sm:p-5 lg:p-6 transition-all duration-300 hover:shadow-2xl hover:-translate-y-0.5 relative group flex flex-col sm:flex-row items-stretch gap-4 sm:gap-6 ${
-                    isDark
-                      ? 'bg-[#0a1832]/95 border-sky-500/25 hover:border-amber-400/50 shadow-xl shadow-sky-950/30'
-                      : 'bg-white border-slate-200/90 hover:border-sky-300 shadow-md shadow-slate-200/50'
-                  }`}
+                  className={`w-full rounded-2xl border p-4 sm:p-6 md:p-8 flex flex-col md:flex-row items-stretch gap-5 sm:gap-8 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${isDark
+                      ? 'bg-slate-900 border-slate-800 hover:border-slate-700'
+                      : 'bg-white border-[#DCE3EC] hover:border-slate-300'
+                    }`}
                 >
-                  {/* Left Column: Executive Photograph (Approx 30-35% width) */}
-                  <div className="w-full sm:w-[34%] shrink-0 flex items-stretch">
-                    <div className="w-full h-56 sm:h-full min-h-[220px]">
+                  {/* Left Column: Executive Photograph (25–32% width on desktop) */}
+                  <div className="w-full md:w-[28%] lg:w-[26%] shrink-0 flex items-stretch min-w-0">
+                    <div className="w-full h-56 sm:h-64 md:h-full min-h-[220px] md:min-h-[270px]">
                       <TeamMemberPhoto
                         src={member.imageSrc}
                         name={member.name}
@@ -459,76 +372,46 @@ export const NFTeamPage: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Right Column: Executive Information (Approx 65-70% width) */}
-                  <div className="w-full sm:w-[66%] flex flex-col justify-between py-1">
-                    <div className="space-y-2.5">
-                      {/* Top Role Badge Row */}
-                      <div className="flex items-center justify-between gap-2">
-                        <span
-                          className={`inline-flex items-center gap-1.5 text-[10px] sm:text-[11px] font-mono font-bold uppercase px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full border tracking-wide ${
-                            isDark
-                              ? 'bg-sky-400/10 text-sky-300 border-sky-400/30'
-                              : 'bg-sky-50 text-[#0284c7] border-sky-200'
-                          }`}
-                        >
-                          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                  {/* Right Column: Executive Information */}
+                  <div className="flex-1 flex flex-col justify-between py-1">
+                    <div className="space-y-3">
+                      {/* 1. Small role badge */}
+                      <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between gap-2">
+                        <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full border border-[#DCE3EC] dark:border-slate-700 bg-[#EAF1F9] dark:bg-slate-800 text-[#123B73] dark:text-sky-300">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#123B73] dark:bg-sky-400" />
                           {member.shortRole}
                         </span>
-                        <span
-                          className={`text-[10px] sm:text-[11px] font-mono font-medium ${
-                            isDark ? 'text-slate-400' : 'text-slate-500'
-                          }`}
-                        >
-                          NFVS Executive
+                        <span className="text-xs text-slate-400 dark:text-slate-500 font-medium">
+                          NF Venture Studio · Executive
                         </span>
                       </div>
 
-                      {/* Executive Name & Official Designation */}
+                      {/* 2. Executive name & 3. Official designation */}
                       <div>
-                        <h3
-                          className={`text-lg sm:text-xl md:text-2xl font-black uppercase tracking-tight leading-snug ${
-                            isDark ? 'text-white' : 'text-[#081c3b]'
-                          }`}
-                        >
+                        <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white leading-tight">
                           {member.name}
                         </h3>
-                        <div
-                          className={`text-xs sm:text-sm font-bold mt-1 tracking-wide ${
-                            isDark ? 'text-amber-400' : 'text-amber-600'
-                          }`}
-                        >
+                        <div className="text-sm font-semibold text-[#D9A72E] mt-1">
                           {member.designation}
                         </div>
                       </div>
 
-                      {/* Focus Description Paragraph */}
-                      <p
-                        className={`text-xs sm:text-[13px] leading-relaxed font-normal ${
-                          isDark ? 'text-slate-300' : 'text-slate-600'
-                        }`}
-                      >
+                      {/* 4. Focus description */}
+                      <p className="text-sm sm:text-[15px] leading-relaxed text-slate-600 dark:text-slate-300">
                         {member.focus}
                       </p>
                     </div>
 
-                    {/* Divider and Core Functional Scope Responsibilities */}
-                    <div className="pt-3 sm:pt-4 mt-3 sm:mt-4 border-t border-slate-700/50 dark:border-slate-800 space-y-2">
-                      <div
-                        className={`text-[10px] font-mono uppercase tracking-wider font-bold ${
-                          isDark ? 'text-sky-400' : 'text-[#0284c7]'
-                        }`}
-                      >
+                    {/* 5. Core Functional Scope responsibilities */}
+                    <div className="pt-4 mt-5 border-t border-slate-200 dark:border-slate-800 space-y-2">
+                      <div className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                         Core Functional Scope:
                       </div>
-                      <div className="flex flex-wrap gap-1.5">
+                      <div className="flex flex-wrap gap-2">
                         {member.responsibilities.map((resp, idx) => (
                           <span
                             key={idx}
-                            className={`text-[10px] sm:text-[11px] font-mono font-medium px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg border transition-colors ${
-                              isDark
-                                ? 'bg-slate-900/90 text-slate-300 border-slate-700/80 hover:border-sky-400/40'
-                                : 'bg-slate-50 text-slate-700 border-slate-200 hover:border-sky-300'
-                            }`}
+                            className="text-xs font-medium px-3 py-1 rounded-md border border-[#DCE3EC] dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300"
                           >
                             {resp}
                           </span>
@@ -536,158 +419,37 @@ export const NFTeamPage: React.FC = () => {
                       </div>
                     </div>
                   </div>
-                </div>
+                </article>
               ))}
             </div>
           </section>
 
-          {/* ========================================================= */}
-          {/* 3. EXECUTIVE MESSAGES SECTION                             */}
-          {/*    Role/Title only (NO names, NO photos)                  */}
-          {/* ========================================================= */}
+          {/* 4. Action CTA Banner */}
           <section
-            className="space-y-8"
-            style={{ opacity: 1, visibility: 'visible', transform: 'none' }}
-          >
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b pb-4 border-slate-800">
-              <div>
-                <div className="text-xs font-mono font-bold uppercase tracking-widest text-sky-400">
-                  Institutional Leadership Addresses
-                </div>
-                <h2
-                  className={`text-xl sm:text-2xl md:text-3xl font-black uppercase tracking-tight ${
-                    isDark ? 'text-white' : 'text-[#081c3b]'
-                  }`}
-                >
-                  Executive Messages
-                </h2>
-              </div>
-              <span
-                className={`text-xs font-mono ${
-                  isDark ? 'text-slate-400' : 'text-slate-500'
-                }`}
-              >
-                Governance & Vision
-              </span>
-            </div>
-
-            {/* 3 Strategic Executive Messages in 3-Column Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
-              {executiveMessages.map((msg) => (
-                <div
-                  key={msg.id}
-                  style={{ opacity: 1, visibility: 'visible', transform: 'none' }}
-                  className={`p-6 sm:p-7 rounded-3xl border flex flex-col justify-between transition-all duration-300 shadow-xl relative animate-fade-in ${
-                    msg.cardBorder
-                  } ${
-                    isDark ? 'bg-[#09152b]/95' : 'bg-white'
-                  }`}
-                >
-                  <div className="space-y-4">
-                    {/* Top Row: Office Badge & Quote Icon */}
-                    <div className="flex items-center justify-between">
-                      <span
-                        className={`text-[10px] font-mono font-bold px-3 py-1 rounded-full border uppercase tracking-wider ${msg.badgeStyle}`}
-                      >
-                        {msg.roleBadge}
-                      </span>
-                      <div
-                        className={`w-8 h-8 rounded-xl flex items-center justify-center border ${
-                          isDark
-                            ? 'bg-slate-900 border-slate-700 text-amber-400'
-                            : 'bg-slate-100 border-slate-200 text-amber-600'
-                        }`}
-                      >
-                        <Quote className="w-4 h-4" />
-                      </div>
-                    </div>
-
-                    {/* Title: Exactly Role / Title only (NO names, NO photos) */}
-                    <div>
-                      <h3
-                        className={`text-lg sm:text-xl font-black uppercase tracking-tight ${
-                          isDark ? 'text-white' : 'text-[#081c3b]'
-                        }`}
-                      >
-                        {msg.title}
-                      </h3>
-                      <div
-                        className={`text-[11px] font-mono font-semibold mt-1 ${
-                          isDark ? 'text-sky-300' : 'text-[#0284c7]'
-                        }`}
-                      >
-                        NF Venture Studio • Institutional Governance
-                      </div>
-                    </div>
-
-                    {/* Gradient Divider */}
-                    <div className="h-px bg-gradient-to-r from-sky-400/30 via-amber-400/20 to-transparent" />
-
-                    {/* Executive Leadership Message Text */}
-                    <p
-                      className={`text-sm sm:text-base leading-relaxed italic ${
-                        isDark ? 'text-slate-200' : 'text-slate-700'
-                      }`}
-                    >
-                      "{msg.message}"
-                    </p>
-                  </div>
-
-                  {/* Bottom Verification Note */}
-                  <div className="pt-4 mt-5 border-t border-slate-800/80 flex items-center justify-between text-[10px] font-mono">
-                    <span className="text-amber-400/90 flex items-center gap-1 font-semibold">
-                      <Sparkles className="w-3 h-3" />
-                      Official Institutional Policy
-                    </span>
-                    <span className={isDark ? 'text-slate-500' : 'text-slate-400'}>
-                      Naree Care Foundation
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* ========================================================= */}
-          {/* 4. Action CTA Banner                                      */}
-          {/* ========================================================= */}
-          <section
-            className={`p-6 sm:p-8 rounded-3xl border text-center space-y-3.5 ${
-              isDark
-                ? 'bg-gradient-to-br from-[#0c1f3d] via-[#07152b] to-[#060f1e] border-sky-400/40 shadow-xl'
-                : 'bg-gradient-to-br from-sky-50 via-white to-amber-50 border-sky-200 shadow-md'
-            }`}
-          >
-            <h2
-              className={`text-lg sm:text-xl font-black uppercase tracking-tight ${
-                isDark ? 'text-white' : 'text-[#081c3b]'
+            className={`p-8 sm:p-12 rounded-2xl border text-center space-y-4 transition-colors ${isDark ? 'bg-slate-900 border-slate-800' : 'bg-[#EAF1F9] border-[#DCE3EC]'
               }`}
-            >
-              Collaborate With Our Leadership & Venture Team
+          >
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
+              Collaborate with Our Leadership &amp; <span className="text-[#D9A72E]">Venture Team</span>
             </h2>
-            <p
-              className={`text-xs sm:text-sm max-w-xl mx-auto ${
-                isDark ? 'text-slate-300' : 'text-slate-600'
-              }`}
-            >
+            <p className="text-sm text-slate-600 dark:text-slate-300 max-w-xl mx-auto leading-relaxed">
               Whether you are an academic institution seeking turnkey incubation setup or a student innovator ready to build, our team is here to support your journey.
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-3 pt-1.5">
+            <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
               <button
                 type="button"
                 onClick={() => handleOpenApplication()}
-                className="h-9 sm:h-10 px-4 sm:px-5 rounded-xl font-black text-xs uppercase tracking-wider text-white bg-gradient-to-r from-[#0284c7] via-[#0369a1] to-[#081c3b] hover:from-[#0ea5e9] hover:to-[#0284c7] shadow-lg shadow-sky-500/25 border border-sky-400/50 transition-all hover:scale-105 active:scale-95 cursor-pointer inline-flex items-center gap-1.5"
+                className="px-6 py-3 rounded-xl font-semibold text-xs text-white bg-[#123B73] hover:bg-[#0B1F3A] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md inline-flex items-center gap-2"
               >
-                <Sparkles className="w-3.5 h-3.5 text-amber-300" />
                 <span>Apply for Incubation Center</span>
+                <ArrowRight className="w-3.5 h-3.5 text-white/80" />
               </button>
               <Link
                 to="/contact"
-                className={`h-9 sm:h-10 px-4 sm:px-5 rounded-xl font-bold text-xs uppercase tracking-wider border transition-all hover:scale-105 active:scale-95 inline-flex items-center gap-1.5 ${
-                  isDark
-                    ? 'bg-slate-900 border-slate-700 text-slate-200 hover:text-white hover:bg-slate-800'
-                    : 'bg-white border-slate-300 text-slate-700 hover:bg-slate-100 hover:text-[#0284c7]'
-                }`}
+                className={`px-5 py-3 rounded-xl font-semibold text-xs border transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 inline-flex items-center gap-2 ${isDark
+                    ? 'bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-700 hover:border-slate-600'
+                    : 'bg-white border-[#DCE3EC] text-slate-700 hover:bg-slate-50 hover:border-slate-300 hover:shadow-xs'
+                  }`}
               >
                 <span>Contact Executive Office</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -705,7 +467,6 @@ export const NFTeamPage: React.FC = () => {
         scrollToTop={scrollToTop}
       />
 
-      {/* Application Intake Modal */}
       <NFApplicationModal
         isOpen={isAppModalOpen}
         onClose={() => setIsAppModalOpen(false)}

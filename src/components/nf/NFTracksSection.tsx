@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { GraduationCap, Award, UserCheck, CheckCircle2, ArrowUpRight, Sparkles, Rocket, Zap, BarChart3 } from 'lucide-react';
+import React from 'react';
+import { GraduationCap, Award, UserCheck, CheckCircle2, ArrowRight } from 'lucide-react';
 
 interface NFTracksSectionProps {
   onOpenApplication: (track: string) => void;
@@ -8,69 +8,55 @@ interface NFTracksSectionProps {
 
 export const NFTracksSection: React.FC<NFTracksSectionProps> = ({
   onOpenApplication,
-  isDark = true,
+  isDark = false,
 }) => {
-  const [hoveredTrack, setHoveredTrack] = useState<string | null>(null);
-
   const tracks = [
     {
       id: 'student',
       number: '01',
-      title: 'STUDENT STARTUP TRACK',
-      targetGroup: 'UG/PG students, campus innovators & E-Cell teams.',
+      title: 'Student Startup Track',
+      targetGroup: 'UG/PG students, campus innovators & E-Cell teams',
       icon: GraduationCap,
-      avatarBg: 'from-[#f59e0b] to-[#ea580c]',
-      borderGlow: 'hover:border-amber-400/80',
-      activeBorder: 'border-amber-400/80',
-      glowColor: 'rgba(245,158,11,0.15)',
       bullets: [
-        { bold: 'E-Cell hackathons', text: ' & innovation bootcamps' },
-        { bold: '3–6 month cohorts', text: ' for pre-incubation' },
-        { bold: 'PoC micro-grants', text: ' & prototyping lab access' },
-        { bold: 'Investor demo days', text: ' & operator mentorship' },
+        { bold: 'E-Cell hackathons', text: ' & structured innovation bootcamps' },
+        { bold: '3–6 month cohorts', text: ' for pre-incubation & validation' },
+        { bold: 'PoC micro-grants', text: ' & prototyping lab infrastructure' },
+        { bold: 'Investor demo days', text: ' & experienced operator mentorship' },
       ],
-      highlight: 'From College Idea to Scalable Startup',
-      badgeText: 'UG/PG_COHORTS',
+      highlight: 'From campus project to scalable startup venture',
+      badgeText: 'Cohort Enrolment',
       ctaText: 'Apply as Student Innovator',
     },
     {
       id: 'faculty',
       number: '02',
-      title: 'FACULTY & RESEARCHER TRACK',
-      targetGroup: 'Faculty researchers, scholars & lab leads.',
+      title: 'Faculty & Researcher Track',
+      targetGroup: 'Faculty researchers, scholars & departmental lab leads',
       icon: Award,
-      avatarBg: 'from-[#0284c7] to-[#0369a1]',
-      borderGlow: 'hover:border-sky-400/80',
-      activeBorder: 'border-sky-400/80',
-      glowColor: 'rgba(56,189,248,0.15)',
       bullets: [
-        { bold: 'Commercialisation roadmaps', text: ' from lab to market' },
-        { bold: 'AICTE-NISP IP policy', text: ' & equity frameworks' },
-        { bold: 'Grant readiness', text: ' for NIDHI, BIRAC & MSME' },
-        { bold: 'Patent drafting', text: ' & tech transfer office (TTO)' },
+        { bold: 'Commercialisation roadmaps', text: ' from laboratory to market' },
+        { bold: 'AICTE-NISP IP policy', text: ' & institutional equity frameworks' },
+        { bold: 'Grant readiness', text: ' for NIDHI, BIRAC & MSME schemes' },
+        { bold: 'Patent drafting', text: ' & Technology Transfer Office (TTO) support' },
       ],
-      highlight: 'Commercialise Deep-Tech Patents & Research',
-      badgeText: 'RESEARCH_TO_VENTURE',
+      highlight: 'Commercialise deep-tech patents & academic research',
+      badgeText: 'Research to Venture',
       ctaText: 'Commercialize Faculty Research',
     },
     {
       id: 'external',
       number: '03',
-      title: 'INDIVIDUAL & OPEN TRACK',
-      targetGroup: 'Alumni, solo founders & tech innovators.',
+      title: 'Individual & Open Track',
+      targetGroup: 'Alumni, solo founders & grassroots tech innovators',
       icon: UserCheck,
-      avatarBg: 'from-[#6366f1] to-[#4338ca]',
-      borderGlow: 'hover:border-indigo-400/80',
-      activeBorder: 'border-indigo-400/80',
-      glowColor: 'rgba(99,102,241,0.15)',
       bullets: [
-        { bold: 'Dedicated co-working', text: ' physical & virtual zones' },
-        { bold: 'Dev-for-Equity', text: ' rapid MVP build sprints' },
-        { bold: 'Corporate pilots', text: ' & Go-to-Market support' },
-        { bold: 'Angel syndication', text: ' & demo day investor access' },
+        { bold: 'Dedicated co-working', text: ' physical & collaborative incubation spaces' },
+        { bold: 'Dev-for-Equity', text: ' rapid MVP engineering sprints' },
+        { bold: 'Corporate pilots', text: ' & enterprise Go-to-Market access' },
+        { bold: 'Angel syndication', text: ' & venture capital pitch access' },
       ],
-      highlight: 'Grassroots & Alumni to Investable Enterprises',
-      badgeText: 'DEV_FOR_EQUITY',
+      highlight: 'Grassroots & alumni to investable enterprises',
+      badgeText: 'Venture Studio Build',
       ctaText: 'Join as Solo Founder',
     },
   ];
@@ -78,137 +64,79 @@ export const NFTracksSection: React.FC<NFTracksSectionProps> = ({
   return (
     <section
       id="tracks"
-      className={`py-12 sm:py-16 relative border-b transition-colors duration-300 ${
-        isDark ? 'bg-[#081528] border-sky-500/20' : 'bg-white border-slate-200'
+      className={`py-14 sm:py-20 border-b transition-colors duration-200 ${
+        isDark ? 'bg-[#081528] border-slate-800 text-white' : 'bg-white border-[#DCE3EC] text-[#172334]'
       }`}
     >
       <div className="section-shell">
-
-        {/* Section Header Pill */}
-        <div className="flex justify-center mb-8 sm:mb-12 reveal">
-          <div
-            className={`section-title-pill ${
-              isDark
-                ? 'bg-[#0b1e3c] text-white border-sky-400/40'
-                : 'bg-slate-50 text-[#081c3b] border-slate-300 shadow-md'
-            }`}
-          >
-            <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping" />
-            <h2
-                className={`section-title-text ${
-                isDark
-                  ? 'text-transparent bg-clip-text bg-gradient-to-r from-sky-200 to-amber-300'
-                  : 'text-[#081c3b]'
-              }`}
-            >
-              THE THREE SPECIALIZED TRACKS
-            </h2>
-            <span className="w-2.5 h-2.5 rounded-full bg-sky-400" />
+        
+        {/* Section Header */}
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold border mb-3 bg-[#EAF1F9] dark:bg-slate-800 text-[#123B73] dark:text-sky-300 border-[#DCE3EC] dark:border-slate-700">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#123B73] dark:bg-sky-400" />
+            <span>Incubation Pathways</span>
           </div>
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+            Who NF Venture Studio <span className="text-[#D9A72E]">Supports</span>
+          </h2>
+          <p className="mt-3 text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl mx-auto">
+            Dedicated incubation frameworks designed to translate academic curiosity, technical IP, and entrepreneurial grit into viable enterprises.
+          </p>
         </div>
 
-        {/* 3 High-Tech Track Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch reveal-stagger">
+        {/* 3 Clean Institutional Track Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
           {tracks.map((track) => {
             const Icon = track.icon;
-            const isHovered = hoveredTrack === track.id;
             return (
               <div
                 key={track.id}
-                onMouseEnter={() => setHoveredTrack(track.id)}
-                onMouseLeave={() => setHoveredTrack(null)}
-                className={`group relative flex flex-col justify-between glass-card nf-card hover:shadow-2xl transition-all duration-300 glass-card-hover ${track.borderGlow} ${
-                  isDark ? 'border-sky-500/30' : 'border-slate-200 bg-white'
+                className={`group flex flex-col justify-between rounded-2xl border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-l-4 hover:border-l-[#D9A72E] ${
+                  isDark
+                    ? 'bg-slate-900/80 border-slate-800 hover:border-slate-700'
+                    : 'bg-[#F7F9FC] border-[#DCE3EC] hover:border-slate-300'
                 }`}
-                style={{
-                  boxShadow: isHovered
-                    ? `0 20px 40px -10px ${track.glowColor}, 0 0 30px ${track.glowColor}`
-                    : undefined,
-                }}
               >
-                {/* Top Glowing Laser Accent */}
-                <div className="h-1.5 w-full bg-gradient-to-r from-[#f59e0b] via-[#38bdf8] to-[#0284c7] animate-border-beam" />
-
-                <div className="p-5 sm:p-6 flex-1 flex flex-col">
-
-                  {/* Header Row: Track Number & Icon */}
-                  <div className="flex items-start gap-3 sm:gap-4 mb-4 pr-16 sm:pr-20">
+                <div className="p-6 sm:p-7 flex-1 flex flex-col">
+                  
+                  {/* Top Header */}
+                  <div className="flex items-center justify-between gap-4 mb-5">
                     <div
-                      className={`w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg bg-gradient-to-br ${track.avatarBg} text-white transition-all group-hover:scale-110 group-hover:rotate-3 border border-white/20`}
+                      className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors duration-200 ${
+                        isDark ? 'bg-slate-800 text-sky-400 group-hover:bg-[#123B73] group-hover:text-white' : 'bg-[#EAF1F9] text-[#123B73] group-hover:bg-[#123B73] group-hover:text-white'
+                      }`}
                     >
-                      <Icon className="w-6 h-6 sm:w-7 sm:h-7" />
+                      <Icon className="w-6 h-6" />
                     </div>
-
-                    <div className="min-w-0">
-                      <span
-                        className={`text-xl sm:text-2xl font-black font-mono transition-colors ${
-                          isDark
-                            ? 'text-slate-600 group-hover:text-sky-400'
-                            : 'text-slate-300 group-hover:text-[#0284c7]'
-                        }`}
-                      >
+                    <div className="text-right">
+                      <span className="text-xl font-mono font-bold text-slate-400 dark:text-slate-500">
                         #{track.number}
                       </span>
-                      <div className="mt-0.5 sm:mt-1">
-                        <span
-                          className={`text-[9.5px] sm:text-[10px] font-mono font-bold px-2 py-0.5 rounded border inline-block truncate max-w-full ${
-                            isDark
-                              ? 'text-sky-300 bg-sky-500/15 border-sky-500/30'
-                              : 'text-[#0284c7] bg-sky-50 border-sky-200'
-                          }`}
-                        >
+                      <div>
+                        <span className="text-[10px] font-semibold px-2 py-0.5 rounded border border-[#DCE3EC] dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 inline-block">
                           {track.badgeText}
                         </span>
                       </div>
                     </div>
                   </div>
 
-                  {/* Title & Target Group */}
+                  {/* Title & Target */}
                   <div className="mb-4">
-                    <h3
-                      className={`text-base sm:text-lg font-black tracking-tight uppercase leading-snug text-balance transition-colors ${
-                        isDark ? 'text-white group-hover:text-sky-300' : 'text-[#081c3b] group-hover:text-[#0284c7]'
-                      }`}
-                    >
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-white leading-snug">
                       {track.title}
                     </h3>
-
-                    <div
-                      className={`mt-2 p-2 rounded-lg border ${
-                        isDark ? 'bg-slate-900/60 border-slate-700/80' : 'bg-slate-50 border-slate-200'
-                      }`}
-                    >
-                      <span
-                        className={`text-[11px] font-medium leading-tight block ${
-                          isDark ? 'text-slate-300' : 'text-slate-600'
-                        }`}
-                      >
-                        {track.targetGroup}
-                      </span>
-                    </div>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
+                      {track.targetGroup}
+                    </p>
                   </div>
 
-                  {/* Bullet Points with Cyber Gold Checkmarks */}
-                  <div className="my-3 flex-1 nf-compact-list">
+                  {/* Bullets */}
+                  <div className="my-3 space-y-2.5 flex-1">
                     {track.bullets.map((bullet, idx) => (
-                      <div
-                        key={idx}
-                        className={`flex items-start gap-2.5 font-medium transition-all ${
-                          isDark ? 'text-slate-200' : 'text-slate-700'
-                        }`}
-                        style={{ transitionDelay: `${idx * 40}ms` }}
-                      >
-                        <div
-                          className={`w-4 h-4 rounded-full border flex items-center justify-center flex-shrink-0 mt-0.5 transition-all group-hover:scale-110 ${
-                            isDark
-                              ? 'bg-amber-400/20 border-amber-400/50'
-                              : 'bg-amber-100 border-amber-300'
-                          }`}
-                        >
-                          <CheckCircle2 className={`w-3.5 h-3.5 ${isDark ? 'text-amber-300' : 'text-amber-600'}`} />
-                        </div>
+                      <div key={idx} className="flex items-start gap-2.5 text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+                        <CheckCircle2 className="w-4 h-4 text-[#123B73] dark:text-sky-400 shrink-0 mt-0.5" />
                         <span>
-                          <strong className={isDark ? 'text-white font-semibold' : 'text-slate-900 font-bold'}>
+                          <strong className="font-semibold text-slate-900 dark:text-white">
                             {bullet.bold}
                           </strong>
                           {bullet.text}
@@ -217,42 +145,27 @@ export const NFTracksSection: React.FC<NFTracksSectionProps> = ({
                     ))}
                   </div>
 
-                  {/* Bottom Highlight Strip */}
-                  <div
-                    className={`mt-4 pt-3 border-t flex items-center justify-between text-xs ${
-                      isDark ? 'border-slate-800' : 'border-slate-200'
-                    }`}
-                  >
-                    <span className={`font-bold flex items-center gap-1.5 min-w-0 safe-wrap ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                      <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                      {track.highlight}
-                    </span>
-                    <span
-                      className={`text-[10px] font-mono font-bold uppercase px-1.5 py-0.5 rounded border ${
-                        isDark
-                          ? 'text-emerald-400 bg-emerald-950/60 border-emerald-500/30'
-                          : 'text-emerald-700 bg-emerald-50 border-emerald-200'
-                      }`}
-                    >
-                      ACTIVE
-                    </span>
+                  {/* Bottom Highlight */}
+                  <div className="mt-5 pt-3 border-t border-slate-200 dark:border-slate-800 text-xs text-[#D9A72E] font-medium">
+                    {track.highlight}
                   </div>
                 </div>
 
                 {/* Card Button */}
-                <div className={`p-4 border-t ${isDark ? 'bg-slate-950/70 border-slate-800' : 'bg-slate-50 border-slate-200'}`}>
+                <div className="p-4 sm:p-5 pt-0">
                   <button
                     onClick={() => onOpenApplication(track.id)}
-                    className="w-full min-h-11 py-2.5 px-4 rounded-xl text-xs font-black uppercase tracking-wide text-white bg-gradient-to-r from-[#0284c7] to-[#081c3b] hover:from-[#0ea5e9] hover:to-[#0284c7] border border-sky-400/40 hover:border-amber-400/60 transition-all flex items-center justify-center gap-2 shadow-md group/btn cursor-pointer btn-neon-blue text-center"
+                    className="w-full py-2.5 px-4 rounded-xl text-xs font-semibold text-white bg-[#123B73] hover:bg-[#0B1F3A] active:bg-[#0B1F3A] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer shadow-xs hover:shadow-sm"
                   >
                     <span>{track.ctaText}</span>
-                    <ArrowUpRight className="w-4 h-4 text-amber-300 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+                    <ArrowRight className="w-3.5 h-3.5 text-white/80 transition-transform duration-200 group-hover:translate-x-1" />
                   </button>
                 </div>
               </div>
             );
           })}
         </div>
+
       </div>
     </section>
   );

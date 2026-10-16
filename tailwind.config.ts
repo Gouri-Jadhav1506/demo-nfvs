@@ -6,28 +6,41 @@ export default {
   theme: {
     extend: {
       colors: {
+        brand: {
+          navy: '#123B73',
+          deep: '#0B1F3A',
+          gold: '#D9A72E',
+          muted: '#EAF1F9',
+          bg: '#F7F9FC',
+          text: '#172334',
+          secondary: '#596579',
+          border: '#DCE3EC',
+        },
         primary: {
-          50: 'hsl(220, 100%, 95%)',
-          100: 'hsl(220, 100%, 90%)',
-          200: 'hsl(220, 100%, 80%)',
-          300: 'hsl(220, 100%, 70%)',
-          400: 'hsl(220, 100%, 60%)',
-          500: 'hsl(220, 100%, 50%)',
-          600: 'hsl(220, 100%, 40%)',
-          700: 'hsl(220, 100%, 30%)',
-          800: 'hsl(220, 100%, 20%)',
-          900: 'hsl(220, 100%, 10%)',
-          950: 'hsl(220, 100%, 5%)',
+          50: '#F0F5FC',
+          100: '#E0EBF8',
+          200: '#C2D8F2',
+          300: '#94BAE9',
+          400: '#5F95DC',
+          500: '#123B73',
+          600: '#0F3263',
+          700: '#0C284F',
+          800: '#0B1F3A',
+          900: '#07162B',
+          950: '#040E1B',
         },
         sidebar: {
-          bg: '#0f172a',
+          bg: '#0B1F3A',
         },
+      },
+      screens: {
+        xs: '480px',
       },
       borderRadius: {
         card: '0.75rem',
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif'],
       },
       keyframes: {
         fadeIn: {

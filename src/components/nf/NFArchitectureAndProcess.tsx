@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { NFLogo } from './NFLogo';
-import { ClipboardCheck, Network, Cpu, Rocket, ArrowRight, Activity, Terminal, Shield, CheckCircle, Play, Pause, RotateCcw, Sparkles, Check } from 'lucide-react';
+import { ClipboardCheck, Network, Cpu, Rocket, ArrowRight, Play, Pause, RotateCcw, Check, CheckCircle2 } from 'lucide-react';
 
 interface NFArchitectureAndProcessProps {
   onOpenApplication: (track?: string) => void;
@@ -10,15 +10,13 @@ interface NFArchitectureAndProcessProps {
 
 export const NFArchitectureAndProcess: React.FC<NFArchitectureAndProcessProps> = ({
   onOpenApplication,
-  onOpenLabDetails,
-  isDark = true,
+  isDark = false,
 }) => {
   const [activeStage, setActiveStage] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(25);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
   const playIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const processRef = useRef<HTMLDivElement>(null);
 
   const clearPlayInterval = () => {
     if (playIntervalRef.current) {
@@ -36,104 +34,67 @@ export const NFArchitectureAndProcess: React.FC<NFArchitectureAndProcessProps> =
   const stages = [
     {
       id: 1,
-      label: 'STAGE I – ASSESS',
+      label: 'Stage I – Assess',
       subtitle: 'MoU & Capability Audit',
-      month: 'M1',
+      month: 'Month 1',
       tag: 'MoU & Audit',
-      badge: 'Month 1',
       progress: 25,
-      tagColor: isDark ? 'text-sky-300 bg-sky-500/20 border border-sky-400/30' : 'text-[#0284c7] bg-sky-50 border border-sky-200',
-      borderActive: isDark ? 'border-sky-400 shadow-lg shadow-sky-500/20 ring-2 ring-sky-400/40 bg-[#0c1f3d]' : 'border-[#0284c7] shadow-md shadow-sky-200/80 ring-2 ring-[#0284c7]/40 bg-sky-50/50',
-      borderIdle: isDark ? 'bg-slate-900/70 border-slate-800 hover:border-sky-400/50' : 'bg-white/80 border-slate-200 hover:border-sky-400/50',
-      iconBg: isDark ? 'bg-sky-500/20 text-sky-400 border-sky-400/40' : 'bg-sky-100 text-[#0284c7] border-sky-300',
-      titleColor: isDark ? 'text-sky-300' : 'text-[#0284c7]',
-      barColor: '#38bdf8',
       Icon: ClipboardCheck,
-      desc: 'Capability audit of labs, student projects, patents & E-Cell baseline.',
+      desc: 'Capability audit of academic labs, student research projects, existing faculty patents, and institutional E-Cell baseline.',
       deliverables: [
-        'Lab & IP capability audit',
-        'NBA/NAAC Criterion 3 baseline',
-        'Institutional co-execution MoU',
+        'Lab & IP capability audit report',
+        'NBA & NAAC Criterion 3 baseline evaluation',
+        'Institutional co-execution partnership MoU',
       ],
     },
     {
       id: 2,
-      label: 'STAGE II – GOVERN',
+      label: 'Stage II – Govern',
       subtitle: 'Board & IP Policy Ratification',
-      month: 'M2',
+      month: 'Month 2',
       tag: 'Board & IP',
-      badge: 'Month 2',
       progress: 50,
-      tagColor: isDark ? 'text-amber-300 bg-amber-400/20 border border-amber-400/30' : 'text-amber-800 bg-amber-50 border border-amber-200',
-      borderActive: isDark ? 'border-amber-400 shadow-lg shadow-amber-500/20 ring-2 ring-amber-400/40 bg-[#1f1a0d]' : 'border-amber-500 shadow-md shadow-amber-200/80 ring-2 ring-amber-400/40 bg-amber-50/50',
-      borderIdle: isDark ? 'bg-slate-900/70 border-slate-800 hover:border-amber-400/50' : 'bg-white/80 border-slate-200 hover:border-amber-400/50',
-      iconBg: isDark ? 'bg-amber-500/20 text-amber-400 border-amber-400/40' : 'bg-amber-100 text-amber-800 border-amber-300',
-      titleColor: isDark ? 'text-amber-300' : 'text-amber-800',
-      barColor: '#f59e0b',
       Icon: Network,
-      desc: 'Incubation Board constitution & AICTE-NISP IP policy ratification.',
+      desc: 'Institutional Incubation Board constitution and formal AICTE-NISP compliant IP policy adoption and ratification.',
       deliverables: [
-        'Institutional Incubation Board',
-        'AICTE-NISP IP policy ratified',
-        'Faculty SPOC & E-Cell governance',
+        'Institutional Incubation Board constituted',
+        'AICTE-NISP IP policy ratified by leadership',
+        'Faculty SPOC & student E-Cell governance operational',
       ],
     },
     {
       id: 3,
-      label: 'STAGE III – BUILD',
+      label: 'Stage III – Build',
       subtitle: 'Space Setup & Digital ERP',
-      month: 'M3-4',
+      month: 'Months 3–4',
       tag: 'Space & ERP',
-      badge: 'Months 3–4',
       progress: 75,
-      tagColor: isDark ? 'text-sky-300 bg-sky-500/20 border border-sky-400/30' : 'text-[#0284c7] bg-sky-50 border border-sky-200',
-      borderActive: isDark ? 'border-sky-400 shadow-lg shadow-sky-500/20 ring-2 ring-sky-400/40 bg-[#0c1f3d]' : 'border-[#0284c7] shadow-md shadow-sky-200/80 ring-2 ring-[#0284c7]/40 bg-sky-50/50',
-      borderIdle: isDark ? 'bg-slate-900/70 border-slate-800 hover:border-sky-400/50' : 'bg-white/80 border-slate-200 hover:border-sky-400/50',
-      iconBg: isDark ? 'bg-sky-500/20 text-sky-400 border-sky-400/40' : 'bg-sky-100 text-[#0284c7] border-sky-300',
-      titleColor: isDark ? 'text-sky-300' : 'text-[#0284c7]',
-      barColor: '#0ea5e9',
       Icon: Cpu,
-      desc: 'Prototyping space setup & Digital Incubation ERP portal deployment.',
+      desc: 'On-campus incubation and prototyping space configuration alongside complete Digital Incubation ERP portal rollout.',
       deliverables: [
-        '500–2,000+ sq. ft. innovation space',
-        'Digital Incubation ERP portal live',
-        'Annual IIC master workshop calendar',
+        '500–2,000+ sq. ft. dedicated campus innovation hub',
+        'Digital Incubation ERP management portal deployed',
+        'Annual IIC master activity & workshop schedule',
       ],
     },
     {
       id: 4,
-      label: 'STAGE IV – OPERATE & HANDOVER',
+      label: 'Stage IV – Operate & Handover',
       subtitle: 'Cohort Launch & Handover',
-      month: 'M5-12',
+      month: 'Months 5–12+',
       tag: 'Self-Sustaining',
-      badge: 'Months 5–12+',
       progress: 100,
-      tagColor: isDark ? 'text-emerald-300 bg-emerald-500/20 border border-emerald-400/30' : 'text-emerald-800 bg-emerald-50 border border-emerald-200',
-      borderActive: isDark ? 'border-emerald-400 shadow-lg shadow-emerald-500/20 ring-2 ring-emerald-400/40 bg-[#0d2319]' : 'border-emerald-500 shadow-md shadow-emerald-200/80 ring-2 ring-emerald-400/40 bg-emerald-50/50',
-      borderIdle: isDark ? 'bg-slate-900/70 border-slate-800 hover:border-emerald-400/50' : 'bg-white/80 border-slate-200 hover:border-emerald-400/50',
-      iconBg: isDark ? 'bg-emerald-500/20 text-emerald-400 border-emerald-400/40' : 'bg-emerald-100 text-emerald-800 border-emerald-300',
-      titleColor: isDark ? 'text-emerald-300' : 'text-emerald-800',
-      barColor: '#10b981',
       Icon: Rocket,
-      desc: 'Cohort launch, mentoring, demo days & self-sustaining operational handover.',
+      desc: 'Structured cohort incubation, mentor matchmaking, investor demo days, and turnkey operational handover for sustainability.',
       deliverables: [
-        'Cohort-1 venture intake & mentoring',
-        'Investor demo days & patent filings',
-        'Turnkey handover for self-sufficiency',
+        'Cohort-1 venture intake, prototyping & mentorship',
+        'Investor demo days, patent filings & seed linkage',
+        'Turnkey handover with established operational playbooks',
       ],
     },
   ];
 
-  const handleStageHover = (idx: number) => {
-    if (isPlaying) {
-      clearPlayInterval();
-      setIsPlaying(false);
-    }
-    setActiveStage(idx);
-    setScrollProgress(stages[idx].progress);
-  };
-
-  const handleStageClick = (idx: number) => {
+  const handleStageSelect = (idx: number) => {
     if (isPlaying) {
       clearPlayInterval();
       setIsPlaying(false);
@@ -168,280 +129,280 @@ export const NFArchitectureAndProcess: React.FC<NFArchitectureAndProcessProps> =
           setActiveStage(nextIndex);
           setScrollProgress(stages[nextIndex].progress);
         }
-      }, 2500); // 2.5 seconds per stage
+      }, 2600);
     }
   };
+
   return (
     <section
       id="architecture"
-      className={`py-12 sm:py-16 relative border-b transition-colors duration-300 ${
-        isDark ? 'bg-[#081528] border-sky-500/20' : 'bg-white border-slate-200'
+      className={`py-14 sm:py-20 border-b transition-colors duration-200 ${
+        isDark ? 'bg-[#081528] border-slate-800 text-white' : 'bg-white border-[#DCE3EC] text-[#172334]'
       }`}
     >
       <div className="section-shell">
+        
+        {/* Section Header */}
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold border mb-3 bg-[#EAF1F9] dark:bg-slate-800 text-[#123B73] dark:text-sky-300 border-[#DCE3EC] dark:border-slate-700">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#123B73] dark:bg-sky-400" />
+            <span>Operational Framework</span>
+          </div>
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+            Architecture &amp; <span className="text-[#D9A72E]">Rollout Roadmap</span>
+          </h2>
+          <p className="mt-3 text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl mx-auto">
+            A battle-tested four-pillar institutional model and a 12-month phased transition from assessment to self-sustaining operation.
+          </p>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-stretch">
           
-          {/* ================= LEFT BOX: THE INTEGRATED SYSTEM ARCHITECTURE ================= */}
+          {/* ================= LEFT BOX: FOUR-PILLAR INCUBATION ARCHITECTURE ================= */}
           <div
-            className={`flex flex-col glass-card rounded-2xl sm:rounded-3xl border p-5 sm:p-6 lg:p-7 shadow-2xl relative overflow-hidden ${
-              isDark ? 'border-sky-500/30' : 'border-slate-200 bg-slate-50/70'
+            className={`flex flex-col rounded-2xl border p-6 sm:p-7 shadow-xs transition-colors ${
+              isDark ? 'bg-slate-900 border-slate-800' : 'bg-[#F7F9FC] border-[#DCE3EC]'
             }`}
           >
-            <div className="absolute top-0 right-0 w-40 h-40 bg-sky-500/10 rounded-full blur-2xl pointer-events-none" />
-
-            {/* Header Pill */}
-            <div className="flex justify-center mb-6">
-              <div
-                className={`section-title-pill !px-4 sm:!px-6 !py-2.5 ${
-                  isDark
-                    ? 'bg-[#0b1e3c] text-white border-sky-400/40'
-                    : 'bg-white text-[#081c3b] border-slate-300 shadow-md'
-                }`}
-              >
-                <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
-                <h3
-                  className={`section-title-text !text-xs sm:!text-sm ${
-                    isDark
-                      ? 'text-transparent bg-clip-text bg-gradient-to-r from-sky-200 to-amber-300'
-                      : 'text-[#081c3b]'
-                  }`}
-                >
-                  FOUR-PILLAR INCUBATION ARCHITECTURE
+            {/* Header */}
+            <div className="flex items-center justify-between pb-4 mb-5 border-b border-slate-200 dark:border-slate-800">
+              <div>
+                <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
+                  Four-Pillar Incubation Architecture
                 </h3>
-                <span className="w-2 h-2 rounded-full bg-sky-400" />
+                <p className="text-xs text-slate-500 dark:text-slate-400">Institutional Co-Execution Framework</p>
               </div>
+              <span className="text-[10px] font-semibold px-2 py-0.5 rounded border border-[#DCE3EC] dark:border-slate-700 bg-white dark:bg-slate-800 text-[#123B73] dark:text-sky-400">
+                Core Model
+              </span>
             </div>
 
-            {/* 4 Pillars Grid with Central Emblem */}
-            <div className="relative flex-1 flex flex-col justify-between space-y-3.5">
+            {/* 4 Pillars Grid with Central Connected Hub */}
+            <div className="flex-1 flex flex-col justify-between space-y-2 relative">
               
-              {/* Top Row: Pillar 1 & Pillar 2 */}
+              {/* Top Row: Pillar 1 & 2 */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                {/* Pillar 1: Pre-Incubation Ecosystem */}
+                {/* Pillar 1 */}
                 <div
-                  className={`p-5 sm:p-6 rounded-2xl border shadow-md flex flex-col justify-between transition-colors ${
-                    isDark
-                      ? 'bg-slate-900/80 border-sky-500/30 hover:border-sky-400'
-                      : 'bg-white border-sky-200 hover:border-sky-400 shadow-xs'
+                  className={`p-4 rounded-xl border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xs hover:border-l-2 hover:border-l-[#123B73] dark:hover:border-l-sky-400 ${
+                    isDark ? 'bg-slate-800/80 border-slate-700' : 'bg-white border-[#DCE3EC]'
                   }`}
                 >
-                  <div>
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="w-2 h-2 rounded-full bg-sky-400" />
-                      <h4
-                        className={`text-xs font-mono font-black uppercase tracking-wider ${
-                          isDark ? 'text-sky-300' : 'text-[#0284c7]'
-                        }`}
-                      >
-                        1. PRE-INCUBATION ECOSYSTEM
-                      </h4>
-                    </div>
-                    <ul className={`space-y-2 text-xs font-medium leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                      <li className="flex items-start gap-1.5">
-                        <span className="text-amber-500 font-mono font-bold leading-none">▶</span>
-                        <span><strong className={isDark ? 'text-white' : 'text-slate-900'}>Hackathons & bootcamps</strong> for idea discovery</span>
-                      </li>
-                      <li className="flex items-start gap-1.5">
-                        <span className="text-amber-500 font-mono font-bold leading-none">▶</span>
-                        <span><strong className={isDark ? 'text-white' : 'text-slate-900'}>3–6 month cohorts</strong> with PoC micro-grants</span>
-                      </li>
-                      <li className="flex items-start gap-1.5">
-                        <span className="text-amber-500 font-mono font-bold leading-none">▶</span>
-                        <span><strong className={isDark ? 'text-white' : 'text-slate-900'}>Prototyping labs</strong> & workstation access</span>
-                      </li>
-                      <li className="flex items-start gap-1.5">
-                        <span className="text-amber-500 font-mono font-bold leading-none">▶</span>
-                        <span><strong className={isDark ? 'text-white' : 'text-slate-900'}>E-Cell activation</strong> & campus demo days</span>
-                      </li>
-                    </ul>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#123B73] dark:bg-sky-400" />
+                    <h4 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">
+                      1. Pre-Incubation
+                    </h4>
                   </div>
+                  <ul className="space-y-1.5 text-xs text-slate-600 dark:text-slate-300">
+                    <li className="flex items-start gap-1.5">
+                      <span className="text-[#123B73] dark:text-sky-400 font-bold">·</span>
+                      <span><strong>Hackathons &amp; bootcamps</strong> for idea discovery</span>
+                    </li>
+                    <li className="flex items-start gap-1.5">
+                      <span className="text-[#123B73] dark:text-sky-400 font-bold">·</span>
+                      <span><strong>3–6 month cohorts</strong> with PoC micro-grants</span>
+                    </li>
+                    <li className="flex items-start gap-1.5">
+                      <span className="text-[#123B73] dark:text-sky-400 font-bold">·</span>
+                      <span><strong>Prototyping labs</strong> &amp; workstation access</span>
+                    </li>
+                    <li className="flex items-start gap-1.5">
+                      <span className="text-[#123B73] dark:text-sky-400 font-bold">·</span>
+                      <span><strong>E-Cell activation</strong> &amp; campus demo days</span>
+                    </li>
+                  </ul>
                 </div>
 
-                {/* Pillar 2: Full-Fledged Incubation */}
+                {/* Pillar 2 */}
                 <div
-                  className={`p-5 sm:p-6 rounded-2xl border shadow-md flex flex-col justify-between transition-colors ${
-                    isDark
-                      ? 'bg-slate-900/80 border-amber-500/30 hover:border-amber-400'
-                      : 'bg-white border-amber-200 hover:border-amber-400 shadow-xs'
+                  className={`p-4 rounded-xl border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xs hover:border-l-2 hover:border-l-[#D9A72E] ${
+                    isDark ? 'bg-slate-800/80 border-slate-700' : 'bg-white border-[#DCE3EC]'
                   }`}
                 >
-                  <div>
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="w-2 h-2 rounded-full bg-amber-400" />
-                      <h4
-                        className={`text-xs font-mono font-black uppercase tracking-wider ${
-                          isDark ? 'text-amber-300' : 'text-amber-800'
-                        }`}
-                      >
-                        2. FULL-FLEDGED INCUBATION
-                      </h4>
-                    </div>
-                    <ul className={`space-y-2 text-xs font-medium ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                      <li className="flex items-start gap-1.5">
-                        <span className="text-amber-500 font-mono font-bold leading-none">▶</span>
-                        <span><strong className={isDark ? 'text-white' : 'text-slate-900'}>Dev-for-Equity</strong> rapid MVP engineering</span>
-                      </li>
-                      <li className="flex items-start gap-1.5">
-                        <span className="text-amber-500 font-mono font-bold leading-none">▶</span>
-                        <span><strong className={isDark ? 'text-white' : 'text-slate-900'}>Entity incorporation</strong> (Pvt Ltd / LLP)</span>
-                      </li>
-                      <li className="flex items-start gap-1.5">
-                        <span className="text-amber-500 font-mono font-bold leading-none">▶</span>
-                        <span><strong className={isDark ? 'text-white' : 'text-slate-900'}>CXO mentoring</strong> & operator guidance</span>
-                      </li>
-                      <li className="flex items-start gap-1.5">
-                        <span className="text-amber-500 font-mono font-bold leading-none">▶</span>
-                        <span><strong className={isDark ? 'text-white' : 'text-slate-900'}>GTM pilots</strong> & angel syndication</span>
-                      </li>
-                    </ul>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#D9A72E]" />
+                    <h4 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">
+                      2. Venture Incubation
+                    </h4>
                   </div>
+                  <ul className="space-y-1.5 text-xs text-slate-600 dark:text-slate-300">
+                    <li className="flex items-start gap-1.5">
+                      <span className="text-[#D9A72E] font-bold">·</span>
+                      <span><strong>Dev-for-Equity</strong> rapid MVP engineering</span>
+                    </li>
+                    <li className="flex items-start gap-1.5">
+                      <span className="text-[#D9A72E] font-bold">·</span>
+                      <span><strong>Entity incorporation</strong> (Pvt Ltd / LLP support)</span>
+                    </li>
+                    <li className="flex items-start gap-1.5">
+                      <span className="text-[#D9A72E] font-bold">·</span>
+                      <span><strong>CXO mentoring</strong> &amp; domain guidance</span>
+                    </li>
+                    <li className="flex items-start gap-1.5">
+                      <span className="text-[#D9A72E] font-bold">·</span>
+                      <span><strong>GTM pilots</strong> &amp; angel syndication access</span>
+                    </li>
+                  </ul>
                 </div>
               </div>
 
-              {/* Central Core Emblem Strip */}
-              <div className="py-1 flex items-center justify-center">
+              {/* Central Connecting Flow Hub */}
+              <div className="relative py-1 flex flex-col items-center justify-center">
+                {/* Thin vertical connector line from top */}
+                <div className="w-[1.5px] h-2.5 bg-gradient-to-b from-[#123B73]/30 to-[#D9A72E]/50 dark:from-sky-400/30 dark:to-[#D9A72E]/50" />
+                
                 <div
-                  className={`px-5 py-2 rounded-2xl border-2 shadow-2xl flex items-center gap-3 animate-pulse-glow ${
+                  className={`px-4 py-2 rounded-xl border flex items-center gap-3 transition-shadow duration-200 hover:shadow-sm ${
                     isDark
-                      ? 'bg-[#060f1e] text-white border-amber-400 shadow-amber-500/20'
-                      : 'bg-white text-[#081c3b] border-amber-400 shadow-amber-500/10'
+                      ? 'bg-slate-800 border-slate-700 text-white'
+                      : 'bg-white border-[#DCE3EC] text-slate-900 shadow-xs'
                   }`}
                 >
                   <NFLogo size="sm" variant={isDark ? 'light' : 'dark'} showSubtitle={false} />
-                  <div className={`text-left border-l pl-3 ${isDark ? 'border-slate-700' : 'border-slate-300'}`}>
-                    <div className={`text-[11px] font-mono font-black uppercase tracking-wider ${
-                      isDark ? 'text-amber-300' : 'text-amber-800'
-                    }`}>
-                      Central Core Hub
+                  <div className="text-left border-l border-slate-200 dark:border-slate-700 pl-3">
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#D9A72E]" />
+                      <span className="text-xs font-bold text-[#123B73] dark:text-sky-300">
+                        NF Venture Studio Engine
+                      </span>
                     </div>
-                    <div className={`text-[10px] font-mono ${isDark ? 'text-sky-300' : 'text-[#0284c7]'}`}>
-                      From Lab to Market Pipeline Engine
+                    <div className="text-[11px] text-slate-500 dark:text-slate-400">
+                      Co-Execution &amp; Lab-to-Market Pipeline
                     </div>
                   </div>
                 </div>
+
+                {/* Thin vertical connector line to bottom */}
+                <div className="w-[1.5px] h-2.5 bg-gradient-to-b from-[#D9A72E]/50 to-[#123B73]/30 dark:from-[#D9A72E]/50 dark:to-sky-400/30" />
               </div>
 
-              {/* Bottom Row: Pillar 3 & Pillar 4 */}
+              {/* Bottom Row: Pillar 3 & 4 */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                {/* Pillar 3: IPR & Technology Transfer */}
+                {/* Pillar 3 */}
                 <div
-                  className={`p-5 sm:p-6 rounded-2xl border shadow-md flex flex-col justify-between transition-colors ${
-                    isDark
-                      ? 'bg-slate-900/80 border-sky-500/30 hover:border-sky-400'
-                      : 'bg-white border-sky-200 hover:border-sky-400 shadow-xs'
+                  className={`p-4 rounded-xl border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xs hover:border-l-2 hover:border-l-[#123B73] dark:hover:border-l-sky-400 ${
+                    isDark ? 'bg-slate-800/80 border-slate-700' : 'bg-white border-[#DCE3EC]'
                   }`}
                 >
-                  <div>
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="w-2 h-2 rounded-full bg-sky-400" />
-                      <h4
-                        className={`text-xs font-mono font-black uppercase tracking-wider ${
-                          isDark ? 'text-sky-300' : 'text-[#0284c7]'
-                        }`}
-                      >
-                        3. IPR & TECH TRANSFER
-                      </h4>
-                    </div>
-                    <ul className={`space-y-2 text-xs font-medium ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                      <li className="flex items-start gap-1.5">
-                        <span className="text-amber-500 font-mono font-bold leading-none">▶</span>
-                        <span><strong className={isDark ? 'text-white' : 'text-slate-900'}>Patent filings</strong> (provisional & complete)</span>
-                      </li>
-                      <li className="flex items-start gap-1.5">
-                        <span className="text-amber-500 font-mono font-bold leading-none">▶</span>
-                        <span><strong className={isDark ? 'text-white' : 'text-slate-900'}>AICTE-NISP policy</strong> adoption & setup</span>
-                      </li>
-                      <li className="flex items-start gap-1.5">
-                        <span className="text-amber-500 font-mono font-bold leading-none">▶</span>
-                        <span><strong className={isDark ? 'text-white' : 'text-slate-900'}>TTO enablement</strong> & prior-art training</span>
-                      </li>
-                      <li className="flex items-start gap-1.5">
-                        <span className="text-amber-500 font-mono font-bold leading-none">▶</span>
-                        <span><strong className={isDark ? 'text-white' : 'text-slate-900'}>Corporate licensing</strong> & spin-off models</span>
-                      </li>
-                    </ul>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#123B73] dark:bg-sky-400" />
+                    <h4 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">
+                      3. IPR &amp; Tech Transfer
+                    </h4>
                   </div>
+                  <ul className="space-y-1.5 text-xs text-slate-600 dark:text-slate-300">
+                    <li className="flex items-start gap-1.5">
+                      <span className="text-[#123B73] dark:text-sky-400 font-bold">·</span>
+                      <span><strong>Patent filings</strong> (provisional &amp; complete)</span>
+                    </li>
+                    <li className="flex items-start gap-1.5">
+                      <span className="text-[#123B73] dark:text-sky-400 font-bold">·</span>
+                      <span><strong>AICTE-NISP policy</strong> adoption &amp; compliance</span>
+                    </li>
+                    <li className="flex items-start gap-1.5">
+                      <span className="text-[#123B73] dark:text-sky-400 font-bold">·</span>
+                      <span><strong>TTO enablement</strong> &amp; faculty training</span>
+                    </li>
+                    <li className="flex items-start gap-1.5">
+                      <span className="text-[#123B73] dark:text-sky-400 font-bold">·</span>
+                      <span><strong>Corporate licensing</strong> &amp; spin-off models</span>
+                    </li>
+                  </ul>
                 </div>
 
-                {/* Pillar 4: IIC Activities & Accreditation */}
+                {/* Pillar 4 */}
                 <div
-                  className={`p-5 sm:p-6 rounded-2xl border shadow-md flex flex-col justify-between transition-colors ${
-                    isDark
-                      ? 'bg-slate-900/80 border-emerald-500/30 hover:border-emerald-400'
-                      : 'bg-white border-emerald-200 hover:border-emerald-400 shadow-xs'
+                  className={`p-4 rounded-xl border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xs hover:border-l-2 hover:border-l-emerald-600 dark:hover:border-l-emerald-400 ${
+                    isDark ? 'bg-slate-800/80 border-slate-700' : 'bg-white border-[#DCE3EC]'
                   }`}
                 >
-                  <div>
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                      <h4
-                        className={`text-xs font-mono font-black uppercase tracking-wider ${
-                          isDark ? 'text-emerald-300' : 'text-emerald-800'
-                        }`}
-                      >
-                        4. IIC & ACCREDITATION
-                      </h4>
-                    </div>
-                    <ul className={`space-y-2 text-xs font-medium ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                      <li className="flex items-start gap-1.5">
-                        <span className="text-amber-500 font-mono font-bold leading-none">▶</span>
-                        <span><strong className={isDark ? 'text-white' : 'text-slate-900'}>100% IIC calendar</strong> execution & ratings</span>
-                      </li>
-                      <li className="flex items-start gap-1.5">
-                        <span className="text-amber-500 font-mono font-bold leading-none">▶</span>
-                        <span><strong className={isDark ? 'text-white' : 'text-slate-900'}>NAAC Criterion 3</strong> documented dossiers</span>
-                      </li>
-                      <li className="flex items-start gap-1.5">
-                        <span className="text-amber-500 font-mono font-bold leading-none">▶</span>
-                        <span><strong className={isDark ? 'text-white' : 'text-slate-900'}>NBA SAR evidence</strong> & NIRF RP uplift</span>
-                      </li>
-                      <li className="flex items-start gap-1.5">
-                        <span className="text-amber-500 font-mono font-bold leading-none">▶</span>
-                        <span><strong className={isDark ? 'text-white' : 'text-slate-900'}>ARIIA & NISP</strong> compliance records</span>
-                      </li>
-                    </ul>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 dark:bg-emerald-400" />
+                    <h4 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">
+                      4. IIC &amp; Accreditation
+                    </h4>
                   </div>
+                  <ul className="space-y-1.5 text-xs text-slate-600 dark:text-slate-300">
+                    <li className="flex items-start gap-1.5">
+                      <span className="text-emerald-600 dark:text-emerald-400 font-bold">·</span>
+                      <span><strong>100% IIC calendar</strong> execution &amp; ratings</span>
+                    </li>
+                    <li className="flex items-start gap-1.5">
+                      <span className="text-emerald-600 dark:text-emerald-400 font-bold">·</span>
+                      <span><strong>NAAC Criterion 3</strong> documented dossiers</span>
+                    </li>
+                    <li className="flex items-start gap-1.5">
+                      <span className="text-emerald-600 dark:text-emerald-400 font-bold">·</span>
+                      <span><strong>NBA SAR evidence</strong> &amp; research score uplift</span>
+                    </li>
+                    <li className="flex items-start gap-1.5">
+                      <span className="text-emerald-600 dark:text-emerald-400 font-bold">·</span>
+                      <span><strong>NIRF &amp; ARIIA</strong> statutory compliance filing</span>
+                    </li>
+                  </ul>
                 </div>
               </div>
 
             </div>
           </div>
 
-          {/* ================= RIGHT BOX: 12-MONTH TURNKEY ROLLOUT ================= */}
+          {/* ================= RIGHT BOX: 12-MONTH ROLLOUT JOURNEY ================= */}
           <div
             id="process"
-            ref={processRef}
-            className={`flex flex-col glass-card rounded-2xl sm:rounded-3xl border p-5 sm:p-6 lg:p-7 shadow-2xl relative overflow-hidden ${
-              isDark ? 'border-sky-500/30' : 'border-slate-200 bg-slate-50/70'
+            className={`flex flex-col rounded-2xl border p-6 sm:p-7 shadow-xs transition-colors ${
+              isDark ? 'bg-slate-900 border-slate-800' : 'bg-[#F7F9FC] border-[#DCE3EC]'
             }`}
           >
-            <div className="absolute top-0 left-0 w-40 h-40 bg-amber-500/10 rounded-full blur-2xl pointer-events-none" />
+            {/* Header with Play Flow button */}
+            <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-200 dark:border-slate-800">
+              <div>
+                <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
+                  12-Month Rollout Journey
+                </h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Interactive Phased Implementation</p>
+              </div>
 
-            {/* Header Pill */}
-            <div className="flex justify-center mb-4">
-              <div
-                className={`section-title-pill !px-4 sm:!px-6 !py-2.5 ${
-                  isDark
-                    ? 'bg-[#0b1e3c] text-white border-sky-400/40'
-                    : 'bg-white text-[#081c3b] border-slate-300 shadow-md'
-                }`}
-              >
-                <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
-                <h3
-                  className={`section-title-text !text-xs sm:!text-sm ${
-                    isDark
-                      ? 'text-transparent bg-clip-text bg-gradient-to-r from-sky-200 to-amber-300'
-                      : 'text-[#081c3b]'
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={handleTogglePlay}
+                  className={`text-xs font-medium px-3 py-1.5 rounded-lg border flex items-center gap-1.5 transition-all cursor-pointer ${
+                    isPlaying
+                      ? 'bg-[#123B73] text-white border-[#123B73]'
+                      : isFinished
+                        ? 'bg-emerald-50 text-emerald-800 border-emerald-300 dark:bg-emerald-950 dark:text-emerald-200'
+                        : isDark
+                          ? 'bg-slate-800 text-slate-200 border-slate-700 hover:bg-slate-700'
+                          : 'bg-white text-slate-700 border-[#DCE3EC] hover:bg-slate-50'
                   }`}
                 >
-                  12-MONTH ROLLOUT JOURNEY
-                </h3>
-                <span className="w-2 h-2 rounded-full bg-sky-400" />
+                  {isPlaying ? (
+                    <>
+                      <Pause className="w-3.5 h-3.5 text-white" />
+                      <span>Pause</span>
+                    </>
+                  ) : isFinished ? (
+                    <>
+                      <RotateCcw className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>Replay</span>
+                    </>
+                  ) : (
+                    <>
+                      <Play className="w-3.5 h-3.5 text-[#123B73] dark:text-sky-300" />
+                      <span>Play Flow</span>
+                    </>
+                  )}
+                </button>
+
+                <span className="text-xs font-mono font-bold text-[#123B73] dark:text-sky-300">
+                  {scrollProgress}%
+                </span>
               </div>
             </div>
 
-            {/* ── INTERACTIVE STAGE MILESTONE TABS ── */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3.5">
+            {/* Interactive Stage Tabs */}
+            <div className="flex sm:grid sm:grid-cols-4 gap-2 mb-3 overflow-x-auto no-scrollbar pb-1 sm:pb-0">
               {stages.map((st, i) => {
                 const isSelected = i === activeStage;
                 const isPast = i < activeStage;
@@ -449,33 +410,28 @@ export const NFArchitectureAndProcess: React.FC<NFArchitectureAndProcessProps> =
                   <button
                     key={i}
                     type="button"
-                    onMouseEnter={() => handleStageHover(i)}
-                    onClick={() => handleStageClick(i)}
-                    onTouchStart={() => handleStageClick(i)}
-                    className={`py-2 px-1.5 rounded-xl text-center border transition-all duration-300 cursor-pointer ${
+                    onClick={() => handleStageSelect(i)}
+                    className={`py-2 px-2 rounded-xl text-center border transition-all cursor-pointer shrink-0 min-w-[100px] sm:min-w-0 ${
                       isSelected
                         ? isDark
-                          ? 'bg-sky-500/25 border-sky-400 text-sky-300 shadow-md shadow-sky-500/20 ring-2 ring-sky-400/50 scale-[1.03]'
-                          : 'bg-sky-100 border-[#0284c7] text-[#0284c7] font-bold shadow-xs ring-2 ring-[#0284c7]/40 scale-[1.03]'
+                          ? 'bg-[#123B73] border-sky-400 text-white font-bold'
+                          : 'bg-white border-[#123B73] text-[#123B73] font-bold shadow-xs'
                         : isPast
                           ? isDark
-                            ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400 hover:border-emerald-400/50'
-                            : 'bg-emerald-50 border-emerald-200 text-emerald-800 hover:border-emerald-300'
+                            ? 'bg-slate-800/80 border-emerald-500/40 text-emerald-300'
+                            : 'bg-emerald-50/60 border-emerald-200 text-emerald-800'
                           : isDark
-                            ? 'bg-slate-900/50 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200'
-                            : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300 hover:text-slate-800'
+                            ? 'bg-slate-800/40 border-slate-800 text-slate-400 hover:border-slate-700'
+                            : 'bg-white border-[#DCE3EC] text-slate-600 hover:border-slate-300'
                     }`}
-                    title={`Hover or tap to inspect ${st.label}`}
                   >
-                    <div className="flex items-center justify-center gap-1">
+                    <div className="flex items-center justify-center gap-1 text-[11px] font-semibold">
                       {isPast ? (
-                        <CheckCircle className="w-2.5 h-2.5 text-emerald-400 flex-shrink-0" />
-                      ) : isSelected ? (
-                        <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping flex-shrink-0" />
+                        <Check className="w-3 h-3 text-emerald-600 shrink-0" />
                       ) : null}
-                      <span className="text-[11px] font-mono font-black">{st.month}</span>
+                      <span>{st.month}</span>
                     </div>
-                    <div className="text-[9px] font-mono font-bold truncate mt-0.5">
+                    <div className="text-[10px] text-slate-500 dark:text-slate-400 truncate mt-0.5">
                       {st.tag}
                     </div>
                   </button>
@@ -483,214 +439,102 @@ export const NFArchitectureAndProcess: React.FC<NFArchitectureAndProcessProps> =
               })}
             </div>
 
-            {/* ── PROGRESS RAIL ── */}
+            {/* Progress Bar */}
             <div className="mb-4">
-              <div className="flex items-center justify-between mb-1.5">
-                <div className="flex flex-wrap items-center gap-2 min-w-0">
-                  <span className={`text-[10px] font-mono font-bold uppercase tracking-widest ${
-                    isDark ? 'text-sky-400' : 'text-[#0284c7]'
-                  }`}>
-                    Incubation Flow Progress
-                  </span>
-                  <span className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded-full border safe-wrap ${
-                    isDark ? 'bg-sky-500/10 border-sky-400/30 text-sky-300' : 'bg-sky-50 border-sky-200 text-[#0284c7]'
-                  }`}>
-                    Stage {activeStage + 1} of 4: {stages[activeStage].tag}
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-2 flex-shrink-0">
-                  <button
-                    type="button"
-                    onClick={handleTogglePlay}
-                    className={`text-[10px] font-mono font-bold px-2.5 py-1 rounded-lg border flex items-center gap-1.5 transition-all cursor-pointer shadow-xs ${
-                      isPlaying
-                        ? 'bg-amber-400 text-slate-950 border-amber-300 font-black shadow-amber-400/30'
-                        : isFinished
-                          ? 'bg-emerald-500/20 text-emerald-300 border-emerald-400/50 hover:bg-emerald-500/30'
-                          : isDark
-                            ? 'bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700 hover:border-sky-400'
-                            : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-300 hover:border-sky-400'
-                    }`}
-                    title={isPlaying ? 'Pause Auto-Play' : isFinished ? 'Replay Walkthrough' : 'Auto-Play Stages Walkthrough'}
-                  >
-                    {isPlaying ? (
-                      <>
-                        <Pause className="w-3 h-3 text-slate-950 animate-pulse" />
-                        <span>Playing...</span>
-                      </>
-                    ) : isFinished ? (
-                      <>
-                        <RotateCcw className="w-3 h-3 text-emerald-400" />
-                        <span>Replay Flow</span>
-                      </>
-                    ) : (
-                      <>
-                        <Play className="w-3 h-3 text-amber-400" />
-                        <span>Play Flow</span>
-                      </>
-                    )}
-                  </button>
-
-                  <span className={`text-xs sm:text-sm font-mono font-black transition-all duration-300 ${
-                    scrollProgress >= 100
-                      ? isDark ? 'text-emerald-400' : 'text-emerald-700'
-                      : isDark ? 'text-amber-400' : 'text-amber-700'
-                  }`}>
-                    {scrollProgress}%
-                  </span>
-                </div>
-              </div>
-
-              {/* Progress Track with 400ms smooth transition */}
-              <div className={`relative h-2.5 sm:h-3 rounded-full overflow-hidden p-0.5 ${
-                isDark ? 'bg-slate-800 border border-slate-700/60' : 'bg-slate-200 border border-slate-300'
-              }`}>
+              <div className="relative h-2 rounded-full overflow-hidden bg-slate-200 dark:bg-slate-800">
                 <div
-                  className="h-full rounded-full relative"
-                  style={{
-                    width: `${scrollProgress}%`,
-                    transition: 'width 400ms ease-out',
-                    background: 'linear-gradient(90deg, #38bdf8 0%, #f59e0b 50%, #10b981 100%)',
-                    backgroundSize: '200% 100%',
-                  }}
-                >
-                  {/* Glowing tip */}
-                  <div className="absolute top-0 right-0 bottom-0 w-2 bg-white/90 rounded-full blur-[1px] shadow-sm animate-pulse" />
-                </div>
-
-                {/* Stage Milestone Dividers */}
-                {[25, 50, 75].map((pct, idx) => (
-                  <div
-                    key={idx}
-                    className={`absolute top-0 bottom-0 w-0.5 transition-colors duration-300 ${
-                      scrollProgress >= pct
-                        ? 'bg-white/80'
-                        : isDark ? 'bg-slate-700' : 'bg-slate-400'
-                    }`}
-                    style={{ left: `${pct}%` }}
-                  />
-                ))}
-              </div>
-
-              {/* Stage labels under the bar */}
-              <div className="grid grid-cols-4 mt-1">
-                {stages.map((s, i) => (
-                  <button
-                    key={i}
-                    type="button"
-                    onMouseEnter={() => handleStageHover(i)}
-                    onClick={() => handleStageClick(i)}
-                    onTouchStart={() => handleStageClick(i)}
-                    className={`text-[9px] font-mono font-bold text-center transition-colors duration-300 cursor-pointer hover:underline ${
-                      i === activeStage
-                        ? isDark ? 'text-amber-300 font-black' : 'text-amber-700 font-black'
-                        : i < activeStage
-                          ? isDark ? 'text-emerald-400' : 'text-emerald-700'
-                          : isDark ? 'text-slate-500' : 'text-slate-400'
-                    }`}
-                  >
-                    {s.month}
-                  </button>
-                ))}
+                  className="h-full rounded-full bg-gradient-to-r from-[#123B73] via-[#123B73] to-[#D9A72E] dark:from-sky-500 dark:to-[#D9A72E] transition-all duration-500 ease-out"
+                  style={{ width: `${scrollProgress}%` }}
+                />
               </div>
             </div>
 
-            {/* ── 4 SEQUENTIAL STAGES CARDS ── */}
-            <div className="flex-1 flex flex-col justify-between space-y-2.5">
+            {/* 4 Sequential Stage Cards with Timeline Indicator */}
+            <div className="flex-1 flex flex-col justify-between space-y-2.5 relative">
               {stages.map((stage, i) => {
                 const Icon = stage.Icon;
-                const isActive = i <= activeStage;
                 const isCurrent = i === activeStage;
                 const isCompleted = i < activeStage;
 
                 return (
                   <div
                     key={i}
-                    onMouseEnter={() => handleStageHover(i)}
-                    onClick={() => handleStageClick(i)}
-                    onTouchStart={() => handleStageClick(i)}
-                    className={`p-3.5 sm:p-4 rounded-2xl border transition-all duration-300 flex items-start gap-3 cursor-pointer group ${
+                    onClick={() => handleStageSelect(i)}
+                    className={`p-3.5 rounded-xl border transition-all duration-200 hover:-translate-y-0.5 cursor-pointer flex items-start gap-3 ${
                       isCurrent
-                        ? `${stage.borderActive} scale-[1.015]`
+                        ? isDark
+                          ? 'bg-slate-800 border-sky-400 border-l-4 border-l-[#D9A72E] shadow-sm'
+                          : 'bg-white border-[#123B73] border-l-4 border-l-[#D9A72E] shadow-xs'
                         : isCompleted
                           ? isDark
-                            ? 'bg-slate-900/80 border-emerald-500/30 hover:border-emerald-400/60'
-                            : 'bg-white border-emerald-200 hover:border-emerald-300 shadow-xs'
-                          : stage.borderIdle
+                            ? 'bg-slate-900/60 border-slate-800 border-l-4 border-l-emerald-500/80'
+                            : 'bg-white/80 border-[#DCE3EC] border-l-4 border-l-emerald-600'
+                          : isDark
+                            ? 'bg-slate-900/40 border-slate-800/80 border-l-4 border-l-transparent'
+                            : 'bg-white/60 border-slate-200 border-l-4 border-l-transparent'
                     }`}
                   >
-                    {/* Month Badge */}
-                    <div className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl border flex flex-col items-center justify-center flex-shrink-0 font-mono transition-all duration-300 ${
-                      stage.iconBg
-                    } ${
-                      isCurrent ? 'animate-badge-pulse ring-2 ring-amber-400/50' : ''
-                    }`}>
-                      <span className="text-[10px] font-black">{stage.month}</span>
-                      <Icon className="w-3.5 h-3.5" />
+                    <div
+                      className={`w-9 h-9 rounded-lg border flex items-center justify-center shrink-0 transition-colors ${
+                        isCurrent
+                          ? 'bg-[#123B73] text-white border-transparent'
+                          : isCompleted
+                            ? 'bg-emerald-50 dark:bg-slate-800 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-slate-700'
+                            : 'bg-slate-100 dark:bg-slate-800 text-slate-500 border-slate-200 dark:border-slate-700'
+                      }`}
+                    >
+                      <Icon className="w-4 h-4" />
                     </div>
 
                     <div className="flex-1 min-w-0">
-                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-2 mb-1.5">
-                        <div className="flex items-center gap-1.5 flex-wrap min-w-0">
-                          <h4 className={`text-xs sm:text-sm font-mono font-black uppercase tracking-wide leading-tight safe-wrap ${
-                            stage.titleColor
-                          }`}>
+                      <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between gap-1 sm:gap-2 mb-1">
+                        <div className="flex items-center gap-2">
+                          <h4 className="text-xs font-bold text-slate-900 dark:text-white leading-tight">
                             {stage.label}
                           </h4>
-                          <span className={`text-[8px] font-mono px-1.5 py-0.5 rounded border hidden sm:inline-block ${
-                            isDark ? 'text-slate-400 border-slate-700 bg-slate-800/60' : 'text-slate-600 border-slate-200 bg-slate-100'
-                          }`}>
-                            {stage.badge}
+                          <span className="text-[10px] text-slate-500 dark:text-slate-400">
+                            ({stage.month})
                           </span>
                         </div>
-
-                        <div className="flex items-center gap-1.5 flex-shrink-0 flex-wrap">
-                          <span className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded safe-wrap ${stage.tagColor}`}>
-                            {isCompleted ? '✓ Done' : isCurrent ? '● Active' : stage.tag}
-                          </span>
-                          {/* Animated check when stage is done */}
-                          <CheckCircle
-                            className={`w-3.5 h-3.5 flex-shrink-0 transition-all duration-300 ${
-                              isCompleted
-                                ? 'text-emerald-400 opacity-100 scale-100'
-                                : isCurrent
-                                  ? 'text-amber-400 opacity-100 scale-100 animate-pulse'
-                                  : 'opacity-0 scale-50'
-                            }`}
-                          />
-                        </div>
+                        <span
+                          className={`text-[10px] font-medium px-2 py-0.5 rounded flex items-center gap-1 shrink-0 ${
+                            isCompleted
+                              ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'
+                              : isCurrent
+                                ? 'bg-blue-50 text-[#123B73] dark:bg-slate-700 dark:text-sky-300 font-semibold'
+                                : 'text-slate-400'
+                          }`}
+                        >
+                          {isCompleted ? (
+                            <>
+                              <Check className="w-3 h-3 text-emerald-600 dark:text-emerald-400 inline" />
+                              <span>Completed</span>
+                            </>
+                          ) : isCurrent ? (
+                            <>
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#D9A72E]" />
+                              <span>Active Stage</span>
+                            </>
+                          ) : (
+                            stage.tag
+                          )}
+                        </span>
                       </div>
 
-                      <p className={`text-xs sm:text-sm leading-relaxed font-medium transition-colors duration-300 ${
-                        isCurrent
-                          ? isDark ? 'text-slate-100 font-semibold' : 'text-slate-900 font-semibold'
-                          : isCompleted
-                            ? isDark ? 'text-slate-300' : 'text-slate-600'
-                            : isDark ? 'text-slate-400' : 'text-slate-500'
-                      }`}>
+                      <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
                         {stage.desc}
                       </p>
 
-                      {/* Stage Deliverables shown prominently when active */}
                       {isCurrent && (
-                        <div className="mt-2.5 pt-2 border-t border-slate-700/40 animate-fadeIn">
-                          <div className="text-[9px] font-mono font-bold uppercase tracking-wider text-amber-400 mb-1 flex items-center gap-1">
-                            <Sparkles className="w-2.5 h-2.5" />
-                            <span>Stage Deliverables:</span>
+                        <div className="mt-2.5 pt-2 border-t border-slate-200 dark:border-slate-700 animate-fadeIn">
+                          <div className="text-[10px] font-semibold text-[#D9A72E] uppercase tracking-wider mb-1.5">
+                            Key Deliverables:
                           </div>
-                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5">
+                          <div className="space-y-1">
                             {stage.deliverables.map((item, dIdx) => (
-                              <div
-                                key={dIdx}
-                                className={`text-[9px] font-mono px-2 py-0.5 rounded border flex items-center gap-1 ${
-                                  isDark
-                                    ? 'bg-slate-900/90 text-slate-300 border-slate-700'
-                                    : 'bg-white text-slate-700 border-slate-200'
-                                }`}
-                              >
-                                <Check className="w-2.5 h-2.5 text-emerald-400 flex-shrink-0" />
-                                <span className="truncate">{item}</span>
+                              <div key={dIdx} className="text-xs text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+                                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                                <span>{item}</span>
                               </div>
                             ))}
                           </div>
@@ -701,138 +545,116 @@ export const NFArchitectureAndProcess: React.FC<NFArchitectureAndProcessProps> =
                 );
               })}
 
-              {/* Action CTA */}
-              <div className="pt-1">
+              <div className="pt-2">
                 <button
                   onClick={() => onOpenApplication('institutional')}
-                  className="w-full py-3 px-4 rounded-xl text-xs font-mono font-black uppercase tracking-wider text-white bg-gradient-to-r from-[#0284c7] via-[#0369a1] to-[#081c3b] hover:from-[#0ea5e9] hover:to-[#0284c7] shadow-xl border border-sky-400/50 flex items-center justify-center gap-2 transition-all cursor-pointer"
+                  className="group w-full py-3 px-4 rounded-xl text-xs font-semibold text-white bg-[#123B73] hover:bg-[#0B1F3A] transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2 cursor-pointer shadow-xs"
                 >
-                  <span>Book Readiness Assessment</span>
-                  <ArrowRight className="w-4 h-4 text-amber-300" />
+                  <span>Book Institutional Readiness Assessment</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-white/80 transition-transform duration-200 group-hover:translate-x-1" />
                 </button>
               </div>
             </div>
-          </div>
-        </div>{/* end grid */}
 
-        {/* Institutional Partnership Framework: Clear Roles (From Proposal Page 2) */}
+          </div>
+
+        </div>
+
+        {/* Institutional Partnership Roles Matrix */}
         <div
-          className={`mt-8 sm:mt-10 p-5 sm:p-7 rounded-2xl sm:rounded-3xl glass-card border shadow-2xl relative overflow-hidden ${
-            isDark ? 'border-sky-500/30' : 'border-slate-200 bg-slate-50/80'
+          className={`mt-10 p-6 sm:p-7 rounded-2xl border transition-colors ${
+            isDark ? 'bg-slate-900 border-slate-800' : 'bg-[#F7F9FC] border-[#DCE3EC]'
           }`}
         >
-          <div
-            className={`flex flex-col md:flex-row items-start md:items-center justify-between gap-3 pb-5 border-b ${
-              isDark ? 'border-slate-800' : 'border-slate-200'
-            }`}
-          >
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-5 border-b border-slate-200 dark:border-slate-800">
             <div>
-              <div
-                className={`inline-flex items-center gap-2 px-3 py-1 rounded-lg border text-xs font-mono font-bold mb-1 ${
-                  isDark ? 'bg-amber-400/10 border-amber-400/30 text-amber-300' : 'bg-amber-50 border-amber-200 text-amber-800'
-                }`}
-              >
-                <span>GOVERNANCE & RESPONSIBILITY MATRIX</span>
+              <div className="text-xs font-semibold text-[#D9A72E] uppercase tracking-wider mb-1">
+                Governance &amp; Responsibility Matrix
               </div>
-              <h3 className={`text-base sm:text-lg md:text-xl font-black uppercase tracking-tight ${
-                isDark ? 'text-white' : 'text-[#081c3b]'
-              }`}>
-                Partnership Roles & Responsibilities
+              <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
+                Partnership Roles &amp; Responsibilities
               </h3>
             </div>
-            <span
-              className={`text-xs font-mono font-bold px-3 py-1.5 rounded-xl border ${
-                isDark
-                  ? 'text-sky-400 bg-sky-500/10 border-sky-500/30'
-                  : 'text-[#0284c7] bg-sky-50 border-sky-200'
-              }`}
-            >
-              Turnkey Co-Execution Framework
+            <span className="text-xs font-medium px-3 py-1 rounded-full border border-[#DCE3EC] dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 w-fit">
+              Turnkey Co-Execution
             </span>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-5">
             {/* Left: What NF Venture Studio Deploys */}
             <div
-              className={`p-4 sm:p-5 rounded-2xl border ${
-                isDark ? 'bg-[#091b38]/90 border-sky-500/30' : 'bg-white border-sky-200 shadow-xs'
+              className={`p-5 rounded-xl border ${
+                isDark ? 'bg-slate-800/80 border-slate-700' : 'bg-white border-[#DCE3EC]'
               }`}
             >
               <div className="flex items-center gap-2 mb-3">
-                <span className="w-2.5 h-2.5 rounded-full bg-sky-400" />
-                <h4
-                  className={`text-xs sm:text-sm font-mono font-black uppercase tracking-wider ${
-                    isDark ? 'text-sky-300' : 'text-[#0284c7]'
-                  }`}
-                >
-                  NF VENTURE STUDIO DEPLOYS
+                <span className="w-2 h-2 rounded-full bg-[#123B73] dark:bg-sky-400" />
+                <h4 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">
+                  NF Venture Studio Deploys
                 </h4>
               </div>
-              <ul className={`space-y-1.5 text-xs ${isDark ? 'text-slate-200' : 'text-slate-700'}`}>
+              <ul className="space-y-2 text-xs text-slate-700 dark:text-slate-300">
                 <li className="flex items-start gap-2">
-                  <span className="text-amber-500 font-bold">▶</span>
-                  <span><strong className={isDark ? 'text-white' : 'text-slate-900'}>Turnkey protocols</strong> & Digital Incubation ERP</span>
+                  <span className="text-[#123B73] dark:text-sky-400 font-bold">✓</span>
+                  <span><strong>Turnkey protocols</strong> &amp; Digital Incubation ERP portal.</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-amber-500 font-bold">▶</span>
-                  <span><strong className={isDark ? 'text-white' : 'text-slate-900'}>Venture builders</strong> & CXO operator mentors</span>
+                  <span className="text-[#123B73] dark:text-sky-400 font-bold">✓</span>
+                  <span><strong>Venture studio engineers</strong> &amp; experienced operator mentors.</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-amber-500 font-bold">▶</span>
-                  <span><strong className={isDark ? 'text-white' : 'text-slate-900'}>Structured cohorts</strong>, hackathons & patent drafting</span>
+                  <span className="text-[#123B73] dark:text-sky-400 font-bold">✓</span>
+                  <span><strong>Structured cohorts</strong>, hackathons, and patent drafting support.</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-amber-500 font-bold">▶</span>
-                  <span><strong className={isDark ? 'text-white' : 'text-slate-900'}>Investor networks</strong> & corporate Go-to-Market pilots</span>
+                  <span className="text-[#123B73] dark:text-sky-400 font-bold">✓</span>
+                  <span><strong>Investor networks</strong>, seed capital connections, and corporate pilots.</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-amber-500 font-bold">▶</span>
-                  <span><strong className={isDark ? 'text-white' : 'text-slate-900'}>Compliance dossiers</strong> for NAAC, NBA, NIRF & IIC</span>
+                  <span className="text-[#123B73] dark:text-sky-400 font-bold">✓</span>
+                  <span><strong>Audit dossiers</strong> for NAAC, NBA, NIRF, and IIC submissions.</span>
                 </li>
               </ul>
             </div>
 
             {/* Right: What Your Institute Provides */}
             <div
-              className={`p-4 sm:p-5 rounded-2xl border ${
-                isDark ? 'bg-[#14223d]/90 border-amber-500/30' : 'bg-white border-amber-200 shadow-xs'
+              className={`p-5 rounded-xl border ${
+                isDark ? 'bg-slate-800/80 border-slate-700' : 'bg-white border-[#DCE3EC]'
               }`}
             >
               <div className="flex items-center gap-2 mb-3">
-                <span className="w-2.5 h-2.5 rounded-full bg-amber-400" />
-                <h4
-                  className={`text-xs sm:text-sm font-mono font-black uppercase tracking-wider ${
-                    isDark ? 'text-amber-300' : 'text-amber-800'
-                  }`}
-                >
-                  YOUR INSTITUTE PROVIDES
+                <span className="w-2 h-2 rounded-full bg-[#D9A72E]" />
+                <h4 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">
+                  Your Institute Provides
                 </h4>
               </div>
-              <ul className={`space-y-1.5 text-xs ${isDark ? 'text-slate-200' : 'text-slate-700'}`}>
+              <ul className="space-y-2 text-xs text-slate-700 dark:text-slate-300">
                 <li className="flex items-start gap-2">
-                  <span className="text-sky-500 font-bold">▶</span>
-                  <span><strong className={isDark ? 'text-white' : 'text-slate-900'}>Campus space</strong> (500–2,000+ sq. ft.)</span>
+                  <span className="text-[#D9A72E] font-bold">✓</span>
+                  <span><strong>Campus innovation space</strong> (500–2,000+ sq. ft.).</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-sky-500 font-bold">▶</span>
-                  <span><strong className={isDark ? 'text-white' : 'text-slate-900'}>Basic infrastructure</strong> (power, internet & desks)</span>
+                  <span className="text-[#D9A72E] font-bold">✓</span>
+                  <span><strong>Basic infrastructure</strong> (utilities, power, internet connectivity, and workstations).</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-sky-500 font-bold">▶</span>
-                  <span><strong className={isDark ? 'text-white' : 'text-slate-900'}>Faculty SPOC</strong> & IIC Coordinator nomination</span>
+                  <span className="text-[#D9A72E] font-bold">✓</span>
+                  <span><strong>Faculty SPOC</strong> and institutional IIC coordinator nomination.</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-sky-500 font-bold">▶</span>
-                  <span><strong className={isDark ? 'text-white' : 'text-slate-900'}>Student outreach</strong> across campus departments</span>
+                  <span className="text-[#D9A72E] font-bold">✓</span>
+                  <span><strong>Student outreach</strong> and engagement across academic departments.</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-sky-500 font-bold">▶</span>
-                  <span><strong className={isDark ? 'text-white' : 'text-slate-900'}>Incubation Board</strong> & IP policy adoption</span>
+                  <span className="text-[#D9A72E] font-bold">✓</span>
+                  <span><strong>Incubation Board</strong> formation and AICTE-NISP IP policy adoption.</span>
                 </li>
               </ul>
             </div>
           </div>
         </div>
+
       </div>
     </section>
   );

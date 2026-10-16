@@ -74,7 +74,7 @@ export const NFLogo: React.FC<NFLogoProps> = ({
             {/* Bold NF */}
             <span
               className={`font-black tracking-tight font-sans ${current.nfText} ${
-                variant === 'light' ? 'text-white' : 'text-[#081c3b]'
+                variant === 'light' ? 'text-white' : 'text-[#0B1F3A]'
               }`}
             >
               NF
@@ -82,8 +82,8 @@ export const NFLogo: React.FC<NFLogoProps> = ({
 
             {/* Venture Studio */}
             <span
-              className={`font-black tracking-tight ${current.studioText} ${
-                variant === 'light' ? 'text-sky-300' : 'text-[#0284c7]'
+              className={`font-bold tracking-tight ${current.studioText} ${
+                variant === 'light' ? 'text-sky-300' : 'text-[#123B73]'
               }`}
             >
               Venture Studio
@@ -93,8 +93,8 @@ export const NFLogo: React.FC<NFLogoProps> = ({
           {/* Naree Care Foundation Subtitle */}
           {showSubtitle && (
             <span
-              className={`font-bold tracking-wider uppercase mt-0.5 sm:mt-1 truncate ${current.subText} ${
-                variant === 'light' ? 'text-amber-400' : 'text-[#d97706]'
+              className={`font-semibold tracking-wider uppercase mt-0.5 sm:mt-1 truncate ${current.subText} ${
+                variant === 'light' ? 'text-[#D9A72E]' : 'text-[#D9A72E]'
               }`}
             >
               Naree Care Foundation

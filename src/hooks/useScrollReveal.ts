@@ -29,7 +29,18 @@ export function useScrollReveal() {
       observer.observe(el);
     });
 
-    return () => observer.disconnect();
+    // Safety fallback: reveal all elements so content is never stuck hidden
+    const timer = setTimeout(() => {
+      revealEls.forEach((el) => {
+        el.classList.add('in-view');
+        (el as HTMLElement).dataset.revealed = 'true';
+      });
+    }, 400);
+
+    return () => {
+      clearTimeout(timer);
+      observer.disconnect();
+    };
   }, []);
 }
 

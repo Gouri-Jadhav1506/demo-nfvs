@@ -1,5 +1,5 @@
 import React from 'react';
-import { FileText, FlaskConical, IndianRupee, ArrowRight, ShieldCheck, Cpu, Wifi, Bot, Zap, Terminal } from 'lucide-react';
+import { FileText, FlaskConical, IndianRupee, ArrowRight, ShieldCheck, Cpu, Wifi, Bot, Zap } from 'lucide-react';
 
 interface NFSupportSectionProps {
   onOpenLabDetails: (domain: 'AI' | 'IoT' | 'Robotics' | 'Electronics') => void;
@@ -10,92 +10,70 @@ interface NFSupportSectionProps {
 export const NFSupportSection: React.FC<NFSupportSectionProps> = ({
   onOpenLabDetails,
   onOpenApplication,
-  isDark = true,
+  isDark = false,
 }) => {
   return (
     <section
       id="support"
-      className={`py-12 sm:py-16 relative border-b transition-colors duration-300 ${
-        isDark ? 'bg-[#060f1e] border-sky-500/20' : 'bg-slate-50 border-slate-200'
+      className={`py-14 sm:py-20 border-b transition-colors duration-200 ${
+        isDark ? 'bg-[#0B1F3A] border-slate-800 text-white' : 'bg-[#F7F9FC] border-[#DCE3EC] text-[#172334]'
       }`}
     >
       <div className="section-shell">
         
-        {/* Section Header Pill */}
-        <div className="flex justify-center mb-8 sm:mb-12 reveal">
-          <div
-            className={`section-title-pill ${
-              isDark
-                ? 'bg-[#0b1e3c] text-white border-sky-400/40'
-                : 'bg-white text-[#081c3b] border-slate-300 shadow-md'
-            }`}
-          >
-            <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping" />
-            <h2
-                className={`section-title-text ${
-                isDark
-                  ? 'text-transparent bg-clip-text bg-gradient-to-r from-sky-200 to-amber-300 animate-gradient-text'
-                  : 'text-[#081c3b]'
-              }`}
-            >
-              COMPREHENSIVE INCUBATION SUPPORT
-            </h2>
-            <span className="w-2.5 h-2.5 rounded-full bg-sky-400" />
+        {/* Section Header */}
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold border mb-3 bg-[#EAF1F9] dark:bg-slate-800 text-[#123B73] dark:text-sky-300 border-[#DCE3EC] dark:border-slate-700">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#123B73] dark:bg-sky-400" />
+            <span>Infrastructure &amp; Capabilities</span>
           </div>
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+            Comprehensive <span className="text-[#D9A72E]">Incubation Support</span>
+          </h2>
+          <p className="mt-3 text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl mx-auto">
+            End-to-end legal, technical, prototyping, and capital backing configured specifically for educational institutions and emerging startups.
+          </p>
         </div>
 
         {/* 3 Pillars Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch reveal-stagger">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
           
-          {/* Card 1: IPR & Technology Transfer Engine */}
+          {/* Card 1: IPR & Technology Transfer */}
           <div
-            className={`relative flex flex-col justify-between glass-card nf-card hover:border-sky-400 transition-all duration-300 glass-card-hover tilt-card ${
-              isDark ? 'border-sky-500/30' : 'border-slate-200 bg-white'
+            className={`flex flex-col justify-between rounded-2xl border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${
+              isDark ? 'bg-slate-900 border-slate-800 hover:border-slate-700' : 'bg-white border-[#DCE3EC] hover:border-slate-300'
             }`}
           >
-            <div className="p-5 sm:p-6 flex-1 flex flex-col">
-              {/* Header Icon + Title */}
+            <div className="p-6 sm:p-7 flex-1 flex flex-col">
               <div className="flex items-center gap-3.5 mb-5">
                 <div
-                  className={`w-14 h-14 rounded-2xl border-2 flex items-center justify-center flex-shrink-0 shadow-lg ${
-                    isDark
-                      ? 'bg-sky-500/10 border-sky-400/40 text-[#38bdf8] shadow-sky-500/10'
-                      : 'bg-sky-50 border-sky-200 text-[#0284c7]'
+                  className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
+                    isDark ? 'bg-slate-800 text-sky-400' : 'bg-[#EAF1F9] text-[#123B73]'
                   }`}
                 >
-                  <FileText className="w-7 h-7" />
+                  <FileText className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3
-                    className={`text-base sm:text-lg font-black tracking-tight uppercase leading-snug text-balance ${
-                      isDark ? 'text-white' : 'text-[#081c3b]'
-                    }`}
-                  >
-                    IPR & Technology Transfer Engine
+                  <h3 className="text-base font-bold text-slate-900 dark:text-white leading-snug">
+                    IPR &amp; Technology Transfer
                   </h3>
-                  <span className={`text-[11px] font-mono font-bold ${isDark ? 'text-amber-400' : 'text-amber-700'}`}>
-                    Patent Drafting, Licensing & Policy
+                  <span className="text-xs font-medium text-[#D9A72E]">
+                    Patent Drafting, Licensing &amp; Policy
                   </span>
                 </div>
               </div>
 
-              {/* Exact Bullets from Proposal & Brochure */}
-              <div className="nf-compact-list flex-1">
+              <div className="space-y-2.5 flex-1 text-xs text-slate-700 dark:text-slate-300">
                 {[
-                  { bold: 'Patent drafting & filing', text: ' (provisional & complete)' },
-                  { bold: 'AICTE-NISP IP policy', text: ' & institutional equity rules' },
-                  { bold: 'TTO enablement', text: ' & faculty prior-art training' },
-                  { bold: 'Corporate licensing', text: ' & spin-off governance' },
+                  { bold: 'Patent drafting & filing', text: ' (provisional and complete applications)' },
+                  { bold: 'AICTE-NISP IP policy', text: ' & institutional faculty equity frameworks' },
+                  { bold: 'TTO enablement', text: ' & academic prior-art training programs' },
+                  { bold: 'Corporate licensing', text: ' & spin-off governance structures' },
                 ].map((item, idx) => (
-                  <div
-                    key={idx}
-                    className={`flex items-start gap-2 font-medium ${
-                      isDark ? 'text-slate-200' : 'text-slate-700'
-                    }`}
-                  >
-                    <span className="text-amber-500 font-mono font-bold text-xs leading-none mt-1">▶</span>
-                    <span className="text-xs">
-                      <strong className={isDark ? 'text-white font-semibold' : 'text-slate-900 font-bold'}>
+                  <div key={idx} className="flex items-start gap-2 leading-relaxed">
+                    <span className="text-[#123B73] dark:text-sky-400 font-bold">✓</span>
+                    <span>
+                      <strong className="font-semibold text-slate-900 dark:text-white">
                         {item.bold}
                       </strong>
                       {item.text}
@@ -104,260 +82,201 @@ export const NFSupportSection: React.FC<NFSupportSectionProps> = ({
                 ))}
               </div>
 
-              {/* Trust Badge */}
               <div
-                className={`mt-5 p-3 rounded-xl border flex flex-wrap items-center justify-between gap-2 ${
+                className={`mt-6 p-3 rounded-xl border flex items-center justify-between text-xs ${
                   isDark
-                    ? 'bg-slate-900/80 border-sky-500/25 text-slate-200'
-                    : 'bg-slate-50 border-slate-200 text-slate-700'
+                    ? 'bg-slate-800/60 border-slate-700/80 text-slate-300'
+                    : 'bg-slate-50 border-[#DCE3EC] text-slate-600'
                 }`}
               >
-                <div className="flex items-center gap-2 text-xs font-bold">
-                  <ShieldCheck className="w-4 h-4 text-sky-500" />
+                <div className="flex items-center gap-1.5 font-medium">
+                  <ShieldCheck className="w-4 h-4 text-[#123B73] dark:text-sky-400" />
                   <span>AICTE-NISP Aligned</span>
                 </div>
-                <span
-                  className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded border ${
-                    isDark
-                      ? 'text-sky-300 bg-sky-500/20 border-sky-400/30'
-                      : 'text-[#0284c7] bg-sky-50 border-sky-200'
-                  }`}
-                >
-                  IP_PORTAL
+                <span className="text-[10px] font-semibold px-2 py-0.5 rounded border border-[#DCE3EC] dark:border-slate-700 bg-white dark:bg-slate-800">
+                  IP Support
                 </span>
               </div>
             </div>
 
-            <div className={`p-4 border-t ${isDark ? 'bg-slate-950/70 border-slate-800' : 'bg-slate-50 border-slate-200'}`}>
+            <div className={`p-4 sm:p-5 pt-0`}>
               <button
                 onClick={() => onOpenApplication('faculty')}
-                className={`w-full py-2.5 px-3 text-xs font-black uppercase tracking-wider rounded-xl flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer border ${
+                className={`w-full py-2.5 px-3 text-xs font-semibold rounded-xl flex items-center justify-center gap-1.5 transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer border ${
                   isDark
-                    ? 'text-sky-300 hover:text-white bg-slate-900 hover:bg-sky-600/30 border-sky-500/30'
-                    : 'text-[#0284c7] hover:text-white bg-white hover:bg-[#0284c7] border-sky-200'
+                    ? 'text-slate-200 hover:text-white bg-slate-800 hover:bg-slate-700 border-slate-700'
+                    : 'text-[#123B73] hover:bg-[#123B73] hover:text-white bg-white border-[#DCE3EC]'
                 }`}
               >
                 <span>Request Patent Guidance</span>
-                <ArrowRight className="w-3.5 h-3.5 text-amber-500" />
+                <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
           </div>
 
-          {/* Card 2: High-Tech Prototyping Infrastructure */}
+          {/* Card 2: Prototyping Labs */}
           <div
-            className={`relative flex flex-col justify-between glass-card-gold nf-card hover:border-amber-400 transition-all duration-300 glass-card-hover tilt-card ${
-              isDark ? 'border-amber-500/30' : 'border-amber-200 bg-amber-50/30'
+            className={`flex flex-col justify-between rounded-2xl border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${
+              isDark ? 'bg-slate-900 border-slate-800 hover:border-slate-700' : 'bg-white border-[#DCE3EC] hover:border-slate-300'
             }`}
           >
-            <div className="p-5 sm:p-6 flex-1 flex flex-col">
-              {/* Header Icon + Title */}
+            <div className="p-6 sm:p-7 flex-1 flex flex-col">
               <div className="flex items-center gap-3.5 mb-5">
                 <div
-                  className={`w-14 h-14 rounded-2xl border-2 flex items-center justify-center flex-shrink-0 shadow-lg ${
-                    isDark
-                      ? 'bg-amber-500/10 border-amber-400/40 text-amber-400 shadow-amber-500/10'
-                      : 'bg-amber-100 border-amber-300 text-amber-600'
+                  className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
+                    isDark ? 'bg-slate-800 text-[#D9A72E]' : 'bg-amber-50 text-[#D9A72E]'
                   }`}
                 >
-                  <FlaskConical className="w-7 h-7" />
+                  <FlaskConical className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3
-                    className={`text-base sm:text-lg font-black tracking-tight uppercase leading-snug text-balance ${
-                      isDark ? 'text-white' : 'text-[#081c3b]'
-                    }`}
-                  >
-                    High-Tech Prototyping Labs
+                  <h3 className="text-base font-bold text-slate-900 dark:text-white leading-snug">
+                    Prototyping Laboratories
                   </h3>
-                  <span className={`text-[11px] font-mono font-bold ${isDark ? 'text-sky-300' : 'text-[#0284c7]'}`}>
-                    AI/Compute, IoT, Embedded & Bio
+                  <span className="text-xs font-medium text-[#D9A72E]">
+                    AI/Compute, IoT, Embedded &amp; Bio
                   </span>
                 </div>
               </div>
 
-              {/* Exact Bullets from Proposal & Brochure */}
-              <div className="nf-compact-list flex-1">
-                <div
-                  className={`flex items-start gap-2 font-medium ${
-                    isDark ? 'text-slate-200' : 'text-slate-700'
-                  }`}
-                >
-                  <span className="text-amber-500 font-mono font-bold text-xs leading-none mt-1">▶</span>
-                  <span className="text-xs">
-                    <strong className={isDark ? 'text-white font-semibold' : 'text-slate-900 font-bold'}>
+              <div className="space-y-2.5 flex-1 text-xs text-slate-700 dark:text-slate-300">
+                <div className="flex items-start gap-2 leading-relaxed">
+                  <span className="text-[#123B73] dark:text-sky-400 font-bold">✓</span>
+                  <span>
+                    <strong className="font-semibold text-slate-900 dark:text-white">
                       500–2,000+ sq. ft.
                     </strong>{' '}
-                    campus prototyping & co-working space
+                    campus prototyping &amp; co-working space setup.
                   </span>
                 </div>
-
-                <div
-                  className={`flex items-start gap-2 font-medium ${
-                    isDark ? 'text-slate-200' : 'text-slate-700'
-                  }`}
-                >
-                  <span className="text-amber-500 font-mono font-bold text-xs leading-none mt-1">▶</span>
-                  <span className="text-xs">
-                    <strong className={isDark ? 'text-white font-semibold' : 'text-slate-900 font-bold'}>
+                <div className="flex items-start gap-2 leading-relaxed">
+                  <span className="text-[#123B73] dark:text-sky-400 font-bold">✓</span>
+                  <span>
+                    <strong className="font-semibold text-slate-900 dark:text-white">
                       Hardware testbeds
                     </strong>{' '}
-                    with Digital Incubation ERP
+                    integrated with digital incubation monitoring.
                   </span>
                 </div>
 
-                {/* Focus Areas High-Tech Buttons */}
                 <div className="pt-2">
-                  <div
-                    className={`flex items-center gap-1.5 text-xs font-mono font-bold uppercase tracking-wider mb-2.5 ${
-                      isDark ? 'text-amber-300' : 'text-amber-800'
-                    }`}
-                  >
-                    <span className={isDark ? 'text-sky-400 font-bold' : 'text-[#0284c7] font-bold'}>▶</span> 4 Specialised Domain Labs:
+                  <div className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
+                    Specialised Domain Labs:
                   </div>
-
                   <div className="grid grid-cols-2 gap-2">
                     <button
                       onClick={() => onOpenLabDetails('AI')}
-                      className={`p-2.5 rounded-xl border text-xs font-bold transition-all shadow-xs flex flex-col items-center justify-center gap-1 group cursor-pointer ${
+                      className={`p-2 rounded-lg border text-xs font-medium transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                         isDark
-                          ? 'bg-[#081730] text-white hover:bg-sky-600 border-sky-500/40'
-                          : 'bg-white text-[#081c3b] hover:bg-sky-50 border-slate-200 shadow-xs'
+                          ? 'bg-slate-800 border-slate-700 hover:bg-slate-700 text-slate-200'
+                          : 'bg-slate-50 border-[#DCE3EC] hover:bg-slate-100 text-slate-700'
                       }`}
-                      title="Explore AI Lab"
                     >
-                      <Cpu className="w-4 h-4 text-sky-500 group-hover:scale-110 transition-transform" />
-                      <span className="font-mono">AI</span>
+                      <Cpu className="w-3.5 h-3.5 text-[#123B73] dark:text-sky-400" />
+                      <span>AI &amp; Data</span>
                     </button>
-
                     <button
                       onClick={() => onOpenLabDetails('IoT')}
-                      className={`p-2.5 rounded-xl border text-xs font-bold transition-all shadow-xs flex flex-col items-center justify-center gap-1 group cursor-pointer ${
+                      className={`p-2 rounded-lg border text-xs font-medium transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                         isDark
-                          ? 'bg-[#081730] text-white hover:bg-cyan-600 border-cyan-500/40'
-                          : 'bg-white text-[#081c3b] hover:bg-cyan-50 border-slate-200 shadow-xs'
+                          ? 'bg-slate-800 border-slate-700 hover:bg-slate-700 text-slate-200'
+                          : 'bg-slate-50 border-[#DCE3EC] hover:bg-slate-100 text-slate-700'
                       }`}
-                      title="Explore IoT Lab"
                     >
-                      <Wifi className="w-4 h-4 text-cyan-500 group-hover:scale-110 transition-transform" />
-                      <span className="font-mono">IoT</span>
+                      <Wifi className="w-3.5 h-3.5 text-[#123B73] dark:text-sky-400" />
+                      <span>IoT Sensors</span>
                     </button>
-
                     <button
                       onClick={() => onOpenLabDetails('Robotics')}
-                      className={`p-2.5 rounded-xl border text-xs font-bold transition-all shadow-xs flex flex-col items-center justify-center gap-1 group cursor-pointer ${
+                      className={`p-2 rounded-lg border text-xs font-medium transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                         isDark
-                          ? 'bg-[#081730] text-white hover:bg-amber-600 border-amber-500/40'
-                          : 'bg-white text-[#081c3b] hover:bg-amber-50 border-slate-200 shadow-xs'
+                          ? 'bg-slate-800 border-slate-700 hover:bg-slate-700 text-slate-200'
+                          : 'bg-slate-50 border-[#DCE3EC] hover:bg-slate-100 text-slate-700'
                       }`}
-                      title="Explore Robotics Lab"
                     >
-                      <Bot className="w-4 h-4 text-amber-500 group-hover:scale-110 transition-transform" />
-                      <span className="font-mono">Robotics</span>
+                      <Bot className="w-3.5 h-3.5 text-[#123B73] dark:text-sky-400" />
+                      <span>Robotics</span>
                     </button>
-
                     <button
                       onClick={() => onOpenLabDetails('Electronics')}
-                      className={`p-2.5 rounded-xl border text-xs font-bold transition-all shadow-xs flex flex-col items-center justify-center gap-1 group cursor-pointer ${
+                      className={`p-2 rounded-lg border text-xs font-medium transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                         isDark
-                          ? 'bg-[#081730] text-white hover:bg-emerald-600 border-emerald-500/40'
-                          : 'bg-white text-[#081c3b] hover:bg-emerald-50 border-slate-200 shadow-xs'
+                          ? 'bg-slate-800 border-slate-700 hover:bg-slate-700 text-slate-200'
+                          : 'bg-slate-50 border-[#DCE3EC] hover:bg-slate-100 text-slate-700'
                       }`}
-                      title="Explore Electronics Lab"
                     >
-                      <Zap className="w-4 h-4 text-emerald-500 group-hover:scale-110 transition-transform" />
-                      <span className="font-mono">Electronics</span>
+                      <Zap className="w-3.5 h-3.5 text-[#123B73] dark:text-sky-400" />
+                      <span>Electronics</span>
                     </button>
                   </div>
                 </div>
               </div>
 
-              {/* Tag */}
               <div
-                className={`mt-4 p-2.5 rounded-xl border flex flex-wrap items-center justify-between gap-2 text-xs ${
+                className={`mt-4 p-3 rounded-xl border flex items-center justify-between text-xs ${
                   isDark
-                    ? 'bg-slate-900/80 border-amber-500/30'
-                    : 'bg-white border-amber-200 text-amber-800'
+                    ? 'bg-slate-800/60 border-slate-700/80 text-slate-300'
+                    : 'bg-slate-50 border-[#DCE3EC] text-slate-600'
                 }`}
               >
-                <span className={`font-bold font-mono ${isDark ? 'text-amber-300' : 'text-amber-800'}`}>
-                  Hardware & Virtual Labs
-                </span>
-                <span
-                  className={`text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded border ${
-                    isDark
-                      ? 'text-emerald-400 bg-emerald-950/60 border-emerald-500/30'
-                      : 'text-emerald-700 bg-emerald-50 border-emerald-200'
-                  }`}
-                >
-                  ERP TRACKED
+                <span className="font-medium">Hardware &amp; Prototyping</span>
+                <span className="text-[10px] font-semibold px-2 py-0.5 rounded border border-[#DCE3EC] dark:border-slate-700 bg-white dark:bg-slate-800 text-emerald-600 dark:text-emerald-400">
+                  Ready
                 </span>
               </div>
             </div>
 
-            <div className={`p-4 border-t ${isDark ? 'bg-slate-950/70 border-slate-800' : 'bg-slate-50 border-slate-200'}`}>
+            <div className={`p-4 sm:p-5 pt-0`}>
               <button
                 onClick={() => onOpenLabDetails('AI')}
-                className={`w-full py-2.5 px-3 text-xs font-black uppercase tracking-wider rounded-xl flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer border ${
+                className={`w-full py-2.5 px-3 text-xs font-semibold rounded-xl flex items-center justify-center gap-1.5 transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer border ${
                   isDark
-                    ? 'text-amber-300 hover:text-white bg-slate-900 hover:bg-amber-600/30 border-amber-500/30'
-                    : 'text-amber-800 hover:text-white bg-white hover:bg-amber-600 border-amber-200'
+                    ? 'text-slate-200 hover:text-white bg-slate-800 hover:bg-slate-700 border-slate-700'
+                    : 'text-[#123B73] hover:bg-[#123B73] hover:text-white bg-white border-[#DCE3EC]'
                 }`}
               >
-                <span>View Lab Tooling & Specs</span>
-                <ArrowRight className="w-3.5 h-3.5 text-sky-400" />
+                <span>View Lab Specifications</span>
+                <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
           </div>
 
-          {/* Card 3: Grant Engineering & Investor Engagement */}
+          {/* Card 3: Grant Engineering & Syndication */}
           <div
-            className={`relative flex flex-col justify-between glass-card nf-card hover:border-emerald-400 transition-all duration-300 glass-card-hover tilt-card ${
-              isDark ? 'border-sky-500/30' : 'border-slate-200 bg-white'
+            className={`flex flex-col justify-between rounded-2xl border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${
+              isDark ? 'bg-slate-900 border-slate-800 hover:border-slate-700' : 'bg-white border-[#DCE3EC] hover:border-slate-300'
             }`}
           >
-            <div className="p-5 sm:p-6 flex-1 flex flex-col">
-              {/* Header Icon + Title */}
+            <div className="p-6 sm:p-7 flex-1 flex flex-col">
               <div className="flex items-center gap-3.5 mb-5">
                 <div
-                  className={`w-14 h-14 rounded-2xl border-2 flex items-center justify-center flex-shrink-0 shadow-lg ${
-                    isDark
-                      ? 'bg-emerald-500/10 border-emerald-400/40 text-emerald-400 shadow-emerald-500/10'
-                      : 'bg-emerald-50 border-emerald-200 text-emerald-600'
+                  className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
+                    isDark ? 'bg-slate-800 text-emerald-400' : 'bg-emerald-50 text-emerald-700'
                   }`}
                 >
-                  <IndianRupee className="w-7 h-7" />
+                  <IndianRupee className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3
-                    className={`text-base sm:text-lg font-black tracking-tight uppercase leading-snug text-balance ${
-                      isDark ? 'text-white' : 'text-[#081c3b]'
-                    }`}
-                  >
-                    Grant Engineering & Syndication
+                  <h3 className="text-base font-bold text-slate-900 dark:text-white leading-snug">
+                    Grant Engineering &amp; Syndication
                   </h3>
-                  <span className={`text-[11px] font-mono font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>
+                  <span className="text-xs font-medium text-[#D9A72E]">
                     NIDHI · BIRAC · MSME · Angel Network
                   </span>
                 </div>
               </div>
 
-              {/* Exact Bullets from Proposal & Brochure */}
-              <div className="nf-compact-list flex-1">
+              <div className="space-y-2.5 flex-1 text-xs text-slate-700 dark:text-slate-300">
                 {[
-                  { bold: 'Non-dilutive grants', text: ' (NIDHI, BIRAC, MSME, MeitY)' },
-                  { bold: 'PoC micro-grants', text: ' & institutional seed capital' },
-                  { bold: 'CXO mentorship', text: ' & Go-to-Market corporate pilots' },
-                  { bold: 'Investor demo days', text: ' & angel syndication (₹3Cr+ lines)' },
+                  { bold: 'Non-dilutive grants', text: ' (NIDHI, BIRAC, MSME, MeitY application guidance)' },
+                  { bold: 'PoC micro-grants', text: ' & institutional seed capital support' },
+                  { bold: 'CXO mentorship', text: ' & Go-to-Market corporate pilot facilitation' },
+                  { bold: 'Investor demo days', text: ' & angel syndication access' },
                 ].map((item, idx) => (
-                  <div
-                    key={idx}
-                    className={`flex items-start gap-2 font-medium ${
-                      isDark ? 'text-slate-200' : 'text-slate-700'
-                    }`}
-                  >
-                    <span className="text-amber-500 font-mono font-bold text-xs leading-none mt-1">▶</span>
-                    <span className="text-xs">
-                      <strong className={isDark ? 'text-white font-semibold' : 'text-slate-900 font-bold'}>
+                  <div key={idx} className="flex items-start gap-2 leading-relaxed">
+                    <span className="text-[#123B73] dark:text-sky-400 font-bold">✓</span>
+                    <span>
+                      <strong className="font-semibold text-slate-900 dark:text-white">
                         {item.bold}
                       </strong>
                       {item.text}
@@ -366,46 +285,40 @@ export const NFSupportSection: React.FC<NFSupportSectionProps> = ({
                 ))}
               </div>
 
-              {/* Trust Badge */}
               <div
-                className={`mt-5 p-3 rounded-xl border flex flex-wrap items-center justify-between gap-2 ${
+                className={`mt-6 p-3 rounded-xl border flex items-center justify-between text-xs ${
                   isDark
-                    ? 'bg-slate-900/80 border-emerald-500/25 text-slate-200'
-                    : 'bg-slate-50 border-emerald-200 text-slate-700'
+                    ? 'bg-slate-800/60 border-slate-700/80 text-slate-300'
+                    : 'bg-slate-50 border-[#DCE3EC] text-slate-600'
                 }`}
               >
-                <div className="flex items-center gap-2 text-xs font-bold safe-wrap">
-                  <IndianRupee className="w-4 h-4 text-emerald-500" />
+                <div className="flex items-center gap-1.5 font-medium">
+                  <IndianRupee className="w-4 h-4 text-[#123B73] dark:text-sky-400" />
                   <span>₹3Cr+ Grant Pipeline</span>
                 </div>
-                <span
-                  className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded border ${
-                    isDark
-                      ? 'text-emerald-300 bg-emerald-500/20 border-emerald-400/30'
-                      : 'text-emerald-700 bg-emerald-50 border-emerald-200'
-                  }`}
-                >
-                  NON-DILUTIVE
+                <span className="text-[10px] font-semibold px-2 py-0.5 rounded border border-[#DCE3EC] dark:border-slate-700 bg-white dark:bg-slate-800">
+                  Non-Dilutive
                 </span>
               </div>
             </div>
 
-            <div className={`p-4 border-t ${isDark ? 'bg-slate-950/70 border-slate-800' : 'bg-slate-50 border-slate-200'}`}>
+            <div className={`p-4 sm:p-5 pt-0`}>
               <button
                 onClick={() => onOpenApplication('student')}
-                className={`w-full py-2.5 px-3 text-xs font-black uppercase tracking-wider rounded-xl flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer border ${
+                className={`w-full py-2.5 px-3 text-xs font-semibold rounded-xl flex items-center justify-center gap-1.5 transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer border ${
                   isDark
-                    ? 'text-emerald-300 hover:text-white bg-slate-900 hover:bg-emerald-600/30 border-emerald-500/30'
-                    : 'text-emerald-800 hover:text-white bg-white hover:bg-emerald-600 border-emerald-200'
+                    ? 'text-slate-200 hover:text-white bg-slate-800 hover:bg-slate-700 border-slate-700'
+                    : 'text-[#123B73] hover:bg-[#123B73] hover:text-white bg-white border-[#DCE3EC]'
                 }`}
               >
-                <span>Apply for Grant & Seed Pipeline</span>
-                <ArrowRight className="w-3.5 h-3.5 text-amber-500" />
+                <span>Apply for Grant &amp; Seed Pipeline</span>
+                <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
           </div>
 
         </div>
+
       </div>
     </section>
   );
