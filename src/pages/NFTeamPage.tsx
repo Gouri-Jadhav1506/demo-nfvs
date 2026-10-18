@@ -381,8 +381,8 @@ export const NFTeamPage: React.FC = () => {
                 >
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-12 items-stretch h-full flex-1">
 
-                    {/* LEFT COLUMN — CEO PROFILE & LEADERSHIP PRIORITIES */}
-                    <div className="lg:col-span-5 flex flex-col justify-between h-full space-y-4 max-w-md mx-auto lg:max-w-none w-full">
+                    {/* LEFT COLUMN — CEO PROFILE */}
+                    <div className="lg:col-span-5 flex flex-col space-y-4 max-w-md mx-auto lg:max-w-none w-full">
                       <div className="space-y-3.5">
                         {/* Portrait of Mr. Ashok Patil */}
                         <div
@@ -426,98 +426,6 @@ export const NFTeamPage: React.FC = () => {
                           <div className="pt-0.5 flex items-center gap-2 text-xs sm:text-sm text-slate-600 dark:text-slate-400">
                             <Building2 className="w-4 h-4 text-[#D9A72E]" />
                             <span>NF Venture Studio · Pune</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* LEADERSHIP PRIORITIES CARD — Fills empty space and ends on exact same bottom line */}
-                      <div
-                        className={`rounded-xl border p-4 transition-colors shadow-2xs mt-auto ${
-                          isDark
-                            ? 'bg-slate-800/80 border-slate-700/80'
-                            : 'bg-[#F4F7FB] border-[#DCE3EC]'
-                        }`}
-                      >
-                        {/* Card Header with Gold Accent */}
-                        <div className="flex items-center justify-between pb-2 mb-2.5 border-b border-[#DCE3EC]/80 dark:border-slate-700/70">
-                          <div className="flex items-center gap-2">
-                            <span className="w-1.5 h-3 bg-[#D9A72E] rounded-full inline-block" />
-                            <h3 className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#123B73] dark:text-sky-300">
-                              Leadership Priorities
-                            </h3>
-                          </div>
-                          <span className="text-[9px] font-mono text-slate-400 dark:text-slate-500 uppercase tracking-widest font-semibold">
-                            Core Focus
-                          </span>
-                        </div>
-
-                        {/* 3 Vertically Stacked Priority Items with Thin Dividers */}
-                        <div className="space-y-2.5">
-                          {/* Priority 1: Institutional Incubation */}
-                          <div className="flex items-start gap-2.5">
-                            <div
-                              className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 border shadow-2xs ${
-                                isDark
-                                  ? 'bg-slate-900 border-slate-700 text-[#D9A72E]'
-                                  : 'bg-white border-[#DCE3EC] text-[#D9A72E]'
-                              }`}
-                            >
-                              <Building2 className="w-3.5 h-3.5" />
-                            </div>
-                            <div className="flex-1 min-w-0 pt-0.5">
-                              <h4 className="text-xs font-bold text-[#123B73] dark:text-white leading-tight">
-                                Institutional Incubation
-                              </h4>
-                              <p className="text-[10.5px] text-slate-600 dark:text-slate-300 leading-snug mt-0.5">
-                                Building capable startup incubation centres within academic institutions.
-                              </p>
-                            </div>
-                          </div>
-
-                          <div className="border-t border-[#DCE3EC]/60 dark:border-slate-700/50" />
-
-                          {/* Priority 2: Startup Enablement */}
-                          <div className="flex items-start gap-2.5">
-                            <div
-                              className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 border shadow-2xs ${
-                                isDark
-                                  ? 'bg-slate-900 border-slate-700 text-[#D9A72E]'
-                                  : 'bg-white border-[#DCE3EC] text-[#D9A72E]'
-                              }`}
-                            >
-                              <Lightbulb className="w-3.5 h-3.5" />
-                            </div>
-                            <div className="flex-1 min-w-0 pt-0.5">
-                              <h4 className="text-xs font-bold text-[#123B73] dark:text-white leading-tight">
-                                Startup Enablement
-                              </h4>
-                              <p className="text-[10.5px] text-slate-600 dark:text-slate-300 leading-snug mt-0.5">
-                                Supporting innovators from idea validation to market readiness.
-                              </p>
-                            </div>
-                          </div>
-
-                          <div className="border-t border-[#DCE3EC]/60 dark:border-slate-700/50" />
-
-                          {/* Priority 3: Ecosystem Partnerships */}
-                          <div className="flex items-start gap-2.5">
-                            <div
-                              className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 border shadow-2xs ${
-                                isDark
-                                  ? 'bg-slate-900 border-slate-700 text-[#D9A72E]'
-                                  : 'bg-white border-[#DCE3EC] text-[#D9A72E]'
-                              }`}
-                            >
-                              <Users className="w-3.5 h-3.5" />
-                            </div>
-                            <div className="flex-1 min-w-0 pt-0.5">
-                              <h4 className="text-xs font-bold text-[#123B73] dark:text-white leading-tight">
-                                Ecosystem Partnerships
-                              </h4>
-                              <p className="text-[10.5px] text-slate-600 dark:text-slate-300 leading-snug mt-0.5">
-                                Connecting institutions, mentors, industry, and funding opportunities.
-                              </p>
-                            </div>
                           </div>
                         </div>
                       </div>
