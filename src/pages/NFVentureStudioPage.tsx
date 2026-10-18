@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { NFNavbar } from '../components/nf/NFNavbar';
 import { NFHeroSection } from '../components/nf/NFHeroSection';
+import { NFVentureEnginesSection } from '../components/nf/NFVentureEnginesSection';
+import { NFIncubationFrameworkSection } from '../components/nf/NFIncubationFrameworkSection';
 import { NFTracksSection } from '../components/nf/NFTracksSection';
 import { NFSupportSection } from '../components/nf/NFSupportSection';
 import { NFArchitectureAndProcess } from '../components/nf/NFArchitectureAndProcess';
@@ -121,7 +123,13 @@ export const NFVentureStudioPage: React.FC = () => {
         {/* Hero Section */}
         <NFHeroSection onOpenApplication={handleOpenApplication} isDark={isDark} />
 
-        {/* Marquee ticker between hero and tracks */}
+        {/* Incubation Framework Section */}
+        <NFIncubationFrameworkSection isDark={isDark} />
+
+        {/* Three Venture Engines Section */}
+        <NFVentureEnginesSection isDark={isDark} />
+
+        {/* Marquee ticker between framework and tracks */}
         <NFMarquee isDark={isDark} />
 
         {/* Section 1: The Three Specialized Tracks */}

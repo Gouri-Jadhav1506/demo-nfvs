@@ -310,3 +310,65 @@
     transition: width 0.1s linear;
   }
 }
+
+/* ============================================================
+   HERO PILL ANIMATED GOLD DOT & HERO IMAGE FRAME
+   ============================================================ */
+@keyframes hero-dot-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 0 8px 1.5px rgba(217, 167, 46, 0.75);
+  }
+  50% {
+    opacity: 0.35;
+    transform: scale(0.75);
+    box-shadow: 0 0 0 0 rgba(217, 167, 46, 0);
+  }
+}
+
+@keyframes hero-dot-pulse-reduced {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 8px 1.5px rgba(217, 167, 46, 0.75);
+  }
+  50% {
+    opacity: 0.35;
+    box-shadow: 0 0 0 0 rgba(217, 167, 46, 0);
+  }
+}
+
+.hero-pill-dot {
+  width: 8px;
+  height: 8px;
+  min-width: 8px;
+  border-radius: 50%;
+  background-color: #D9A72E;
+  display: inline-block;
+  flex-shrink: 0;
+  animation: hero-dot-pulse 1.4s ease-in-out infinite;
+  will-change: opacity, transform, box-shadow;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-pill-dot {
+    animation: hero-dot-pulse-reduced 1.4s ease-in-out infinite !important;
+    transform: none !important;
+  }
+}
+
+/* Hero Image Frame with theme-specific borders (Light: #DCE3EC, Dark: #45688F) */
+.hero-image-frame {
+  border-width: 3px !important;
+  border-style: solid !important;
+  border-color: #DCE3EC !important;
+  border-radius: 20px !important;
+  overflow: hidden;
+}
+
+.dark .hero-image-frame,
+html.dark .hero-image-frame {
+  border-color: #45688F !important;
+}
+
+

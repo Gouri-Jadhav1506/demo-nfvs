@@ -54,6 +54,12 @@ function App() {
         <Route path="/about-us" element={<NFAboutPage />} />
         <Route path="/team" element={<NFTeamPage />} />
         <Route path="/our-team" element={<NFTeamPage />} />
+        <Route path="/our-inspiration" element={<NFTeamPage />} />
+        <Route path="/from-presidents-desk" element={<NFTeamPage />} />
+        <Route path="/from-vice-presidents-desk" element={<NFTeamPage />} />
+        <Route path="/from-secretarys-desk" element={<NFTeamPage />} />
+        <Route path="/from-ceos-desk" element={<NFTeamPage />} />
+        <Route path="/from-executive-directors-desk" element={<NFTeamPage />} />
         <Route path="/contact" element={<NFContactPage />} />
         <Route path="/contact-us" element={<NFContactPage />} />
 
