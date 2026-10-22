@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { NFNavbar } from '../components/nf/NFNavbar';
 import { NFFooter } from '../components/nf/NFFooter';
 import { NFApplicationModal } from '../components/nf/NFApplicationModal';
 import { useScrollReveal } from '../hooks/useScrollReveal';
+import { useNFTheme } from '../hooks/useNFTheme';
 import {
   User,
   Users,
@@ -12,16 +13,20 @@ import {
   ArrowRight,
   ShieldCheck,
   Lightbulb,
-  ChevronRight,
-  Camera,
-  Target,
+  Award,
   Compass,
   FileText,
   Mail,
   Phone,
+  Briefcase,
+  CheckCircle2,
+  ChevronRight,
+  Sparkles,
+  MapPin,
 } from 'lucide-react';
 import ashokPatilImg from '../../assets/ashok patil.jpg';
-import rahulMoreImg from '../../assets/rahul more.png';
+import nileshSirImg from '../../assets/nilesh_sir.jpeg';
+import vicePresidentImg from '../../assets/voice_president.jpeg';
 import pallaviShirkeImg from '../../assets/pallavi shrike.png';
 import mohammadAshparazImg from '../../assets/Mohammed Ashparaz.png';
 import sayaliKaleImg from '../../assets/sayali kale.jpeg';
@@ -38,49 +43,20 @@ export interface PillarMember {
   responsibilities: string[];
 }
 
-export interface ExecutiveMessage {
-  id: string;
-  title: string;
-  roleBadge: string;
-  greeting: string;
-  message: string;
-  authorName: string;
-  authorDesignation: string;
-  authorImage?: string;
-  isPlaceholder?: boolean;
-}
-
 export const NFTeamPage: React.FC = () => {
-  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
-    const saved = localStorage.getItem('nf-theme');
-    return saved === 'light' || saved === 'dark' ? saved : 'light';
-  });
+  const { theme, isDark, toggleTheme } = useNFTheme();
 
   const [isAppModalOpen, setIsAppModalOpen] = useState(false);
   const [selectedTrack, setSelectedTrack] = useState('student');
   const [showScrollTop, setShowScrollTop] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useScrollReveal();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
-
-  useEffect(() => {
-    localStorage.setItem('nf-theme', theme);
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-      document.documentElement.classList.remove('light');
-    } else {
-      document.documentElement.classList.add('light');
-      document.documentElement.classList.remove('dark');
-    }
-  }, [theme]);
-
-  const toggleTheme = () => {
-    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
-  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -99,32 +75,21 @@ export const NFTeamPage: React.FC = () => {
     setIsAppModalOpen(true);
   };
 
-  const isDark = theme === 'dark';
+  // Dedicated CEO Profile
+  const ceoMember: PillarMember = {
+    id: 'ashok-patil',
+    name: 'Mr. Ashok K. Patil',
+    designation: 'Chief Executive Officer (CEO)',
+    shortRole: 'CEO',
+    imageSrc: ashokPatilImg,
+    initials: 'AP',
+    focus:
+      'Executive venture leadership, strategic institutional partnerships, turnkey incubation deployment, and startup venture syndication.',
+    responsibilities: ['Venture Creation Strategy', 'Institutional Governance', 'Investor Syndication'],
+  };
 
-  // Preserved Core Working Pillars Data (5 Executive Members for future individual profile views)
-  const corePillars: PillarMember[] = [
-    {
-      id: 'ashok-patil',
-      name: 'Mr. Ashok Patil',
-      designation: 'Chief Executive Officer (CEO)',
-      shortRole: 'CEO',
-      imageSrc: ashokPatilImg,
-      initials: 'AP',
-      focus:
-        'Executive venture leadership, strategic institutional partnerships, turnkey incubation deployment, and startup venture syndication.',
-      responsibilities: ['Venture Creation Strategy', 'Institutional Governance', 'Investor Syndication'],
-    },
-    {
-      id: 'rahul-more',
-      name: 'Capt. Rahul More',
-      designation: 'Chief Operating Officer (COO)',
-      shortRole: 'COO',
-      imageSrc: rahulMoreImg,
-      initials: 'RM',
-      focus:
-        'Operational infrastructure rollout, campus incubation operations, turnkey execution, and defense / deep-tech program orchestration.',
-      responsibilities: ['Turnkey Lab Rollout', 'Operations Governance', 'Defense & Deep-Tech Cohorts'],
-    },
+  // 3 Core Team Members for "Our Team"
+  const teamMembers: PillarMember[] = [
     {
       id: 'pallavi-shirke',
       name: 'Mrs. Pallavi Shirke',
@@ -160,62 +125,42 @@ export const NFTeamPage: React.FC = () => {
     },
   ];
 
-  // Preserved Executive Leadership Messages
-  const executiveMessages: ExecutiveMessage[] = [
-    {
-      id: 'msg-president',
-      title: "President's Message",
-      roleBadge: 'Office of the President',
-      greeting: 'Warm greetings and a heartfelt welcome to NF Venture Studio!',
-      message:
-        'At Naree Foundation, we believe that education creates its greatest value when knowledge is translated into meaningful action. NF Venture Studio reflects our commitment to building an environment where students, researchers, and institutions can explore ideas, develop practical solutions, and create opportunities for sustainable growth. By strengthening the connection between academic excellence, innovation, and entrepreneurship, we aim to support initiatives that address real-world challenges and contribute to lasting social and economic progress. We welcome institutions, innovators, and partners to join us in building this shared vision.',
-      authorName: 'Office of the President',
-      authorDesignation: 'President, Naree Foundation',
-      isPlaceholder: true,
-    },
-    {
-      id: 'msg-ceo',
-      title: "Chief Executive Officer's Message",
-      roleBadge: 'Office of the Chief Executive Officer',
-      greeting: 'A warm welcome to all students, researchers, institutional partners, and aspiring entrepreneurs!',
-      message:
-        'Welcome to NF Venture Studio.\n\nWe are committed to building an ecosystem that encourages innovation, supports emerging entrepreneurs, and strengthens collaboration between institutions, industry, and researchers.\n\nThrough mentorship, incubation, and strategic partnerships, we aim to transform promising ideas into sustainable ventures with meaningful social and economic impact.\n\nThis message is provided as demo content and will be updated with the official message.',
-      authorName: 'Mr. Ashok Patil',
-      authorDesignation: 'Chief Executive Officer (CEO)',
-      authorImage: ashokPatilImg,
-    },
-    {
-      id: 'msg-coo',
-      title: "Chief Operating Officer's Message",
-      roleBadge: 'Office of the Chief Operating Officer',
-      greeting: 'Greetings and welcome to NF Venture Studio!',
-      message:
-        'Strong ideas require strong systems to become reality. At NF Venture Studio, our focus is on establishing the processes, facilities, and collaborative networks that make innovation practical and measurable. From incubation programme coordination and prototype development to institutional readiness and industry engagement, we aim to create a structured environment in which innovators can make steady progress. Through clear execution, consistent support, and accountable processes, we strive to turn ambitious concepts into workable outcomes. We look forward to working with institutions and innovators to build an effective, collaborative, and outcome-oriented ecosystem.',
-      authorName: 'Capt. Rahul More',
-      authorDesignation: 'Chief Operating Officer (COO)',
-      authorImage: rahulMoreImg,
-    },
-  ];
-
-  // Sidebar navigation items list in approved order matching reference image
+  // Sidebar navigation items list in approved order (President first)
   const sidebarNavItems = [
-    { id: 'our-inspiration', label: 'Our Inspiration', path: '/our-inspiration', icon: User },
-    { id: 'from-presidents-desk', label: 'From President’s Desk', path: '/from-presidents-desk', icon: User },
-    { id: 'from-vice-presidents-desk', label: 'From Vice President’s Desk', path: '/from-vice-presidents-desk', icon: User },
-    { id: 'from-secretarys-desk', label: 'From Secretary’s Desk', path: '/from-secretarys-desk', icon: User },
-    { id: 'from-ceos-desk', label: 'From CEO’s Desk', path: '/from-ceos-desk', icon: User },
-    { id: 'from-executive-directors-desk', label: 'From Executive Director’s Desk', path: '/from-executive-directors-desk', icon: User },
-    { id: 'our-team', label: 'Our Team', path: '/team', icon: User },
+    { id: 'from-presidents-desk', label: "President's Message", path: '/from-presidents-desk', icon: Award },
+    { id: 'from-vice-presidents-desk', label: "Vice-President's Message", path: '/from-vice-presidents-desk', icon: Compass },
+    { id: 'from-ceos-desk', label: "CEO's Desk", path: '/from-ceos-desk', icon: User },
+    { id: 'our-team', label: 'Our Team', path: '/team', icon: Users },
   ];
 
-  // Determine active item based on current URL path
-  const currentPath = location.pathname;
-  const isOurTeamActive =
-    currentPath === '/team' ||
-    currentPath === '/our-team';
+  // Active tab state management: FIRST TAB WHEN PAGE IS OPENED IS PRESIDENT'S MESSAGE
+  const getInitialTab = (): string => {
+    if (location.pathname === '/from-ceos-desk') return 'from-ceos-desk';
+    if (location.pathname === '/from-vice-presidents-desk') return 'from-vice-presidents-desk';
+    if (location.pathname === '/team' && location.search.includes('view=team')) return 'our-team';
+    if (location.pathname === '/from-presidents-desk') return 'from-presidents-desk';
+    // Default when page is opened is always President's Message
+    return 'from-presidents-desk';
+  };
 
-  // Profile data for Ashok Patil (CEO)
-  const ceoMember = corePillars[0];
+  const [activeTab, setActiveTab] = useState<string>(getInitialTab);
+
+  useEffect(() => {
+    if (location.pathname === '/from-presidents-desk') setActiveTab('from-presidents-desk');
+    else if (location.pathname === '/from-vice-presidents-desk') setActiveTab('from-vice-presidents-desk');
+    else if (location.pathname === '/from-ceos-desk') setActiveTab('from-ceos-desk');
+    else if (location.pathname === '/team' && location.search.includes('view=team')) setActiveTab('our-team');
+    else setActiveTab('from-presidents-desk');
+  }, [location.pathname, location.search]);
+
+  const handleTabClick = (tabId: string, path: string) => {
+    setActiveTab(tabId);
+    if (tabId === 'our-team') {
+      navigate('/team?view=team');
+    } else {
+      navigate(path);
+    }
+  };
 
   return (
     <div
@@ -230,315 +175,548 @@ export const NFTeamPage: React.FC = () => {
         onToggleTheme={toggleTheme}
       />
 
-      {/* 2. Main Page Layout */}
+      {/* 2. Main Page Layout - Left Navigation with Right Content Display */}
       <main className="flex-1 w-full pt-20 sm:pt-24 lg:pt-28 pb-16 sm:pb-24">
-        <div className="section-shell">
-          <div className="flex flex-col lg:flex-row gap-8 lg:gap-10 xl:gap-12 items-stretch">
+        <div className="section-shell px-3.5 sm:px-6 lg:px-8 space-y-8 sm:space-y-10 lg:space-y-12">
+          
+          <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 lg:gap-10 xl:gap-12 lg:items-start">
 
-            {/* LEFT SIDEBAR */}
-            <aside className="w-full lg:w-72 xl:w-80 shrink-0 flex flex-col justify-between space-y-5">
-              <div className="space-y-5">
-                {/* Sidebar Header Box: NF Venture Studio */}
-                <div
-                  className={`p-4 sm:p-5 rounded-xl border transition-colors shadow-xs ${
-                    isDark
-                      ? 'bg-slate-900 border-slate-800'
-                      : 'bg-white border-[#DCE3EC]'
-                  }`}
-                >
-                  <div className="flex items-center justify-center gap-3">
-                    <div className="w-10 h-10 rounded-xl overflow-hidden shadow-sm border border-amber-300/40 bg-white shrink-0 flex items-center justify-center">
-                      <img
-                        src={nfLogoImg}
-                        alt="NF Logo"
-                        className="w-full h-full object-contain p-0.5"
-                      />
-                    </div>
-                    <h2 className="text-lg sm:text-xl font-extrabold tracking-tight text-[#123B73] dark:text-sky-300 leading-tight">
+            {/* LEFT SIDEBAR NAVIGATION */}
+            <aside className="w-full lg:w-72 xl:w-80 shrink-0 flex flex-col gap-4 sm:gap-6 lg:sticky lg:top-28">
+
+              {/* CARD 1: NFVS BRANDING + 4-ITEM LEFT NAVIGATION */}
+              <div
+                className={`p-4 sm:p-6 rounded-2xl border transition-colors shadow-xs space-y-4 sm:space-y-5 ${
+                  isDark
+                    ? 'bg-slate-900 border-slate-800'
+                    : 'bg-white border-[#DCE3EC]'
+                }`}
+              >
+                {/* Brand Header */}
+                <div className="flex flex-col items-center justify-center text-center space-y-2 pt-1">
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl overflow-hidden shadow-xs border border-[#DCE3EC] dark:border-slate-700 bg-white p-2 flex items-center justify-center shrink-0">
+                    <img
+                      src={nfLogoImg}
+                      alt="NF Venture Studio - Official Logo"
+                      decoding="async"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <h2 className="text-base sm:text-lg font-extrabold tracking-tight text-[#123B73] dark:text-white leading-tight">
                       NF Venture Studio
                     </h2>
+                    <div className="w-10 sm:w-12 h-0.5 bg-[#D9A72E] mx-auto rounded-full" />
                   </div>
-                  <div className="w-12 h-0.5 bg-[#D9A72E] mx-auto mt-2.5 rounded-full" />
                 </div>
 
-                {/* Sidebar Navigation Items List with Left-Aligned Icons */}
-                <nav aria-label="Leadership Navigation" className="space-y-2">
+                {/* Left Navigation Items List: President, VP, CEO, Our Team */}
+                <nav
+                  aria-label="Leadership & Team Navigation"
+                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-2 pt-1"
+                >
                   {sidebarNavItems.map((item) => {
                     const ItemIcon = item.icon;
-                    const isActive =
-                      (item.id === 'our-team' && isOurTeamActive) ||
-                      (item.path === currentPath);
+                    const isActive = activeTab === item.id;
 
                     return (
-                      <Link
+                      <button
                         key={item.id}
-                        to={item.path}
-                        className={`group flex items-center gap-3.5 px-4 py-3 sm:py-3.5 rounded-xl border text-sm transition-all duration-200 select-none ${
+                        type="button"
+                        onClick={() => handleTabClick(item.id, item.path)}
+                        className={`w-full group flex items-center justify-between px-3.5 sm:px-4 py-3 rounded-xl border text-xs sm:text-sm transition-all duration-200 select-none text-left cursor-pointer min-h-[44px] ${
                           isActive
-                            ? 'bg-[#123B73] dark:bg-[#0F3263] text-white border-l-4 border-l-[#D9A72E] border-t-[#123B73] border-r-[#123B73] border-b-[#123B73] dark:border-t-slate-700 dark:border-r-slate-700 dark:border-b-slate-700 shadow-sm font-semibold'
+                            ? 'bg-[#123B73] text-white border-[#123B73] shadow-sm font-bold ring-2 ring-[#D9A72E]/50'
                             : isDark
-                            ? 'bg-slate-900 border-slate-800 text-slate-200 hover:bg-slate-800 hover:border-slate-700 font-medium'
-                            : 'bg-white border-[#DCE3EC] text-[#123B73] hover:bg-[#EAF1F9] hover:border-[#123B73]/30 font-medium shadow-2xs'
+                            ? 'bg-slate-900/90 border-slate-700/80 text-slate-200 hover:bg-slate-800 hover:border-slate-600 font-medium'
+                            : 'bg-white border-slate-300 text-slate-800 hover:bg-[#F0F5FA] hover:border-[#123B73]/40 font-medium shadow-2xs'
                         }`}
                       >
-                        <ItemIcon
-                          className={`w-4 h-4 shrink-0 transition-transform duration-200 group-hover:scale-110 ${
-                            isActive
-                              ? 'text-[#D9A72E]'
-                              : isDark
-                              ? 'text-slate-400 group-hover:text-sky-300'
-                              : 'text-[#123B73]/70 group-hover:text-[#123B73]'
-                          }`}
-                        />
-                        <span className="truncate">{item.label}</span>
-                      </Link>
+                        <div className="flex items-center gap-2.5 truncate">
+                          <ItemIcon
+                            className={`w-4 h-4 shrink-0 transition-transform duration-200 group-hover:scale-110 ${
+                              isActive
+                                ? 'text-[#D9A72E]'
+                                : isDark
+                                ? 'text-slate-400 group-hover:text-white'
+                                : 'text-slate-500 group-hover:text-[#123B73]'
+                            }`}
+                          />
+                          <span className="truncate">{item.label}</span>
+                        </div>
+                        {isActive && (
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#D9A72E] shrink-0" />
+                        )}
+                      </button>
                     );
                   })}
                 </nav>
               </div>
 
-              {/* Promotional Banner: Empowering Innovation for a Better Tomorrow — Enlarged to fill space */}
+              {/* CARD 2: INCUBATION ECOSYSTEM SUPPORT */}
               <div
-                className={`relative overflow-hidden rounded-2xl p-6 sm:p-8 text-white border shadow-md transition-all flex-1 min-h-[360px] sm:min-h-[420px] flex flex-col justify-center items-center mt-3 ${
+                className={`hidden lg:flex flex-col justify-between p-5 sm:p-6 rounded-2xl border transition-colors shadow-xs ${
                   isDark
-                    ? 'bg-gradient-to-br from-[#091E42] via-[#0B2554] to-[#06152F] border-slate-700'
-                    : 'bg-gradient-to-br from-[#091E42] via-[#0B2554] to-[#06152F] border-[#123B73]'
+                    ? 'bg-slate-900 border-slate-800'
+                    : 'bg-white border-[#DCE3EC]'
                 }`}
               >
-                {/* Subtle decorative glow & lightbulb outline */}
-                <div
-                  className="absolute -right-8 -bottom-8 w-44 h-44 rounded-full bg-[#D9A72E]/15 blur-3xl pointer-events-none"
-                  aria-hidden="true"
-                />
-                <svg
-                  className="absolute -right-4 -bottom-4 w-36 h-36 text-[#D9A72E]/15 pointer-events-none"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                >
-                  <path d="M9 18h6" />
-                  <path d="M10 22h4" />
-                  <path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14" />
-                </svg>
-
-                {/* Content Centered Vertically and Horizontally */}
-                <div className="relative z-10 flex flex-col items-center justify-center text-center space-y-4 w-full py-2">
-                  <div className="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-[#D9A72E] shadow-sm">
-                    <Rocket className="w-7 h-7" />
-                  </div>
-
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[11px] uppercase font-mono tracking-widest text-[#D9A72E] font-bold">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#D9A72E]" />
-                    NF VENTURE STUDIO
-                  </div>
-
-                  <div className="space-y-1">
-                    <h3 className="text-lg sm:text-xl font-extrabold leading-snug text-white">
-                      Empowering Innovation
-                    </h3>
-                    <div className="text-lg sm:text-xl font-extrabold text-[#D9A72E] leading-snug">
-                      for a Better Tomorrow
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-xl bg-[#EAF1F9] dark:bg-slate-800 border border-[#DCE3EC] dark:border-slate-700 flex items-center justify-center text-[#123B73] dark:text-sky-300 shrink-0">
+                      <Rocket className="w-4 h-4 text-[#D9A72E]" />
+                    </div>
+                    <div>
+                      <h3 className="text-xs font-bold text-[#123B73] dark:text-white leading-tight">
+                        Incubation Ecosystem
+                      </h3>
+                      <p className="text-[10px] text-slate-500 dark:text-slate-400">
+                        Turnkey Academic Incubation
+                      </p>
                     </div>
                   </div>
 
-                  <div className="w-16 h-0.5 bg-[#D9A72E] rounded-full mx-auto" />
-
-                  <p className="text-xs sm:text-[13px] text-slate-200 leading-relaxed max-w-[240px]">
-                    Translating research and ambitious ideas into scalable, deep-tech enterprise ventures.
-                  </p>
-
-                  {/* Supporting feature tags to enrich the card and fill vertical space */}
-                  <div className="pt-2 flex flex-wrap justify-center gap-2 max-w-[260px]">
-                    <span className="px-2.5 py-1 rounded-lg bg-white/10 border border-white/15 text-[11px] font-semibold text-slate-200 shadow-2xs">
-                      Turnkey Labs
-                    </span>
-                    <span className="px-2.5 py-1 rounded-lg bg-white/10 border border-white/15 text-[11px] font-semibold text-slate-200 shadow-2xs">
-                      Incubation Centers
-                    </span>
-                    <span className="px-2.5 py-1 rounded-lg bg-white/10 border border-white/15 text-[11px] font-semibold text-slate-200 shadow-2xs">
-                      Deep-Tech R&amp;D
-                    </span>
+                  <div className="space-y-2.5 pt-2 border-t border-slate-100 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-300">
+                    <div className="flex items-start gap-2">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#D9A72E] shrink-0 mt-0.5" />
+                      <span>AICTE-NISP Policy Governance</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#D9A72E] shrink-0 mt-0.5" />
+                      <span>₹3Cr+ Grant Linkages (NIDHI/BIRAC)</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#D9A72E] shrink-0 mt-0.5" />
+                      <span>Turnkey Prototyping Maker Labs</span>
+                    </div>
                   </div>
                 </div>
+
+                <div className="pt-4 border-t border-slate-100 dark:border-slate-800 space-y-2 mt-4">
+                  <button
+                    type="button"
+                    onClick={() => handleOpenApplication('student')}
+                    className="w-full py-2.5 px-3 rounded-xl font-bold text-xs text-white bg-[#123B73] hover:bg-[#0B1F3A] transition-colors shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    <span>Apply for Incubation</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-[#D9A72E]" />
+                  </button>
+                  <Link
+                    to="/contact"
+                    className="w-full py-2.5 px-3 rounded-xl font-semibold text-xs border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors flex items-center justify-center gap-1.5 text-center"
+                  >
+                    <span>Contact Executive Office</span>
+                  </Link>
+                </div>
               </div>
+
             </aside>
 
-            {/* RIGHT MAIN CONTENT AREA */}
-            <div className="flex-1 min-w-0 space-y-8 sm:space-y-10 flex flex-col justify-between">
+            {/* RIGHT MAIN CONTENT DISPLAY AREA */}
+            <div className="flex-1 min-w-0 w-full">
 
-              {/* SINGLE-MEMBER PROFILE LAYOUT CONTAINER MATCHING IMAGE */}
               <section className="reveal flex-1 flex flex-col">
                 <div
-                  className={`rounded-2xl border p-6 sm:p-8 lg:p-9 shadow-sm transition-colors flex-1 flex flex-col justify-between ${
+                  className={`rounded-2xl border p-5 sm:p-8 lg:p-10 shadow-sm transition-colors ${
                     isDark
                       ? 'bg-slate-900 border-slate-800'
                       : 'bg-white border-[#DCE3EC]'
                   }`}
                 >
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-12 items-stretch h-full flex-1">
 
-                    {/* LEFT COLUMN — CEO PROFILE */}
-                    <div className="lg:col-span-5 flex flex-col space-y-4 max-w-md mx-auto lg:max-w-none w-full">
-                      <div className="space-y-3.5">
-                        {/* Portrait of Mr. Ashok Patil */}
-                        <div
-                          className={`relative w-full aspect-[4/4.3] rounded-xl overflow-hidden border shadow-sm transition-all ${
-                            isDark
-                              ? 'border-slate-800 bg-slate-950'
-                              : 'border-[#DCE3EC] bg-slate-100'
-                          }`}
-                        >
+                  {/* TAB 1: PRESIDENT'S MESSAGE (DEFAULT WHEN PAGE IS OPENED) */}
+                  {activeTab === 'from-presidents-desk' && (
+                    <div className="space-y-6 sm:space-y-8 animate-fade-in flex flex-col justify-between">
+                      {/* Leader Portrait & Header Info */}
+                      <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-center sm:items-start text-center sm:text-left">
+                        {/* Small Photograph */}
+                        <div className="w-24 sm:w-28 md:w-32 aspect-[3/4] rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 shadow-xs shrink-0 mx-auto sm:mx-0">
                           <img
-                            src={ceoMember.imageSrc}
-                            alt={ceoMember.name}
-                            className="w-full h-full object-cover object-top block select-none"
+                            src={nileshSirImg}
+                            alt="Dr. Nilesh Gaikwad - President, NF Venture Studio"
+                            className="w-full h-full object-cover object-[center_20%] block select-none"
                             loading="eager"
+                            decoding="async"
                           />
                         </div>
 
-                        {/* CEO Information Beneath the Portrait */}
-                        <div className="space-y-1.5 pt-0.5 text-left">
-                          {/* Designation badge & Organization label */}
-                          <div className="flex items-center justify-between gap-2">
-                            <span className="inline-flex items-center px-3 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-[#EAF1F9] dark:bg-slate-800 text-[#123B73] dark:text-sky-300 border border-[#DCE3EC] dark:border-slate-700">
-                              CEO
-                            </span>
-                            <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
-                              NF Venture Studio
-                            </span>
+                        <div className="flex-1 min-w-0 space-y-1.5">
+                          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[10px] font-mono font-bold uppercase tracking-wider bg-[#EAF1F9] dark:bg-slate-800 text-[#123B73] dark:text-sky-300 border border-[#DCE3EC] dark:border-slate-700">
+                            <Award className="w-3 h-3 text-[#D9A72E]" />
+                            <span>Office of the President</span>
                           </div>
+                          <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-[#123B73] dark:text-white tracking-tight leading-tight">
+                            Dr. Nilesh Gaikwad
+                          </h1>
+                          <p className="text-xs sm:text-sm font-bold text-[#D9A72E]">
+                            President, NF Venture Studio
+                          </p>
 
-                          {/* Full Name in Dark Navy-Blue */}
-                          <h2 className="text-2xl sm:text-[26px] font-extrabold text-[#123B73] dark:text-white leading-tight">
-                            {ceoMember.name}
-                          </h2>
-
-                          {/* Designation in Gold */}
-                          <div className="text-sm sm:text-base font-bold text-[#D9A72E]">
-                            {ceoMember.designation}
-                          </div>
-
-                          {/* Organization Line with Gold Building Icon */}
-                          <div className="pt-0.5 flex items-center gap-2 text-xs sm:text-sm text-slate-600 dark:text-slate-400">
-                            <Building2 className="w-4 h-4 text-[#D9A72E]" />
-                            <span>NF Venture Studio · Pune</span>
+                          {/* Relevant Address & Official Contact */}
+                          <div className="pt-1.5 flex flex-col gap-1 text-xs text-slate-600 dark:text-slate-300">
+                            <div className="flex items-start gap-1.5 justify-center sm:justify-start">
+                              <MapPin className="w-3.5 h-3.5 text-[#D9A72E] shrink-0 mt-0.5" />
+                              <span>Parijatak, Near Nigdi Police Station, Nigdi, Pune – 411044, Maharashtra</span>
+                            </div>
+                            <div className="flex items-center gap-1.5 justify-center sm:justify-start">
+                              <Mail className="w-3.5 h-3.5 text-[#D9A72E] shrink-0" />
+                              <a
+                                href="mailto:contact@ncfvs.in"
+                                className="hover:underline text-[#123B73] dark:text-sky-300 font-medium"
+                              >
+                                contact@ncfvs.in
+                              </a>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
 
-                    {/* RIGHT COLUMN — MESSAGE FROM THE CEO */}
-                    <div className="lg:col-span-7 flex flex-col justify-between h-full pt-1 lg:pt-0">
-                      <div>
-                        {/* Heading: MESSAGE FROM THE CEO (Dark Navy + Gold) */}
-                        <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#123B73] dark:text-white uppercase">
-                          MESSAGE FROM THE <span className="text-[#D9A72E]">CEO</span>
+                      {/* Message Heading */}
+                      <div className="pt-4 sm:pt-5 border-t border-slate-200 dark:border-slate-800 space-y-1 text-center sm:text-left">
+                        <h2 className="text-base sm:text-lg lg:text-xl font-extrabold text-[#123B73] dark:text-white tracking-tight uppercase">
+                          Message from the President
                         </h2>
+                        <p className="text-xs sm:text-sm font-semibold text-[#D9A72E] uppercase tracking-wider">
+                          NF Venture Studio · Ecosystem Foundation
+                        </p>
+                      </div>
 
-                        {/* Decorative Underline Indicator: Two dots + rounded bar */}
-                        <div className="flex items-center gap-1.5 mt-2.5 mb-5">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#123B73] dark:bg-sky-400" />
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#123B73] dark:bg-sky-400" />
-                          <span className="w-12 h-1 rounded-full bg-[#123B73] dark:bg-sky-400" />
-                        </div>
+                      {/* Detailed Message Narrative */}
+                      <div className="space-y-4 text-xs sm:text-sm md:text-[15px] leading-relaxed text-slate-700 dark:text-slate-200 font-normal">
+                        <p>
+                          At NF Venture Studio, our vision is to build a strong startup ecosystem that transforms innovative ideas into sustainable businesses. We aim to establish and strengthen Startup Incubation Centres within academic institutions, empowering students, researchers, and entrepreneurs to turn their ideas into reality.
+                        </p>
 
-                        {/* Official CEO Message Text with Natural Left Alignment */}
-                        <div className="space-y-3.5 text-sm sm:text-[14.5px] text-slate-700 dark:text-slate-200 leading-[1.7] text-left font-normal">
-                          <p>
-                            At NF Venture Studio, we believe that building successful startups requires more than a great idea &mdash; it requires the right infrastructure, expert guidance, institutional support, and a strong ecosystem that enables innovation to grow into sustainable businesses.
-                          </p>
+                        <p>
+                          Through mentorship, infrastructure, funding opportunities, intellectual property support, and industry collaboration, we strive to connect education with entrepreneurship and innovation with impact.
+                        </p>
 
-                          <p>
-                            Our vision is to develop individual Startup Incubation Centres within academic institutions while building a comprehensive ecosystem that supports the establishment, management, and growth of these centres. We aim to empower institutions to become active hubs of innovation, entrepreneurship, research, and business development.
-                          </p>
-
-                          <p>
-                            Through our integrated approach, we support innovators from pre-incubation and idea validation to startup formation, intellectual property protection, funding opportunities, government scheme facilitation, business planning, and market readiness. We also work towards strengthening institutional incubation capabilities through dedicated infrastructure, trained teams, industry connections, mentorship, and structured innovation activities.
-                          </p>
-
-                          <p>
-                            At NF Venture Studio, our commitment extends beyond individual startups. We focus on creating a connected network of incubation centres that share knowledge, resources, expertise, and opportunities, enabling institutions and entrepreneurs to collaborate and achieve sustainable growth.
-                          </p>
-
-                          <p>
-                            Together, we aspire to transform ideas into impactful ventures, institutions into innovation hubs, and entrepreneurial potential into meaningful economic and social progress.
-                          </p>
-
-                          <p className="font-bold text-[#123B73] dark:text-sky-300 pt-1">
-                            Let us build an ecosystem where every promising idea has the opportunity to grow.
-                          </p>
+                        <div className="p-4 rounded-xl border border-[#DCE3EC] dark:border-slate-800 bg-[#EAF1F9]/50 dark:bg-slate-800/40 text-[#123B73] dark:text-sky-300 font-bold text-xs sm:text-sm">
+                          Together, let us build institutions that inspire innovation and an ecosystem that enables every promising idea to grow.
                         </div>
                       </div>
 
-                      {/* Right-aligned Handwritten Signature & Sign-off, ending on bottom baseline */}
-                      <div className="flex justify-end pt-4 mt-auto">
-                        <div className="text-right space-y-0.5">
-                          {/* Beautiful Cursive Signature */}
-                          <div
-                            style={{ fontFamily: "'Caveat', 'Great Vibes', cursive" }}
-                            className="text-4xl sm:text-5xl text-[#123B73] dark:text-sky-300 font-semibold select-none pr-1 tracking-wide"
-                          >
-                            Mr. Ashok Patil
+                      {/* Sign-off */}
+                      <div className="flex justify-center sm:justify-end pt-5 border-t border-slate-200 dark:border-slate-800">
+                        <div className="text-center sm:text-right space-y-0.5">
+                          <div className="text-sm font-bold text-[#123B73] dark:text-white">
+                            Dr. Nilesh Gaikwad
                           </div>
-                          <div className="text-xs sm:text-sm font-bold text-[#123B73] dark:text-white">
-                            Ashok K. Patil
+                          <div className="text-xs font-semibold text-[#D9A72E]">
+                            President
                           </div>
-                          <div className="text-xs text-slate-600 dark:text-slate-400 font-medium">
-                            CEO, NF Venture Studio
+                          <div className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">
+                            NF Venture Studio · Pune
                           </div>
                         </div>
                       </div>
-
                     </div>
+                  )}
 
-                  </div>
-                </div>
-              </section>
+                  {/* TAB 2: VICE-PRESIDENT'S MESSAGE */}
+                  {activeTab === 'from-vice-presidents-desk' && (
+                    <div className="space-y-6 sm:space-y-8 animate-fade-in flex flex-col justify-between">
+                      {/* Leader Portrait & Header Info */}
+                      <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-center sm:items-start text-center sm:text-left">
+                        {/* Small Photograph */}
+                        <div className="w-24 sm:w-28 md:w-32 aspect-[3/4] rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 shadow-xs shrink-0 mx-auto sm:mx-0">
+                          <img
+                            src={vicePresidentImg}
+                            alt="Ms. Nisha Gaikwad - Vice President, NF Venture Studio"
+                            className="w-full h-full object-cover object-[center_20%] block select-none"
+                            loading="eager"
+                            decoding="async"
+                          />
+                        </div>
 
-              {/* Bottom Institutional Action CTA */}
-              <section
-                className={`p-6 sm:p-10 rounded-2xl border text-center space-y-4 transition-colors ${
-                  isDark
-                    ? 'bg-slate-900 border-slate-800'
-                    : 'bg-[#EAF1F9] border-[#DCE3EC]'
-                }`}
-              >
-                <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white">
-                  Collaborate with Our Leadership &amp; <span className="text-[#D9A72E]">Venture Studio</span>
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-xl mx-auto leading-relaxed">
-                  Whether you are an academic institution seeking turnkey incubation deployment or an innovator developing deep-tech prototypes, our leadership team welcomes your partnership.
-                </p>
-                <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-                  <button
-                    type="button"
-                    onClick={() => handleOpenApplication('student')}
-                    className="px-5 py-2.5 rounded-xl font-semibold text-xs text-white bg-[#123B73] hover:bg-[#0B1F3A] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md inline-flex items-center gap-2"
-                  >
-                    <span>Apply for Incubation Center</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-white/80" />
-                  </button>
-                  <Link
-                    to="/contact"
-                    className={`px-5 py-2.5 rounded-xl font-semibold text-xs border transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 inline-flex items-center gap-2 ${
-                      isDark
-                        ? 'bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-700 hover:border-slate-600'
-                        : 'bg-white border-[#DCE3EC] text-slate-700 hover:bg-slate-50 hover:border-slate-300 hover:shadow-2xs'
-                    }`}
-                  >
-                    <span>Contact Executive Office</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </Link>
+                        <div className="flex-1 min-w-0 space-y-1.5">
+                          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[10px] font-mono font-bold uppercase tracking-wider bg-[#EAF1F9] dark:bg-slate-800 text-[#123B73] dark:text-sky-300 border border-[#DCE3EC] dark:border-slate-700">
+                            <Compass className="w-3 h-3 text-[#D9A72E]" />
+                            <span>Office of the Vice President</span>
+                          </div>
+                          <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-[#123B73] dark:text-white tracking-tight leading-tight">
+                            Ms. Nisha Gaikwad
+                          </h1>
+                          <p className="text-xs sm:text-sm font-bold text-[#D9A72E]">
+                            Vice President, NF Venture Studio
+                          </p>
+
+                          {/* Relevant Address & Official Contact */}
+                          <div className="pt-1.5 flex flex-col gap-1 text-xs text-slate-600 dark:text-slate-300">
+                            <div className="flex items-start gap-1.5 justify-center sm:justify-start">
+                              <MapPin className="w-3.5 h-3.5 text-[#D9A72E] shrink-0 mt-0.5" />
+                              <span>Parijatak, Near Nigdi Police Station, Nigdi, Pune – 411044, Maharashtra</span>
+                            </div>
+                            <div className="flex items-center gap-1.5 justify-center sm:justify-start">
+                              <Mail className="w-3.5 h-3.5 text-[#D9A72E] shrink-0" />
+                              <a
+                                href="mailto:contact@ncfvs.in"
+                                className="hover:underline text-[#123B73] dark:text-sky-300 font-medium"
+                              >
+                                contact@ncfvs.in
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Message Heading */}
+                      <div className="pt-4 sm:pt-5 border-t border-slate-200 dark:border-slate-800 space-y-1 text-center sm:text-left">
+                        <h2 className="text-base sm:text-lg lg:text-xl font-extrabold text-[#123B73] dark:text-white tracking-tight uppercase">
+                          Message from the Vice President
+                        </h2>
+                        <p className="text-xs sm:text-sm font-semibold text-[#D9A72E] uppercase tracking-wider">
+                          NF Venture Studio · Incubation Growth
+                        </p>
+                      </div>
+
+                      {/* Detailed Message Narrative */}
+                      <div className="space-y-4 text-xs sm:text-sm md:text-[15px] leading-relaxed text-slate-700 dark:text-slate-200 font-normal">
+                        <p>
+                          At NF Venture Studio, we are committed to creating an environment where innovation, collaboration, and entrepreneurship thrive. Our focus is on strengthening institutional incubation centres and building a connected ecosystem that supports startups at every stage of their journey.
+                        </p>
+
+                        <p>
+                          Through structured guidance, mentorship, intellectual property support, funding facilitation, and industry partnerships, we aim to empower aspiring entrepreneurs to transform ideas into impactful ventures.
+                        </p>
+
+                        <div className="p-4 rounded-xl border border-[#DCE3EC] dark:border-slate-800 bg-[#EAF1F9]/50 dark:bg-slate-800/40 text-[#123B73] dark:text-sky-300 font-bold text-xs sm:text-sm">
+                          Together, let us foster a culture of innovation, strengthen institutional capabilities, and create sustainable opportunities for future entrepreneurs.
+                        </div>
+                      </div>
+
+                      {/* Sign-off */}
+                      <div className="flex justify-center sm:justify-end pt-5 border-t border-slate-200 dark:border-slate-800">
+                        <div className="text-center sm:text-right space-y-0.5">
+                          <div className="text-sm font-bold text-[#123B73] dark:text-white">
+                            Ms. Nisha Gaikwad
+                          </div>
+                          <div className="text-xs font-semibold text-[#D9A72E]">
+                            Vice President
+                          </div>
+                          <div className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">
+                            NF Venture Studio · Pune
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* TAB 3: CEO'S DESK */}
+                  {activeTab === 'from-ceos-desk' && (
+                    <div className="space-y-6 sm:space-y-8 animate-fade-in flex flex-col justify-between">
+                      {/* Leader Portrait & Header Info */}
+                      <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-center sm:items-start text-center sm:text-left">
+                        {/* Small Photograph */}
+                        <div className="w-24 sm:w-28 md:w-32 aspect-[3/4] rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 shadow-xs shrink-0 mx-auto sm:mx-0">
+                          <img
+                            src={ceoMember.imageSrc}
+                            alt="Mr. Ashok K. Patil - Chief Executive Officer, NF Venture Studio"
+                            className="w-full h-full object-cover object-[center_15%] block select-none"
+                            loading="eager"
+                            decoding="async"
+                          />
+                        </div>
+
+                        <div className="flex-1 min-w-0 space-y-1.5">
+                          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[10px] font-mono font-bold uppercase tracking-wider bg-[#EAF1F9] dark:bg-slate-800 text-[#123B73] dark:text-sky-300 border border-[#DCE3EC] dark:border-slate-700">
+                            <User className="w-3 h-3 text-[#D9A72E]" />
+                            <span>Office of the Chief Executive Officer</span>
+                          </div>
+                          <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-[#123B73] dark:text-white tracking-tight leading-tight">
+                            Mr. Ashok K. Patil
+                          </h1>
+                          <p className="text-xs sm:text-sm font-bold text-[#D9A72E]">
+                            Chief Executive Officer (CEO), NF Venture Studio
+                          </p>
+
+                          {/* Relevant Address & Official Contact */}
+                          <div className="pt-1.5 flex flex-col gap-1 text-xs text-slate-600 dark:text-slate-300">
+                            <div className="flex items-start gap-1.5 justify-center sm:justify-start">
+                              <MapPin className="w-3.5 h-3.5 text-[#D9A72E] shrink-0 mt-0.5" />
+                              <span>Parijatak, Near Nigdi Police Station, Nigdi, Pune – 411044, Maharashtra</span>
+                            </div>
+                            <div className="flex items-center gap-1.5 justify-center sm:justify-start">
+                              <Mail className="w-3.5 h-3.5 text-[#D9A72E] shrink-0" />
+                              <a
+                                href="mailto:ceo@ncfvs.in"
+                                className="hover:underline text-[#123B73] dark:text-sky-300 font-medium"
+                              >
+                                ceo@ncfvs.in
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Message Heading */}
+                      <div className="pt-4 sm:pt-5 border-t border-slate-200 dark:border-slate-800 space-y-1 text-center sm:text-left">
+                        <h2 className="text-base sm:text-lg lg:text-xl font-extrabold text-[#123B73] dark:text-white tracking-tight uppercase">
+                          Message from the CEO
+                        </h2>
+                        <p className="text-xs sm:text-sm font-semibold text-[#D9A72E] uppercase tracking-wider">
+                          NF Venture Studio · Operational Strategy
+                        </p>
+                      </div>
+
+                      {/* Detailed Message Narrative */}
+                      <div className="space-y-4 text-xs sm:text-sm md:text-[15px] leading-relaxed text-slate-700 dark:text-slate-200 font-normal">
+                        <p>
+                          At NF Venture Studio, our goal is to transform innovative ideas into successful startups by building a strong, connected incubation ecosystem. We focus on supporting academic institutions in establishing incubation centres and empowering entrepreneurs through business planning, mentorship, intellectual property support, and funding opportunities.
+                        </p>
+
+                        <p>
+                          Through collaboration, technology, and strategic guidance, we aim to bridge the gap between ideas and implementation, helping startups grow into sustainable and impactful businesses.
+                        </p>
+
+                        <div className="p-4 rounded-xl border border-[#DCE3EC] dark:border-slate-800 bg-[#EAF1F9]/50 dark:bg-slate-800/40 text-[#123B73] dark:text-sky-300 font-bold text-xs sm:text-sm">
+                          Together, let us build an ecosystem where innovation creates opportunities and every promising idea has the potential to succeed.
+                        </div>
+                      </div>
+
+                      {/* Sign-off with Small and Discreet Digital Signature Below the Name */}
+                      <div className="flex justify-center sm:justify-end pt-5 border-t border-slate-200 dark:border-slate-800">
+                        <div className="text-center sm:text-right space-y-0.5">
+                          <div className="text-sm font-bold text-[#123B73] dark:text-white">
+                            Mr. Ashok K. Patil
+                          </div>
+                          {/* Small and discreet digital signature below the name */}
+                          <div
+                            style={{ fontFamily: "'Caveat', 'Brush Script MT', cursive" }}
+                            className="text-base sm:text-lg text-slate-600 dark:text-slate-400 font-medium select-none tracking-wider italic leading-none py-0.5"
+                          >
+                            Ashok Patil
+                          </div>
+                          <div className="text-xs font-semibold text-[#D9A72E]">
+                            Chief Executive Officer (CEO)
+                          </div>
+                          <div className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">
+                            NF Venture Studio · Pune
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* TAB 4: OUR TEAM */}
+                  {activeTab === 'our-team' && (
+                    <div className="space-y-6 sm:space-y-8 animate-fade-in flex flex-col justify-between">
+                      <div className="border-b pb-4 border-slate-200 dark:border-slate-800 text-center sm:text-left">
+                        <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#123B73] dark:text-sky-300 mb-1">
+                          <Users className="w-4 h-4 text-[#D9A72E]" />
+                          <span>Core Operating Pillars</span>
+                        </div>
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#123B73] dark:text-white tracking-tight">
+                          Our Team &amp; Leadership Structure
+                        </h2>
+                        <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1">
+                          Executive working pillars driving incubation operations, fiscal governance, and founder acquisition.
+                        </p>
+                      </div>
+
+                      {/* Team Grid: Consistent Professional Portrait Sizes */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 sm:gap-6 items-stretch">
+                        {teamMembers.map((member) => (
+                          <div
+                            key={member.id}
+                            className={`group p-4 sm:p-5 rounded-2xl border flex flex-col justify-between transition-all duration-200 shadow-xs hover:shadow-md hover:-translate-y-1 h-full ${
+                              isDark
+                                ? 'bg-slate-900 border-slate-700 hover:border-slate-600'
+                                : 'bg-[#FAFCFE] border-[#DCE3EC] hover:border-[#123B73]/40'
+                            }`}
+                          >
+                            <div className="space-y-3.5">
+                              {/* Standardized Professional Portrait Container */}
+                              <div className="w-full aspect-[3/4] rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 shadow-2xs relative">
+                                <img
+                                  src={member.imageSrc}
+                                  alt={`${member.name} - ${member.designation}, NF Venture Studio`}
+                                  className="w-full h-full object-cover object-[center_15%] block transition-transform duration-300 group-hover:scale-103"
+                                  loading="lazy"
+                                  decoding="async"
+                                />
+                                <div className="absolute top-2 right-2">
+                                  <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-mono font-bold uppercase tracking-wider bg-[#123B73]/90 text-white backdrop-blur-xs border border-white/20">
+                                    {member.shortRole}
+                                  </span>
+                                </div>
+                              </div>
+
+                              <div>
+                                <h3 className="text-base sm:text-lg font-bold text-[#123B73] dark:text-white leading-tight">
+                                  {member.name}
+                                </h3>
+                                <p className="text-xs font-bold text-[#D9A72E] mt-0.5">
+                                  {member.designation}
+                                </p>
+                              </div>
+
+                              <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-normal">
+                                {member.focus}
+                              </p>
+                            </div>
+
+                            <div className="pt-3 mt-4 border-t border-slate-200 dark:border-slate-700">
+                              <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 block mb-1.5">
+                                Key Responsibilities:
+                              </span>
+                              <div className="flex flex-wrap gap-1.5">
+                                {member.responsibilities.map((resp, idx) => (
+                                  <span
+                                    key={idx}
+                                    className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-md bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-medium"
+                                  >
+                                    <CheckCircle2 className="w-3 h-3 text-[#D9A72E] shrink-0" />
+                                    <span>{resp}</span>
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
                 </div>
               </section>
 
             </div>
 
           </div>
+
+          {/* BOTTOM INSTITUTIONAL PARTNERSHIP BANNER */}
+          <section
+            className={`w-full p-6 sm:p-8 rounded-2xl border text-center space-y-3.5 transition-colors ${
+              isDark
+                ? 'bg-slate-900 border-slate-700'
+                : 'bg-[#EAF1F9] border-[#DCE3EC]'
+            }`}
+          >
+            <h3 className="text-lg sm:text-2xl font-extrabold text-slate-900 dark:text-white">
+              Collaborate with Our Leadership &amp; <span className="text-[#D9A72E]">Venture Studio</span>
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 max-w-xl mx-auto leading-relaxed">
+              Whether you are an academic institution seeking turnkey incubation deployment or an innovator developing deep-tech prototypes, our leadership team welcomes your partnership.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-1">
+              <button
+                type="button"
+                onClick={() => handleOpenApplication('institutional')}
+                className="w-full sm:w-auto px-6 py-2.5 rounded-xl font-bold text-xs sm:text-sm text-white bg-[#123B73] hover:bg-[#0B1F3A] hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer shadow-xs inline-flex items-center justify-center gap-2"
+              >
+                <span>Apply for Incubation Center</span>
+                <ArrowRight className="w-4 h-4 text-[#D9A72E]" />
+              </button>
+              <Link
+                to="/contact"
+                className="w-full sm:w-auto px-5 py-2.5 rounded-xl font-semibold text-xs sm:text-sm border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-750 transition-colors inline-flex items-center justify-center gap-2"
+              >
+                <span>Contact Executive Office</span>
+              </Link>
+            </div>
+          </section>
+
         </div>
       </main>
 

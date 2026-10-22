@@ -1,5 +1,14 @@
 import React, { useState } from 'react';
-import { Trophy, Settings2, GitPullRequest, ArrowRight, FileCheck2 } from 'lucide-react';
+import {
+  Trophy,
+  Settings2,
+  GitPullRequest,
+  ArrowRight,
+  ShieldCheck,
+  CheckCircle2,
+  FileCheck2,
+  Award,
+} from 'lucide-react';
 
 interface NFWhyPartnerSectionProps {
   onOpenApplication: (track?: string) => void;
@@ -12,33 +21,30 @@ export const NFWhyPartnerSection: React.FC<NFWhyPartnerSectionProps> = ({
 }) => {
   const [activeAccreditation, setActiveAccreditation] = useState<'ALL' | 'NAAC' | 'NBA' | 'IIC' | 'NIRF'>('ALL');
 
-  const reasons = [
+  const institutionalValues = [
     {
       number: '01',
-      title: 'Boost Institutional Rankings',
-      description:
-        'Build audit-ready evidence for patents, student startups, faculty research, and NIRF, NAAC, and NBA ranking submissions.',
+      title: 'Ranking & Accreditation Uplift',
+      desc: 'Build verifiable, audit-ready evidence for student startups, patents, faculty research, and funded projects aligned with NIRF, NAAC, and NBA criteria.',
       icon: Trophy,
-      tag: 'NIRF · NAAC · NBA Aligned',
-      badgeText: 'Rankings Uplift',
+      badge: 'Accreditation Aligned',
+      highlights: ['NAAC Criterion 3 (Research & Innovation)', 'NBA Tier-I & II SAR Evidence Packs', 'NIRF-Innovation / ARIIA Submissions'],
     },
     {
       number: '02',
-      title: 'Turnkey Day-Zero Management',
-      description:
-        'Handles space planning, mentor matching, ERP tracking, and compliance dossiers with minimal faculty overhead.',
+      title: 'Day-Zero Turnkey Operations',
+      desc: 'Eliminates administrative burden on academic leadership. NF Venture Studio handles lab space setup, mentor matching, incubation ERP telemetry, and compliance dossiers.',
       icon: Settings2,
-      tag: 'Zero Operational Friction',
-      badgeText: 'Turnkey Protocols',
+      badge: 'Zero Faculty Overhead',
+      highlights: ['Furnished campus makerspace & lab', 'Complete Digital Incubation ERP', 'Standard Operating Procedures & Playbooks'],
     },
     {
       number: '03',
-      title: 'Industry & Capital Connect',
-      description:
-        'Connects academic research with CXO operators, corporate pilots, angel syndicates, and government grant pipelines.',
+      title: 'Direct Industry & Capital Syndication',
+      desc: 'Transforms campus intellectual property into investable enterprises through our curated network of 50+ CXO operators, corporate pilots, and grant pipelines.',
       icon: GitPullRequest,
-      tag: 'Lab to Market Transition',
-      badgeText: 'Market Validation',
+      badge: 'Market Traction',
+      highlights: ['Non-dilutive grant guidance (NIDHI/BIRAC)', 'Annual investor demo days & pitch events', 'Corporate innovation challenges & pilot POs'],
     },
   ];
 
@@ -46,213 +52,178 @@ export const NFWhyPartnerSection: React.FC<NFWhyPartnerSectionProps> = ({
     {
       id: 'NAAC',
       body: 'NAAC Accreditation',
-      badge: 'Criterion 3',
-      criteria: 'Criterion 3: Research, Innovations & Extension ecosystem metrics.',
-      evidence: 'AQAR dossiers, incubation handbooks, and verifiable student E-Cell logs.',
+      criterion: 'Criterion 3: Research, Innovations & Extension',
+      deliverable: 'Audited student venture logs, patent filings, and E-Cell workshop registers ready for peer review.',
     },
     {
       id: 'NBA',
-      body: 'NBA (Tier-I & II SAR)',
-      badge: 'SAR Evidence',
-      criteria: 'Tier-I/II SAR: Industry interaction, active IPR, and funded R&D.',
-      evidence: 'SAR evidence packs, PoC grant registers, and filed patent portfolios.',
+      body: 'NBA Accreditation',
+      criterion: 'Tier-I & II SAR: Industry Interaction & Funded R&D',
+      deliverable: 'Industry MoUs, prototyping lab evidence packs, sponsored research dossiers, and faculty spin-offs.',
     },
     {
       id: 'IIC',
-      body: 'IIC (MoE–MIC)',
-      badge: 'Star Ratings',
-      criteria: 'Ministry of Education Innovation Cell quarterly activity calendar and Star Ratings.',
-      evidence: 'Execution packs, IPR awareness clinics, and certified MIC activity reporting.',
-    },
-    {
-      id: 'AICTE',
-      body: 'AICTE / NISP',
-      badge: 'Policy Adoption',
-      criteria: 'National Innovation and Startup Policy (NISP) institutional governance.',
-      evidence: 'Startup policy drafts, IP charters, and faculty equity frameworks.',
+      body: 'MoE Innovation Cell (IIC)',
+      criterion: 'Quarterly Activity Calendar & Star Ratings',
+      deliverable: 'Certified compliance reporting for MIC quarterly innovation calendars, hackathons, and IPR clinics.',
     },
     {
       id: 'NIRF',
-      body: 'NIRF / ARIIA',
-      badge: 'NIRF-Innovation',
-      criteria: 'Research, innovation achievement metrics, and graduation startup outcomes.',
-      evidence: 'Patent filings, startup counts, corporate publication data, and industry engagements.',
+      body: 'NIRF-Innovation / ARIIA',
+      criterion: 'Research, Innovation & Entrepreneurial Outcomes',
+      deliverable: 'Direct measurement of registered startup ventures, patent commercialization, and incubation revenue.',
     },
   ];
 
-  const filteredAccreditation = activeAccreditation === 'ALL'
+  const filteredData = activeAccreditation === 'ALL'
     ? accreditationData
-    : accreditationData.filter(item => item.id === activeAccreditation || (activeAccreditation === 'NIRF' && item.id === 'AICTE'));
+    : accreditationData.filter((item) => item.id === activeAccreditation);
 
   return (
     <section
       id="why-ncf"
-      className={`py-14 sm:py-20 border-b transition-colors duration-200 ${
+      className={`py-10 sm:py-14 border-b transition-colors duration-300 ${
         isDark ? 'bg-[#0B1F3A] border-slate-800 text-white' : 'bg-[#F7F9FC] border-[#DCE3EC] text-[#172334]'
       }`}
     >
-      <div className="section-shell space-y-12 sm:space-y-16">
+      <div className="section-shell space-y-8 sm:space-y-10">
         
-        {/* Section 1: Why Partner With NF Venture Studio */}
-        <div>
-          <div className="text-center max-w-3xl mx-auto mb-12">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold border mb-3 bg-[#EAF1F9] dark:bg-slate-800 text-[#123B73] dark:text-sky-300 border-[#DCE3EC] dark:border-slate-700">
+        {/* Section Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b pb-6 border-slate-200 dark:border-slate-800">
+          <div className="max-w-2xl space-y-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold border bg-[#EAF1F9] dark:bg-slate-800 text-[#123B73] dark:text-sky-300 border-[#DCE3EC] dark:border-slate-700">
               <span className="w-1.5 h-1.5 rounded-full bg-[#123B73] dark:bg-sky-400" />
-              <span>Institutional Value</span>
+              <span>Institutional Value Proposition</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">
               Why Partner with <span className="text-[#D9A72E]">NF Venture Studio</span>
             </h2>
-            <p className="mt-3 text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl mx-auto">
-              A comprehensive institutional model that bridges academia and industry, creating measurable impact for universities, researchers, and students.
+
+            <p className="text-sm sm:text-base text-slate-800 dark:text-slate-200 leading-relaxed text-justify">
+              A comprehensive partnership framework that transforms campus culture, creates student employment opportunities, 
+              and establishes an audited innovation ecosystem.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
-            {reasons.map((item, idx) => {
-              const Icon = item.icon;
-              return (
-                <div
-                  key={idx}
-                  className={`group flex flex-col justify-between rounded-2xl border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-l-4 hover:border-l-[#D9A72E] ${
-                    isDark ? 'bg-slate-900 border-slate-800 hover:border-slate-700' : 'bg-white border-[#DCE3EC] hover:border-slate-300'
-                  }`}
-                >
-                  <div className="p-6 sm:p-7 flex-1 flex flex-col">
-                    <div className="flex items-start justify-between gap-4 mb-4">
-                      <div
-                        className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-transform duration-200 group-hover:scale-105 ${
-                          isDark ? 'bg-slate-800 text-sky-400' : 'bg-[#EAF1F9] text-[#123B73]'
-                        }`}
-                      >
-                        <Icon className="w-6 h-6" />
-                      </div>
-
-                      <div className="text-right">
-                        <span className="text-xl font-mono font-bold text-slate-400 dark:text-slate-500">
-                          #{item.number}
-                        </span>
-                        <div>
-                          <span className="text-[10px] font-semibold px-2 py-0.5 rounded border border-[#DCE3EC] dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 inline-block">
-                            {item.badgeText}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <h3 className="text-base font-bold text-slate-900 dark:text-white leading-snug mb-2">
-                      {item.title}
-                    </h3>
-
-                    <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed flex-1">
-                      {item.description}
-                    </p>
-
-                    <div className="mt-5 pt-3 border-t border-slate-200 dark:border-slate-800 text-xs font-medium text-[#D9A72E]">
-                      {item.tag}
-                    </div>
-                  </div>
-
-                  <div className="p-4 sm:p-5 pt-0">
-                    <button
-                      onClick={() => onOpenApplication('institutional')}
-                      className={`w-full py-2.5 px-3 text-xs font-semibold rounded-xl flex items-center justify-center gap-1.5 transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer border ${
-                        isDark
-                          ? 'text-slate-200 hover:text-white bg-slate-800 hover:bg-slate-700 border-slate-700'
-                          : 'text-[#123B73] hover:bg-[#123B73] hover:text-white bg-white border-[#DCE3EC]'
-                      }`}
-                    >
-                      <span>Explore Institutional Model</span>
-                      <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" />
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+          <button
+            type="button"
+            onClick={() => onOpenApplication('institutional')}
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-white bg-[#123B73] hover:bg-[#0B1F3A] transition-colors shrink-0"
+          >
+            <span>Request Partnership Brief</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
         </div>
 
-        {/* Section 2: Accreditation & Audit-Ready Evidence Matrix */}
-        <div
-          className={`p-6 sm:p-8 rounded-2xl border transition-colors ${
-            isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-[#DCE3EC]'
-          }`}
-        >
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-slate-800">
-            <div>
-              <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#D9A72E] uppercase tracking-wider mb-1">
-                <FileCheck2 className="w-4 h-4" />
-                <span>Accreditation &amp; Ranking Impact</span>
+        {/* 3 Core Value Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-stretch">
+          {institutionalValues.map((val, idx) => {
+            const Icon = val.icon;
+            return (
+              <div
+                key={idx}
+                className={`p-5 rounded-2xl border flex flex-col justify-between transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${
+                  isDark ? 'bg-slate-900 border-slate-700 text-white' : 'bg-white border-[#DCE3EC] text-slate-900'
+                }`}
+              >
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="w-10 h-10 rounded-xl bg-[#EAF1F9] dark:bg-slate-800 flex items-center justify-center text-[#123B73] dark:text-sky-300">
+                      <Icon className="w-5 h-5 text-[#D9A72E]" />
+                    </div>
+                    <span className="text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+                      #{val.number}
+                    </span>
+                  </div>
+
+                  <div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#D9A72E]">
+                      {val.badge}
+                    </span>
+                    <h3 className="text-base font-bold text-slate-900 dark:text-white mt-0.5 leading-snug">
+                      {val.title}
+                    </h3>
+                  </div>
+
+                  <p className="text-xs text-slate-800 dark:text-slate-200 leading-relaxed text-justify">
+                    {val.desc}
+                  </p>
+
+                  <div className="pt-3 border-t border-slate-200 dark:border-slate-800 space-y-1.5">
+                    {val.highlights.map((h, hIdx) => (
+                      <div key={hIdx} className="flex items-center gap-2 text-[11px] text-slate-800 dark:text-slate-200 font-medium">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#123B73] dark:text-sky-400 shrink-0" />
+                        <span>{h}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
-              <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white">
-                Audit-Ready <span className="text-[#D9A72E]">Accreditation Evidence</span> Matrix
+            );
+          })}
+        </div>
+
+        {/* Accreditation Alignment Matrix (Compact Infographic Strip) */}
+        <div className="p-5 sm:p-6 rounded-2xl border bg-white dark:bg-slate-900 border-[#DCE3EC] dark:border-slate-700 shadow-sm space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200 dark:border-slate-800 gap-3">
+            <div>
+              <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#D9A72E]">
+                Compliance &amp; Verification
+              </div>
+              <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white mt-0.5">
+                Accreditation Alignment Matrix
               </h3>
-              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
-                Concrete documentation and verifiable outputs generated directly by NF Venture Studio for your institution.
-              </p>
             </div>
 
-            {/* Filter Pills */}
-            <div className="flex flex-wrap items-center gap-1.5 p-1 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80">
-              {(['ALL', 'NAAC', 'NBA', 'IIC', 'NIRF'] as const).map((filter) => (
+            {/* Filter Buttons */}
+            <div className="flex flex-wrap gap-1">
+              {(['ALL', 'NAAC', 'NBA', 'IIC', 'NIRF'] as const).map((tab) => (
                 <button
-                  key={filter}
-                  onClick={() => setActiveAccreditation(filter)}
-                  className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all duration-150 cursor-pointer ${
-                    activeAccreditation === filter
+                  key={tab}
+                  type="button"
+                  onClick={() => setActiveAccreditation(tab)}
+                  className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
+                    activeAccreditation === tab
                       ? 'bg-[#123B73] text-white shadow-xs'
-                      : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+                      : isDark
+                      ? 'bg-slate-800 text-slate-200 hover:bg-slate-700'
+                      : 'bg-slate-100 text-slate-800 hover:bg-slate-200'
                   }`}
                 >
-                  {filter}
+                  {tab}
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Evidence Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 pt-6">
-            {filteredAccreditation.map((row, idx) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {filteredData.map((item, idx) => (
               <div
                 key={idx}
-                className={`p-5 rounded-xl border flex flex-col justify-between transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xs hover:border-slate-300 dark:hover:border-slate-700 ${
-                  isDark
-                    ? 'bg-slate-800/60 border-slate-700/80'
-                    : 'bg-[#F7F9FC] border-[#DCE3EC]'
-                }`}
+                className="p-3.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-[#F7F9FC] dark:bg-slate-800 space-y-1.5"
               >
-                <div>
-                  <div className="flex items-center justify-between gap-2 mb-2">
-                    <span className="font-bold text-sm text-slate-900 dark:text-white">
-                      {row.body}
-                    </span>
-                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded border border-[#DCE3EC] dark:border-slate-700 bg-white dark:bg-slate-800 text-[#123B73] dark:text-sky-400">
-                      {row.badge}
-                    </span>
-                  </div>
-
-                  <div className="mb-3">
-                    <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-0.5">
-                      Criteria &amp; Indicators:
-                    </span>
-                    <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
-                      {row.criteria}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="pt-3 border-t border-slate-200 dark:border-slate-700">
-                  <span className="text-[10px] font-semibold uppercase tracking-wider text-[#123B73] dark:text-sky-300 block mb-0.5">
-                    Evidence NF Venture Studio Supplies:
+                <div className="flex items-center justify-between">
+                  <h4 className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                    <Award className="w-3.5 h-3.5 text-[#D9A72E]" />
+                    {item.body}
+                  </h4>
+                  <span className="text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-[#123B73] dark:text-sky-300">
+                    {item.id}
                   </span>
-                  <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                    {row.evidence}
-                  </p>
                 </div>
+
+                <div className="text-[11px] font-semibold text-[#123B73] dark:text-sky-300">
+                  {item.criterion}
+                </div>
+
+                <p className="text-[11px] text-slate-800 dark:text-slate-200 leading-relaxed text-justify">
+                  <strong className="text-slate-900 dark:text-white">Audit Deliverable: </strong>
+                  {item.deliverable}
+                </p>
               </div>
             ))}
           </div>
-
         </div>
 
       </div>

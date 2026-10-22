@@ -29,6 +29,7 @@ export const NFApplicationForm: React.FC<NFApplicationFormProps> = ({
     description: '',
     stage: '',
   });
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [referenceId, setReferenceId] = useState<string | null>(null);
@@ -43,6 +44,7 @@ export const NFApplicationForm: React.FC<NFApplicationFormProps> = ({
     setIsSubmitted(false);
     setReferenceId(null);
     setErrorMessage(null);
+    setFieldErrors({});
     setFormData({
       fullName: '',
       email: '',
@@ -53,6 +55,17 @@ export const NFApplicationForm: React.FC<NFApplicationFormProps> = ({
       description: '',
       stage: '',
     });
+  };
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    if (fieldErrors[field]) {
+      setFieldErrors((prev) => {
+        const next = { ...prev };
+        delete next[field];
+        return next;
+      });
+    }
   };
 
   const tracks = [
@@ -84,31 +97,46 @@ export const NFApplicationForm: React.FC<NFApplicationFormProps> = ({
     // Prevent duplicate form submissions while in-flight
     if (isSubmittingRef.current || isSubmitting) return;
 
-    // Client-side validation
+    // Field-level client validation
+    const errors: Record<string, string> = {};
     const trimmedName = formData.fullName.trim();
     const trimmedEmail = formData.email.trim();
     const trimmedPhone = formData.phone.trim();
     const trimmedOrg = formData.institution.trim();
 
-    if (!trimmedName || !trimmedEmail || !trimmedPhone || !trimmedOrg || !formData.domain || !formData.stage) {
-      setErrorMessage('Please complete all mandatory fields (*).');
-      return;
+    if (!trimmedName || trimmedName.length < 2) {
+      errors.fullName = 'Please enter your full name (at least 2 characters).';
     }
 
-    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(trimmedEmail)) {
-      setErrorMessage('Please provide a valid email address (e.g. innovator@example.com).');
-      return;
+    if (!trimmedEmail || !emailRegex.test(trimmedEmail)) {
+      errors.email = 'Please provide a valid email address (e.g. name@domain.com).';
     }
 
-    // Validate phone number (minimum 10 digits)
     const digitsOnly = trimmedPhone.replace(/\D/g, '');
-    if (digitsOnly.length < 10) {
-      setErrorMessage('Please enter a valid 10-digit contact phone or WhatsApp number.');
+    if (!trimmedPhone || (digitsOnly.length !== 10 && !(digitsOnly.length === 12 && digitsOnly.startsWith('91')))) {
+      errors.phone = 'Please enter a valid 10-digit mobile or WhatsApp number.';
+    }
+
+    if (!trimmedOrg || trimmedOrg.length < 2) {
+      errors.institution = 'Please provide your university, college, or organization name.';
+    }
+
+    if (!formData.domain) {
+      errors.domain = 'Please select a technology domain.';
+    }
+
+    if (!formData.stage) {
+      errors.stage = 'Please select the current stage of your innovation.';
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      setErrorMessage('Please review the form and correct the highlighted fields before submitting.');
       return;
     }
 
+    setFieldErrors({});
     isSubmittingRef.current = true;
     setIsSubmitting(true);
     setErrorMessage(null);
@@ -136,16 +164,16 @@ export const NFApplicationForm: React.FC<NFApplicationFormProps> = ({
       });
 
       if (!response.ok) {
-        throw new Error(`Server returned status code: ${response.status}`);
+        throw new Error(`The online submission service returned an HTTP status error (${response.status}).`);
       }
 
       const data = await response.json().catch(() => null);
-      if (data && data.success === false) {
-        throw new Error(data.message || 'Failed to submit application. Please try again.');
+      if (!data || (data.success !== true && data.status !== 'success')) {
+        throw new Error(data?.message || 'Server did not confirm application receipt. Please use our direct email desk.');
       }
 
-      // Store reference ID returned from Apps Script or generate timestamp fallback
-      if (data && data.referenceId) {
+      // Verified submission confirmation
+      if (data.referenceId) {
         setReferenceId(data.referenceId);
       } else {
         const now = new Date();
@@ -160,8 +188,10 @@ export const NFApplicationForm: React.FC<NFApplicationFormProps> = ({
       }
     } catch (err: any) {
       console.error('Error submitting application to Google Apps Script:', err);
+      // Strictly ensure isSubmitted remains false - never show false success
+      setIsSubmitted(false);
       setErrorMessage(
-        err.message || 'Unable to submit your application. Please check your network connection and try again.'
+        err.message || 'Unable to connect to the submission server. Please try again or use direct contact below.'
       );
     } finally {
       isSubmittingRef.current = false;
@@ -180,8 +210,8 @@ export const NFApplicationForm: React.FC<NFApplicationFormProps> = ({
           <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
             Application Received Successfully
           </h3>
-          <p className="max-w-md mx-auto text-xs sm:text-sm leading-relaxed text-slate-600 dark:text-slate-300">
-            Thank you for applying to NF Venture Studio. Your application has been received successfully. Our team aims to review your application and contact you within 48 hours.
+          <p className="max-w-md mx-auto text-xs sm:text-sm leading-relaxed text-slate-800 dark:text-slate-200 text-justify">
+            Thank you for applying to NF Venture Studio. Your application has been logged with our incubation desk. Our team will review your submission and connect with you within 48 hours.
           </p>
         </div>
 
@@ -194,12 +224,12 @@ export const NFApplicationForm: React.FC<NFApplicationFormProps> = ({
         {/* Application Summary Card */}
         <div
           className={`p-4 rounded-xl border max-w-sm mx-auto text-left text-xs space-y-2 shadow-xs ${
-            isDark ? 'bg-slate-800/90 border-slate-700 text-slate-300' : 'bg-slate-50 border-[#DCE3EC] text-slate-700'
+            isDark ? 'bg-slate-800/90 border-slate-700 text-slate-200' : 'bg-slate-50 border-[#DCE3EC] text-slate-800'
           }`}
         >
           {referenceId && (
             <div className="pb-1.5 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center">
-              <span className="font-semibold text-slate-500 dark:text-slate-400">Reference ID:</span>
+              <span className="font-semibold text-slate-700 dark:text-slate-300">Reference ID:</span>
               <span className="font-mono font-bold text-[#123B73] dark:text-sky-300 bg-white dark:bg-slate-900 px-2 py-0.5 rounded border border-[#DCE3EC] dark:border-slate-700">
                 {referenceId}
               </span>
@@ -208,9 +238,9 @@ export const NFApplicationForm: React.FC<NFApplicationFormProps> = ({
           <p><span className="font-semibold text-slate-900 dark:text-white">Applicant:</span> {formData.fullName}</p>
           <p><span className="font-semibold text-slate-900 dark:text-white">Email:</span> {formData.email}</p>
           <p><span className="font-semibold text-slate-900 dark:text-white">Track:</span> {tracks.find((t) => t.id === selectedTrack)?.name}</p>
-          <p className="pt-1 text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1.5 border-t border-dashed border-slate-200 dark:border-slate-700">
+          <p className="pt-1 text-[11px] text-slate-700 dark:text-slate-300 flex items-center gap-1.5 border-t border-dashed border-slate-200 dark:border-slate-700">
             <Mail className="w-3 h-3 text-[#D9A72E]" />
-            <span>Notification dispatched to <strong className="text-slate-700 dark:text-slate-300">ncfitcell@gmail.com</strong></span>
+            <span>Incubation Desk: <strong className="text-slate-900 dark:text-slate-100">contact@ncfvs.in</strong></span>
           </p>
         </div>
 
@@ -239,34 +269,64 @@ export const NFApplicationForm: React.FC<NFApplicationFormProps> = ({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
+    <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5" noValidate>
       {errorMessage && (
         <div
-          className={`p-3.5 rounded-xl border flex items-start gap-2.5 text-xs ${
+          className={`p-4 rounded-xl border space-y-3 text-xs ${
             isDark
-              ? 'bg-rose-950/50 border-rose-800 text-rose-300'
-              : 'bg-rose-50 border-rose-200 text-rose-800'
+              ? 'bg-rose-950/40 border-rose-800/80 text-rose-200'
+              : 'bg-rose-50 border-rose-200 text-rose-900'
           }`}
         >
-          <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
-          <div className="flex-1">
-            <p className="font-bold">Submission Failed</p>
-            <p className="opacity-90 mt-0.5">{errorMessage}</p>
+          <div className="flex items-start gap-2.5">
+            <AlertCircle className="w-5 h-5 text-rose-600 dark:text-rose-400 shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <p className="font-bold text-sm text-rose-900 dark:text-rose-100">
+                Application Notice
+              </p>
+              <p className="mt-1 leading-relaxed text-rose-800 dark:text-rose-200">
+                {errorMessage}
+              </p>
+              <p className="mt-1.5 text-[11px] text-rose-700 dark:text-rose-300">
+                Your entered details are preserved below. You can retry submission or transmit your proposal directly to the official incubation desk:
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setErrorMessage(null)}
+              className="p-1 rounded-md text-rose-500 hover:text-rose-800 dark:hover:text-rose-100 cursor-pointer"
+              aria-label="Dismiss message"
+            >
+              ×
+            </button>
           </div>
-          <button
-            type="button"
-            onClick={() => setErrorMessage(null)}
-            className="p-1 rounded-md text-slate-400 hover:text-slate-700 cursor-pointer"
-            aria-label="Dismiss error"
-          >
-            ×
-          </button>
+
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-rose-200 dark:border-rose-900/60">
+            <a
+              href={`mailto:contact@ncfvs.in?subject=${encodeURIComponent(
+                `[NF Venture Studio Incubation Application] - ${formData.fullName || 'Innovator'}`
+              )}&body=${encodeURIComponent(
+                `Track: ${tracks.find((t) => t.id === selectedTrack)?.name}\nName: ${formData.fullName}\nEmail: ${formData.email}\nPhone: ${formData.phone}\nOrganization: ${formData.institution}\nTechnology Domain: ${formData.domain}\nCurrent Stage: ${formData.stage}\n\nProject Overview:\n${formData.description}`
+              )}`}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white font-semibold transition-colors shadow-xs"
+            >
+              <Mail className="w-3.5 h-3.5" />
+              <span>Email Proposal Directly to contact@ncfvs.in</span>
+            </a>
+            <a
+              href="tel:8379879846"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-rose-300 dark:border-rose-800 bg-white dark:bg-slate-900 text-rose-900 dark:text-rose-200 font-semibold hover:bg-rose-100 dark:hover:bg-slate-800 transition-colors"
+            >
+              <Phone className="w-3.5 h-3.5 text-rose-600" />
+              <span>Call Helpline: +91 8379879846</span>
+            </a>
+          </div>
         </div>
       )}
 
       {/* Track Selection */}
       <div>
-        <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+        <label className="block text-xs font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wider mb-2">
           Select Your Incubation Track *
         </label>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -282,11 +342,11 @@ export const NFApplicationForm: React.FC<NFApplicationFormProps> = ({
                 className={`flex items-center gap-2.5 p-3 rounded-xl border text-left transition-all cursor-pointer ${
                   isSelected
                     ? isDark
-                      ? 'bg-slate-800 border-sky-400 text-white font-semibold ring-1 ring-sky-400'
-                      : 'bg-[#EAF1F9] border-[#123B73] text-[#123B73] font-semibold ring-1 ring-[#123B73]'
+                      ? 'bg-slate-800 border-sky-400 text-white font-bold ring-1 ring-sky-400'
+                      : 'bg-[#EAF1F9] border-[#123B73] text-[#123B73] font-bold ring-1 ring-[#123B73]'
                     : isDark
-                      ? 'border-slate-800 text-slate-300 bg-slate-900/60 hover:border-slate-700'
-                      : 'border-[#DCE3EC] text-slate-700 bg-slate-50/70 hover:border-slate-300'
+                      ? 'border-slate-700 text-slate-200 bg-slate-900/90 hover:border-slate-600'
+                      : 'border-[#DCE3EC] text-slate-800 bg-slate-50/70 hover:border-slate-300'
                 } ${isSubmitting ? 'opacity-60 cursor-not-allowed' : ''}`}
               >
                 <div
@@ -296,13 +356,13 @@ export const NFApplicationForm: React.FC<NFApplicationFormProps> = ({
                         ? 'bg-slate-700 text-sky-400'
                         : 'bg-white text-[#123B73] shadow-xs'
                       : isDark
-                        ? 'bg-slate-800 text-slate-400'
-                        : 'bg-slate-200/80 text-slate-600'
+                        ? 'bg-slate-800 text-slate-300'
+                        : 'bg-slate-200/80 text-slate-700'
                   }`}
                 >
                   <Icon className="w-4 h-4" />
                 </div>
-                <span className="text-xs">{t.name}</span>
+                <span className="text-xs font-medium">{t.name}</span>
               </button>
             );
           })}
@@ -312,7 +372,7 @@ export const NFApplicationForm: React.FC<NFApplicationFormProps> = ({
       {/* Form Inputs */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
         <div>
-          <label className="block text-xs font-semibold mb-1 text-slate-700 dark:text-slate-300">
+          <label className="block text-xs font-bold mb-1.5 text-slate-900 dark:text-slate-100">
             Full Name *
           </label>
           <input
@@ -320,18 +380,27 @@ export const NFApplicationForm: React.FC<NFApplicationFormProps> = ({
             required
             disabled={isSubmitting}
             value={formData.fullName}
-            onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-            placeholder="Dr. / Prof. / Mr. / Ms. Name"
-            className={`w-full px-3 py-2 text-xs sm:text-sm rounded-lg border transition-colors focus:outline-hidden focus:border-[#123B73] focus:ring-1 focus:ring-[#123B73] ${
+            onChange={(e) => handleInputChange('fullName', e.target.value)}
+            placeholder="Full Name"
+            className={`w-full px-3 py-2 text-xs sm:text-sm rounded-lg border transition-colors focus:outline-hidden ${
+              fieldErrors.fullName
+                ? 'border-rose-500 ring-1 ring-rose-500 bg-rose-50/20'
+                : 'focus:border-[#123B73] focus:ring-1 focus:ring-[#123B73]'
+            } ${
               isDark
-                ? 'bg-slate-900 border-slate-700 text-white placeholder-slate-500'
-                : 'bg-white border-[#DCE3EC] text-slate-900 placeholder-slate-400'
+                ? 'bg-slate-900 border-slate-700 text-white placeholder-slate-400'
+                : 'bg-white border-slate-300 text-slate-900 placeholder-slate-500'
             } ${isSubmitting ? 'opacity-60 cursor-not-allowed' : ''}`}
           />
+          {fieldErrors.fullName && (
+            <p className="mt-1 text-[11px] text-rose-600 dark:text-rose-400 font-medium">
+              {fieldErrors.fullName}
+            </p>
+          )}
         </div>
 
         <div>
-          <label className="block text-xs font-semibold mb-1 text-slate-700 dark:text-slate-300">
+          <label className="block text-xs font-bold mb-1.5 text-slate-900 dark:text-slate-100">
             Email Address *
           </label>
           <input
@@ -339,18 +408,27 @@ export const NFApplicationForm: React.FC<NFApplicationFormProps> = ({
             required
             disabled={isSubmitting}
             value={formData.email}
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            placeholder="innovator@example.com"
-            className={`w-full px-3 py-2 text-xs sm:text-sm rounded-lg border transition-colors focus:outline-hidden focus:border-[#123B73] focus:ring-1 focus:ring-[#123B73] ${
+            onChange={(e) => handleInputChange('email', e.target.value)}
+            placeholder="name@domain.com"
+            className={`w-full px-3 py-2 text-xs sm:text-sm rounded-lg border transition-colors focus:outline-hidden ${
+              fieldErrors.email
+                ? 'border-rose-500 ring-1 ring-rose-500 bg-rose-50/20'
+                : 'focus:border-[#123B73] focus:ring-1 focus:ring-[#123B73]'
+            } ${
               isDark
-                ? 'bg-slate-900 border-slate-700 text-white placeholder-slate-500'
-                : 'bg-white border-[#DCE3EC] text-slate-900 placeholder-slate-400'
+                ? 'bg-slate-900 border-slate-700 text-white placeholder-slate-400'
+                : 'bg-white border-slate-300 text-slate-900 placeholder-slate-500'
             } ${isSubmitting ? 'opacity-60 cursor-not-allowed' : ''}`}
           />
+          {fieldErrors.email && (
+            <p className="mt-1 text-[11px] text-rose-600 dark:text-rose-400 font-medium">
+              {fieldErrors.email}
+            </p>
+          )}
         </div>
 
         <div>
-          <label className="block text-xs font-semibold mb-1 text-slate-700 dark:text-slate-300">
+          <label className="block text-xs font-bold mb-1.5 text-slate-900 dark:text-slate-100">
             Contact Phone / WhatsApp *
           </label>
           <input
@@ -358,18 +436,27 @@ export const NFApplicationForm: React.FC<NFApplicationFormProps> = ({
             required
             disabled={isSubmitting}
             value={formData.phone}
-            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-            placeholder="+91 9876543210"
-            className={`w-full px-3 py-2 text-xs sm:text-sm rounded-lg border transition-colors focus:outline-hidden focus:border-[#123B73] focus:ring-1 focus:ring-[#123B73] ${
+            onChange={(e) => handleInputChange('phone', e.target.value)}
+            placeholder="10-digit mobile number"
+            className={`w-full px-3 py-2 text-xs sm:text-sm rounded-lg border transition-colors focus:outline-hidden ${
+              fieldErrors.phone
+                ? 'border-rose-500 ring-1 ring-rose-500 bg-rose-50/20'
+                : 'focus:border-[#123B73] focus:ring-1 focus:ring-[#123B73]'
+            } ${
               isDark
-                ? 'bg-slate-900 border-slate-700 text-white placeholder-slate-500'
-                : 'bg-white border-[#DCE3EC] text-slate-900 placeholder-slate-400'
+                ? 'bg-slate-900 border-slate-700 text-white placeholder-slate-400'
+                : 'bg-white border-slate-300 text-slate-900 placeholder-slate-500'
             } ${isSubmitting ? 'opacity-60 cursor-not-allowed' : ''}`}
           />
+          {fieldErrors.phone && (
+            <p className="mt-1 text-[11px] text-rose-600 dark:text-rose-400 font-medium">
+              {fieldErrors.phone}
+            </p>
+          )}
         </div>
 
         <div>
-          <label className="block text-xs font-semibold mb-1 text-slate-700 dark:text-slate-300">
+          <label className="block text-xs font-bold mb-1.5 text-slate-900 dark:text-slate-100">
             University / College / Organization *
           </label>
           <input
@@ -377,31 +464,44 @@ export const NFApplicationForm: React.FC<NFApplicationFormProps> = ({
             required
             disabled={isSubmitting}
             value={formData.institution}
-            onChange={(e) => setFormData({ ...formData, institution: e.target.value })}
-            placeholder="e.g. Pune University / Institution"
-            className={`w-full px-3 py-2 text-xs sm:text-sm rounded-lg border transition-colors focus:outline-hidden focus:border-[#123B73] focus:ring-1 focus:ring-[#123B73] ${
+            onChange={(e) => handleInputChange('institution', e.target.value)}
+            placeholder="College, university, or organization name"
+            className={`w-full px-3 py-2 text-xs sm:text-sm rounded-lg border transition-colors focus:outline-hidden ${
+              fieldErrors.institution
+                ? 'border-rose-500 ring-1 ring-rose-500 bg-rose-50/20'
+                : 'focus:border-[#123B73] focus:ring-1 focus:ring-[#123B73]'
+            } ${
               isDark
-                ? 'bg-slate-900 border-slate-700 text-white placeholder-slate-500'
-                : 'bg-white border-[#DCE3EC] text-slate-900 placeholder-slate-400'
+                ? 'bg-slate-900 border-slate-700 text-white placeholder-slate-400'
+                : 'bg-white border-slate-300 text-slate-900 placeholder-slate-500'
             } ${isSubmitting ? 'opacity-60 cursor-not-allowed' : ''}`}
           />
+          {fieldErrors.institution && (
+            <p className="mt-1 text-[11px] text-rose-600 dark:text-rose-400 font-medium">
+              {fieldErrors.institution}
+            </p>
+          )}
         </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
         <div>
-          <label className="block text-xs font-semibold mb-1 text-slate-700 dark:text-slate-300">
+          <label className="block text-xs font-bold mb-1.5 text-slate-900 dark:text-slate-100">
             Technology Domain *
           </label>
           <select
             required
             disabled={isSubmitting}
             value={formData.domain}
-            onChange={(e) => setFormData({ ...formData, domain: e.target.value })}
-            className={`w-full px-3 py-2 text-xs sm:text-sm rounded-lg border transition-colors focus:outline-hidden focus:border-[#123B73] focus:ring-1 focus:ring-[#123B73] ${
+            onChange={(e) => handleInputChange('domain', e.target.value)}
+            className={`w-full px-3 py-2 text-xs sm:text-sm rounded-lg border transition-colors focus:outline-hidden ${
+              fieldErrors.domain
+                ? 'border-rose-500 ring-1 ring-rose-500 bg-rose-50/20'
+                : 'focus:border-[#123B73] focus:ring-1 focus:ring-[#123B73]'
+            } ${
               isDark
-                ? 'bg-slate-900 border-slate-700 text-white'
-                : 'bg-white border-[#DCE3EC] text-slate-900'
+                ? 'bg-slate-900 border-slate-700 text-white font-medium'
+                : 'bg-white border-slate-300 text-slate-900 font-medium'
             } ${isSubmitting ? 'opacity-60 cursor-not-allowed' : ''}`}
           >
             <option value="">Select Domain</option>
@@ -412,21 +512,30 @@ export const NFApplicationForm: React.FC<NFApplicationFormProps> = ({
             <option value="DeepTech">Deep-Tech Academic IP Translation</option>
             <option value="CampusHub">Campus Innovation Hub / Institutional</option>
           </select>
+          {fieldErrors.domain && (
+            <p className="mt-1 text-[11px] text-rose-600 dark:text-rose-400 font-medium">
+              {fieldErrors.domain}
+            </p>
+          )}
         </div>
 
         <div>
-          <label className="block text-xs font-semibold mb-1 text-slate-700 dark:text-slate-300">
+          <label className="block text-xs font-bold mb-1.5 text-slate-900 dark:text-slate-100">
             Current Stage *
           </label>
           <select
             required
             disabled={isSubmitting}
             value={formData.stage}
-            onChange={(e) => setFormData({ ...formData, stage: e.target.value })}
-            className={`w-full px-3 py-2 text-xs sm:text-sm rounded-lg border transition-colors focus:outline-hidden focus:border-[#123B73] focus:ring-1 focus:ring-[#123B73] ${
+            onChange={(e) => handleInputChange('stage', e.target.value)}
+            className={`w-full px-3 py-2 text-xs sm:text-sm rounded-lg border transition-colors focus:outline-hidden ${
+              fieldErrors.stage
+                ? 'border-rose-500 ring-1 ring-rose-500 bg-rose-50/20'
+                : 'focus:border-[#123B73] focus:ring-1 focus:ring-[#123B73]'
+            } ${
               isDark
-                ? 'bg-slate-900 border-slate-700 text-white'
-                : 'bg-white border-[#DCE3EC] text-slate-900'
+                ? 'bg-slate-900 border-slate-700 text-white font-medium'
+                : 'bg-white border-slate-300 text-slate-900 font-medium'
             } ${isSubmitting ? 'opacity-60 cursor-not-allowed' : ''}`}
           >
             <option value="">Select Current Stage</option>
@@ -436,23 +545,28 @@ export const NFApplicationForm: React.FC<NFApplicationFormProps> = ({
             <option value="MVP">MVP Ready (Validation Stage)</option>
             <option value="Scaling">Commercialization &amp; Scaling</option>
           </select>
+          {fieldErrors.stage && (
+            <p className="mt-1 text-[11px] text-rose-600 dark:text-rose-400 font-medium">
+              {fieldErrors.stage}
+            </p>
+          )}
         </div>
       </div>
 
       <div>
-        <label className="block text-xs font-semibold mb-1 text-slate-700 dark:text-slate-300">
+        <label className="block text-xs font-bold mb-1.5 text-slate-900 dark:text-slate-100">
           Brief Idea / Project Overview
         </label>
         <textarea
           rows={3}
           disabled={isSubmitting}
           value={formData.description}
-          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+          onChange={(e) => handleInputChange('description', e.target.value)}
           placeholder="Summarize your innovation, core problem solved, and expected studio support..."
           className={`w-full px-3 py-2 text-xs sm:text-sm rounded-lg border transition-colors focus:outline-hidden focus:border-[#123B73] focus:ring-1 focus:ring-[#123B73] resize-none ${
             isDark
-              ? 'bg-slate-900 border-slate-700 text-white placeholder-slate-500'
-              : 'bg-white border-[#DCE3EC] text-slate-900 placeholder-slate-400'
+              ? 'bg-slate-900 border-slate-700 text-white placeholder-slate-400'
+              : 'bg-white border-slate-300 text-slate-900 placeholder-slate-500'
           } ${isSubmitting ? 'opacity-60 cursor-not-allowed' : ''}`}
         />
       </div>
@@ -460,11 +574,11 @@ export const NFApplicationForm: React.FC<NFApplicationFormProps> = ({
       {/* Submit footer */}
       <div
         className={`pt-3 border-t flex flex-col sm:flex-row items-center justify-between gap-3 ${
-          isDark ? 'border-slate-800' : 'border-slate-200'
+          isDark ? 'border-slate-700' : 'border-slate-300'
         }`}
       >
-        <div className="text-xs text-slate-500 dark:text-slate-400 text-center sm:text-left">
-          Helpline: <a href="tel:8379879846" className="font-semibold text-slate-800 dark:text-slate-200 hover:underline">8379879846</a>
+        <div className="text-xs text-slate-700 dark:text-slate-300 text-center sm:text-left font-medium">
+          Direct Incubation Helpline: <a href="tel:8379879846" className="font-bold text-[#123B73] dark:text-sky-300 hover:underline">8379879846</a>
         </div>
         <div className="flex items-center gap-2.5 w-full sm:w-auto">
           {isModal && onCancel && (

@@ -1,25 +1,24 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { NFNavbar } from '../components/nf/NFNavbar';
 import { NFHeroSection } from '../components/nf/NFHeroSection';
-import { NFVentureEnginesSection } from '../components/nf/NFVentureEnginesSection';
+import { NFAboutIntroSection } from '../components/nf/NFAboutIntroSection';
+import { NFSupportSection } from '../components/nf/NFSupportSection';
 import { NFIncubationFrameworkSection } from '../components/nf/NFIncubationFrameworkSection';
 import { NFTracksSection } from '../components/nf/NFTracksSection';
-import { NFSupportSection } from '../components/nf/NFSupportSection';
 import { NFArchitectureAndProcess } from '../components/nf/NFArchitectureAndProcess';
+import { NFIPRSection } from '../components/nf/NFIPRSection';
+import { NFIICSection } from '../components/nf/NFIICSection';
 import { NFWhyPartnerSection } from '../components/nf/NFWhyPartnerSection';
-import { NFFinalCTA } from '../components/nf/NFFinalCTA';
 import { NFFooter } from '../components/nf/NFFooter';
 import { NFApplicationModal } from '../components/nf/NFApplicationModal';
 import { NFLabModal } from '../components/nf/NFLabModal';
 import { NFMarquee } from '../components/nf/NFMarquee';
 import { useScrollReveal, useCountUp } from '../hooks/useScrollReveal';
+import { useNFTheme } from '../hooks/useNFTheme';
 
 export const NFVentureStudioPage: React.FC = () => {
-  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
-    const saved = localStorage.getItem('nf-theme');
-    return (saved === 'light' || saved === 'dark') ? saved : 'light';
-  });
+  const { theme, isDark, toggleTheme } = useNFTheme();
 
   const [isAppModalOpen, setIsAppModalOpen] = useState(false);
   const [selectedTrack, setSelectedTrack] = useState('student');
@@ -30,7 +29,6 @@ export const NFVentureStudioPage: React.FC = () => {
 
   const location = useLocation();
 
-  // Scroll reveal hooks
   useScrollReveal();
   useCountUp();
 
@@ -46,21 +44,6 @@ export const NFVentureStudioPage: React.FC = () => {
       window.scrollTo(0, 0);
     }
   }, [location.hash, location.pathname]);
-
-  useEffect(() => {
-    localStorage.setItem('nf-theme', theme);
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-      document.documentElement.classList.remove('light');
-    } else {
-      document.documentElement.classList.add('light');
-      document.documentElement.classList.remove('dark');
-    }
-  }, [theme]);
-
-  const toggleTheme = () => {
-    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
-  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -94,8 +77,6 @@ export const NFVentureStudioPage: React.FC = () => {
     setIsAppModalOpen(true);
   };
 
-  const isDark = theme === 'dark';
-
   return (
     <div
       className={`min-h-screen flex flex-col font-sans selection:bg-[#123B73] selection:text-white relative overflow-x-hidden transition-colors duration-300 ${
@@ -118,44 +99,49 @@ export const NFVentureStudioPage: React.FC = () => {
 
       {/* Main Content Sections */}
       <main className="flex-1 w-full">
-        {/* Spacer that pushes content below the fixed navbar */}
+        {/* Spacer below fixed navbar */}
         <div className="h-[64px] sm:h-[76px]" aria-hidden="true" />
-        {/* Hero Section */}
+        
+        {/* 1. Hero Section */}
         <NFHeroSection onOpenApplication={handleOpenApplication} isDark={isDark} />
 
-        {/* Incubation Framework Section */}
-        <NFIncubationFrameworkSection isDark={isDark} />
-
-        {/* Three Venture Engines Section */}
-        <NFVentureEnginesSection isDark={isDark} />
-
-        {/* Marquee ticker between framework and tracks */}
+        {/* Dynamic Partner Marquee Ticker */}
         <NFMarquee isDark={isDark} />
 
-        {/* Section 1: The Three Specialized Tracks */}
-        <NFTracksSection onOpenApplication={handleOpenApplication} isDark={isDark} />
+        {/* 2. About NFVS Storytelling Section */}
+        <NFAboutIntroSection isDark={isDark} />
 
-        {/* Section 2: Comprehensive Incubation Support */}
+        {/* 3. Incubation Journey: Visual Process Flow & 2-Stage Framework */}
+        <NFIncubationFrameworkSection isDark={isDark} />
+
+        {/* 4. What NFVS Offers: Support, Prototyping Labs, Mentorship & Grants */}
         <NFSupportSection
           onOpenLabDetails={handleOpenLab}
           onOpenApplication={handleOpenApplication}
           isDark={isDark}
         />
 
-        {/* Section 3: Integrated System Architecture & 4-Step Process */}
+        {/* 5. Tracks and Programs: 3 Specialized Pathways */}
+        <NFTracksSection onOpenApplication={handleOpenApplication} isDark={isDark} />
+
+        {/* 6. Campus Architecture & 12-Month Rollout Roadmap */}
         <NFArchitectureAndProcess
           onOpenApplication={handleOpenApplication}
           onOpenLabDetails={handleOpenLab}
           isDark={isDark}
         />
 
-        {/* Section 4: Why Partner With NCF? */}
-        <NFWhyPartnerSection onOpenApplication={handleOpenApplication} isDark={isDark} />
+        {/* 7. Intellectual Property Rights (IPR) Framework */}
+        <NFIPRSection onOpenApplication={handleOpenApplication} isDark={isDark} />
 
-        {/* Section 5: Restrained Institutional Final CTA */}
-        <NFFinalCTA onOpenApplication={handleOpenApplication} isDark={isDark} />
+        {/* 8. Institution's Innovation Council (IIC) Calendar */}
+        <NFIICSection onOpenApplication={handleOpenApplication} isDark={isDark} />
+
+        {/* 9. Why Partner & Institutional Accreditation Matrix */}
+        <NFWhyPartnerSection onOpenApplication={handleOpenApplication} isDark={isDark} />
       </main>
 
+      {/* Footer */}
       <NFFooter
         onOpenApplication={handleOpenApplication}
         isDark={isDark}

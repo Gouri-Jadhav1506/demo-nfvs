@@ -18,7 +18,9 @@ export function useScrollReveal() {
     );
 
     // Observe all reveal elements and immediately reveal any in the viewport on mount
-    const revealEls = document.querySelectorAll('.reveal, .reveal-stagger');
+    const revealEls = document.querySelectorAll(
+      '.reveal, .reveal-stagger, .reveal-left, .reveal-right, .reveal-scale, .cinematic-fade'
+    );
     const vh = window.innerHeight;
     revealEls.forEach((el) => {
       const rect = el.getBoundingClientRect();

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import nfLogoImg from '../../assets/nf-logo.jpg';
 
 interface NFLogoProps {
   size?: 'sm' | 'md' | 'lg' | 'xl';
@@ -15,6 +16,7 @@ export const NFLogo: React.FC<NFLogoProps> = ({
   showText = true,
   className = '',
 }) => {
+  const [imgError, setImgError] = useState(false);
   const sizeMap = {
     sm: {
       imgSize: 'w-9 h-9 sm:w-10 sm:h-10',
@@ -52,19 +54,21 @@ export const NFLogo: React.FC<NFLogoProps> = ({
     <div className={`inline-flex items-center ${current.gap} select-none ${className}`}>
       {/* 3D Metallic Shield Logo Image */}
       <div
-        className={`relative flex-shrink-0 transition-transform duration-300 hover:scale-105 ${current.imgSize} rounded-xl sm:rounded-2xl overflow-hidden shadow-md border border-amber-300/40 bg-white`}
+        className={`relative flex-shrink-0 transition-transform duration-300 hover:scale-105 ${current.imgSize} rounded-xl sm:rounded-2xl overflow-hidden shadow-md border border-amber-300/40 bg-white flex items-center justify-center`}
       >
-        <img
-          src="/nf-logo.jpg"
-          alt="NF Venture Studio Logo"
-          className="w-full h-full object-contain p-0.5"
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            if (!target.src.includes('assets')) {
-              target.src = './src/assets/nf-logo.jpg';
-            }
-          }}
-        />
+        {!imgError ? (
+          <img
+            src={nfLogoImg}
+            alt="NF Venture Studio Logo"
+            className="w-full h-full object-contain p-0.5"
+            decoding="async"
+            onError={() => setImgError(true)}
+          />
+        ) : (
+          <div className="w-full h-full bg-[#123B73] text-[#D9A72E] font-black flex items-center justify-center text-xs sm:text-sm tracking-wider">
+            NF
+          </div>
+        )}
       </div>
 
       {/* Typography: "NF" + "Venture Studio" + "Naree Care Foundation" */}

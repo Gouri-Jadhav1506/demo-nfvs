@@ -1,6 +1,28 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { NFLogo } from './NFLogo';
-import { ClipboardCheck, Network, Cpu, Rocket, ArrowRight, Play, Pause, RotateCcw, Check, CheckCircle2 } from 'lucide-react';
+import React, { useState } from 'react';
+import {
+  ClipboardCheck,
+  Network,
+  Cpu,
+  Rocket,
+  ArrowRight,
+  ShieldCheck,
+  CheckCircle2,
+  Layers,
+  TrendingUp,
+  FileCheck2,
+  Repeat,
+  Sparkles,
+  ChevronRight,
+  ChevronLeft,
+  ExternalLink,
+  Building2,
+  BarChart3,
+  Award,
+} from 'lucide-react';
+import prototypingLabImg from '../../assets/prototyping_lab.jpg';
+import founderMentorshipImg from '../../assets/founder_mentorship.jpg';
+import labAiComputeImg from '../../assets/lab_ai_compute.jpg';
+import ventureStudioHubImg from '../../assets/venture_studio_hub.jpg';
 
 interface NFArchitectureAndProcessProps {
   onOpenApplication: (track?: string) => void;
@@ -10,650 +32,577 @@ interface NFArchitectureAndProcessProps {
 
 export const NFArchitectureAndProcess: React.FC<NFArchitectureAndProcessProps> = ({
   onOpenApplication,
+  onOpenLabDetails,
   isDark = false,
 }) => {
-  const [activeStage, setActiveStage] = useState(0);
-  const [scrollProgress, setScrollProgress] = useState(25);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isFinished, setIsFinished] = useState(false);
-  const playIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const [activeTab, setActiveTab] = useState<'architecture' | 'rollout'>('architecture');
+  const [activePillar, setActivePillar] = useState<number>(0);
+  const [activeStage, setActiveStage] = useState<number>(0);
 
-  const clearPlayInterval = () => {
-    if (playIntervalRef.current) {
-      clearInterval(playIntervalRef.current);
-      playIntervalRef.current = null;
-    }
-  };
-
-  useEffect(() => {
-    return () => {
-      clearPlayInterval();
-    };
-  }, []);
-
-  const stages = [
+  const pillars = [
     {
-      id: 1,
-      label: 'Stage I – Assess',
-      subtitle: 'MoU & Capability Audit',
-      month: 'Month 1',
-      tag: 'MoU & Audit',
-      progress: 25,
-      Icon: ClipboardCheck,
-      desc: 'Capability audit of academic labs, student research projects, existing faculty patents, and institutional E-Cell baseline.',
+      number: '01',
+      stepNum: 1,
+      title: 'Physical Hub & Makerspace',
+      shortTitle: 'Physical Hub',
+      role: 'Hardware & Prototyping Foundation',
+      scope: '500–2,000+ sq. ft. Space',
+      desc: 'Turnkey planning of dedicated founder co-working suites, meeting pods, and rapid prototyping test benches (AI, IoT, Robotics).',
+      icon: Cpu,
+      image: prototypingLabImg,
+      badge: 'Turnkey Makerspace',
+      feedsInto: 'Feeds validated hardware & prototypes into Governance & IP structuring',
       deliverables: [
-        'Lab & IP capability audit report',
-        'NBA & NAAC Criterion 3 baseline evaluation',
-        'Institutional co-execution partnership MoU',
+        'Makerspace & electronics benches',
+        'Collaborative founder co-working',
+        'Hardware inspection equipment',
       ],
+      impactTag: 'Infrastructure Readiness',
+      actionType: 'lab' as const,
     },
     {
-      id: 2,
-      label: 'Stage II – Govern',
-      subtitle: 'Board & IP Policy Ratification',
-      month: 'Month 2',
-      tag: 'Board & IP',
-      progress: 50,
-      Icon: Network,
-      desc: 'Institutional Incubation Board constitution and formal AICTE-NISP compliant IP policy adoption and ratification.',
+      number: '02',
+      stepNum: 2,
+      title: 'Governance & IP Framework',
+      shortTitle: 'Governance & IP',
+      role: 'Statutory Compliance & Legal Guardrails',
+      scope: 'AICTE-NISP Policy Compliance',
+      desc: 'Institutional Incubation Board constitution, AICTE-NISP compliant IP charters, faculty spin-off guidelines, and student equity rules.',
+      icon: ShieldCheck,
+      image: founderMentorshipImg,
+      badge: 'Statutory Charters',
+      feedsInto: 'Provides legally protected entities for Digital ERP tracking & milestone logging',
       deliverables: [
-        'Institutional Incubation Board constituted',
-        'AICTE-NISP IP policy ratified by leadership',
-        'Faculty SPOC & student E-Cell governance operational',
+        'Ratified institutional IP charter',
+        'Incubation Board constitution',
+        'Faculty equity & conflict policies',
       ],
+      impactTag: '100% Founder IP Protection',
+      actionType: 'dossier' as const,
     },
     {
-      id: 3,
-      label: 'Stage III – Build',
-      subtitle: 'Space Setup & Digital ERP',
-      month: 'Months 3–4',
-      tag: 'Space & ERP',
-      progress: 75,
-      Icon: Cpu,
-      desc: 'On-campus incubation and prototyping space configuration alongside complete Digital Incubation ERP portal rollout.',
+      number: '03',
+      stepNum: 3,
+      title: 'Digital Incubation ERP',
+      shortTitle: 'Incubation ERP',
+      role: 'Telemetry, Mentorship & Audit Analytics',
+      scope: 'Telemetry & Accreditation Data',
+      desc: 'Centralized software platform for application tracking, founder milestone logging, mentor time tracking, and instant NAAC/NBA/NIRF audit reports.',
+      icon: Network,
+      image: labAiComputeImg,
+      badge: 'Accreditation Telemetry',
+      feedsInto: 'Feeds verifiable venture metrics into central grant applications & angel syndicates',
       deliverables: [
-        '500–2,000+ sq. ft. dedicated campus innovation hub',
-        'Digital Incubation ERP management portal deployed',
-        'Annual IIC master activity & workshop schedule',
+        'Applicant evaluation portal',
+        'Milestone & KPI dashboard',
+        'Audit-ready accreditation logs',
       ],
+      impactTag: 'Instant NIRF & NAAC Export',
+      actionType: 'dossier' as const,
     },
     {
-      id: 4,
-      label: 'Stage IV – Operate & Handover',
-      subtitle: 'Cohort Launch & Handover',
-      month: 'Months 5–12+',
-      tag: 'Self-Sustaining',
-      progress: 100,
-      Icon: Rocket,
-      desc: 'Structured cohort incubation, mentor matchmaking, investor demo days, and turnkey operational handover for sustainability.',
+      number: '04',
+      stepNum: 4,
+      title: 'Capital & Industry Linkage',
+      shortTitle: 'Capital & Industry',
+      role: 'Commercialization & Venture Scaling',
+      scope: 'National Ecosystem Access',
+      desc: 'Direct bridge connecting university innovators to central & state seed grants (NIDHI, BIRAC, MSME), angel syndicates, and enterprise pilots.',
+      icon: TrendingUp,
+      image: ventureStudioHubImg,
+      badge: 'Syndication Engine',
+      feedsInto: 'Commercial revenue & grant reinvestment cycle back into campus physical facilities',
       deliverables: [
-        'Cohort-1 venture intake, prototyping & mentorship',
-        'Investor demo days, patent filings & seed linkage',
-        'Turnkey handover with established operational playbooks',
+        'Non-dilutive grant preparation',
+        'Annual investor demo days',
+        'Corporate innovation challenges',
       ],
+      impactTag: '₹3Cr+ Non-Dilutive Pipeline',
+      actionType: 'dossier' as const,
     },
   ];
 
-  const handleStageSelect = (idx: number) => {
-    if (isPlaying) {
-      clearPlayInterval();
-      setIsPlaying(false);
-    }
-    setActiveStage(idx);
-    setScrollProgress(stages[idx].progress);
-  };
+  const stages = [
+    {
+      stage: 'Stage I',
+      title: 'MoU & Capability Audit',
+      timeline: 'Month 1',
+      tag: 'Audit & MoU',
+      icon: ClipboardCheck,
+      desc: 'Baseline capability evaluation across campus departmental labs, faculty patents, student projects, and existing E-Cell infrastructure.',
+      milestones: [
+        'Comprehensive campus lab & IP audit report',
+        'NBA & NAAC Criterion 3 baseline evaluation',
+        'Institutional co-execution partnership MoU signed',
+      ],
+      impact: 'Identifies immediate commercialization opportunities within existing campus research.',
+    },
+    {
+      stage: 'Stage II',
+      title: 'Governance & IP Ratification',
+      timeline: 'Month 2',
+      tag: 'Board & IP',
+      icon: Network,
+      desc: 'Formal constitution of the Institutional Incubation Board and institutional ratification of an AICTE-NISP compliant IP charter.',
+      milestones: [
+        'Institutional Incubation Board officially constituted',
+        'AICTE-NISP IP policy ratified by university leadership',
+        'Faculty SPOC & student E-Cell governance operationalized',
+      ],
+      impact: 'Protects university equity and provides legal clarity for student and faculty inventors.',
+    },
+    {
+      stage: 'Stage III',
+      title: 'Hub Setup & ERP Deployment',
+      timeline: 'Months 3–4',
+      tag: 'Space & ERP',
+      icon: Cpu,
+      desc: 'Configuring the physical on-campus incubation facility alongside deploying the complete digital Incubation ERP system.',
+      milestones: [
+        '500–2,000+ sq. ft. dedicated campus innovation hub furnished',
+        'Digital Incubation ERP portal configured for students and mentors',
+        'Annual MoE-IIC activity and workshop calendar scheduled',
+      ],
+      impact: 'Creates an inspiring physical and digital home for campus startup founders.',
+    },
+    {
+      stage: 'Stage IV',
+      title: 'Cohort Launch & Handover',
+      timeline: 'Months 5–12+',
+      tag: 'Self-Sustaining',
+      icon: Rocket,
+      desc: 'Inducting the first venture cohort, coordinating weekly mentor sprints, organizing demo days, and executing turnkey operational handover.',
+      milestones: [
+        'Cohort-1 venture intake, prototyping sprints & mentor matching',
+        'Investor demo days, patent filings & seed grant linkage',
+        'Turnkey operational handover with documented playbooks',
+      ],
+      impact: 'Establishes a permanent, self-sustaining campus incubation engine with verifiable ranking impact.',
+    },
+  ];
 
-  const handleTogglePlay = () => {
-    if (isPlaying) {
-      clearPlayInterval();
-      setIsPlaying(false);
-    } else {
-      clearPlayInterval();
-      setIsPlaying(true);
-
-      let nextIndex = activeStage;
-      if (nextIndex >= stages.length - 1 || isFinished) {
-        nextIndex = 0;
-        setActiveStage(0);
-        setScrollProgress(stages[0].progress);
-        setIsFinished(false);
-      }
-
-      playIntervalRef.current = setInterval(() => {
-        nextIndex += 1;
-        if (nextIndex >= stages.length) {
-          clearPlayInterval();
-          setIsPlaying(false);
-          setIsFinished(true);
-        } else {
-          setActiveStage(nextIndex);
-          setScrollProgress(stages[nextIndex].progress);
-        }
-      }, 2600);
-    }
-  };
+  const currentPillar = pillars[activePillar];
+  const CurrentPillarIcon = currentPillar.icon;
 
   return (
     <section
       id="architecture"
-      className={`py-14 sm:py-20 border-b transition-colors duration-200 ${
-        isDark ? 'bg-[#081528] border-slate-800 text-white' : 'bg-white border-[#DCE3EC] text-[#172334]'
+      className={`py-10 sm:py-14 border-b transition-colors duration-300 ${
+        isDark ? 'bg-[#08182D] border-slate-800 text-white' : 'bg-white border-[#DCE3EC] text-[#172334]'
       }`}
     >
-      <div className="section-shell">
+      <div className="section-shell space-y-8 sm:space-y-10">
         
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold border mb-3 bg-[#EAF1F9] dark:bg-slate-800 text-[#123B73] dark:text-sky-300 border-[#DCE3EC] dark:border-slate-700">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#123B73] dark:bg-sky-400" />
-            <span>Operational Framework</span>
+        {/* Section Header with Dual View Toggle */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b pb-6 border-slate-200 dark:border-slate-800">
+          <div className="max-w-2xl space-y-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold border bg-[#EAF1F9] dark:bg-slate-800 text-[#123B73] dark:text-sky-300 border-[#DCE3EC] dark:border-slate-700">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#123B73] dark:bg-sky-400" />
+              <span>Campus Execution Framework</span>
+            </div>
+
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">
+              Institutional Architecture &amp; <span className="text-[#D9A72E]">Turnkey Rollout</span>
+            </h2>
+
+            <p className="text-sm sm:text-base text-slate-800 dark:text-slate-200 leading-relaxed text-justify">
+              Explore our four-pillar infrastructure foundation and the step-by-step 12-month operational roadmap.
+            </p>
           </div>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
-            Architecture &amp; <span className="text-[#D9A72E]">Rollout Roadmap</span>
-          </h2>
-          <p className="mt-3 text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl mx-auto">
-            A battle-tested four-pillar institutional model and a 12-month phased transition from assessment to self-sustaining operation.
-          </p>
+
+          {/* Interactive Dual View Toggle */}
+          <div className="flex items-center p-1 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 self-start md:self-auto shrink-0">
+            <button
+              type="button"
+              onClick={() => setActiveTab('architecture')}
+              className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                activeTab === 'architecture'
+                  ? 'bg-[#123B73] text-white shadow-xs'
+                  : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              4-Pillar Architecture
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab('rollout')}
+              className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                activeTab === 'rollout'
+                  ? 'bg-[#123B73] text-white shadow-xs'
+                  : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              12-Month Rollout
+            </button>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-stretch">
-          
-          {/* ================= LEFT BOX: FOUR-PILLAR INCUBATION ARCHITECTURE ================= */}
-          <div
-            className={`flex flex-col rounded-2xl border p-6 sm:p-7 shadow-xs transition-colors ${
-              isDark ? 'bg-slate-900 border-slate-800' : 'bg-[#F7F9FC] border-[#DCE3EC]'
-            }`}
-          >
-            {/* Header */}
-            <div className="flex items-center justify-between pb-4 mb-5 border-b border-slate-200 dark:border-slate-800">
-              <div>
-                <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
-                  Four-Pillar Incubation Architecture
-                </h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400">Institutional Co-Execution Framework</p>
+        {/* View 1: 4-Pillar Connected Flow Cycle Architecture */}
+        {activeTab === 'architecture' && (
+          <div className="space-y-6 animate-fadeIn">
+            
+            {/* Interactive Connected Flow Cycle Stepper / Ribbon */}
+            <div className="relative">
+              {/* Desktop Connecting Flow Track */}
+              <div
+                className="hidden lg:block absolute top-7 left-12 right-12 h-0.5 bg-gradient-to-r from-[#123B73]/20 via-[#D9A72E]/40 to-[#123B73]/20 dark:from-sky-500/20 dark:via-amber-400/30 dark:to-sky-500/20 z-0"
+                aria-hidden="true"
+              />
+
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 relative z-10">
+                {pillars.map((p, idx) => {
+                  const Icon = p.icon;
+                  const isActive = activePillar === idx;
+                  return (
+                    <button
+                      key={p.number}
+                      type="button"
+                      onClick={() => setActivePillar(idx)}
+                      className={`group relative p-3.5 sm:p-4 rounded-2xl border text-left transition-all duration-200 cursor-pointer flex flex-col justify-between overflow-hidden ${
+                        isActive
+                          ? 'bg-[#123B73] text-white border-[#123B73] shadow-md ring-2 ring-[#D9A72E]/60 -translate-y-1'
+                          : isDark
+                          ? 'bg-slate-900/90 text-slate-200 border-slate-700 hover:bg-slate-800 hover:border-slate-600'
+                          : 'bg-[#F7F9FC] text-slate-800 border-[#DCE3EC] hover:bg-white hover:border-slate-300 hover:shadow-xs'
+                      }`}
+                    >
+                      {/* Top Node Header: Step & Icon */}
+                      <div className="flex items-center justify-between mb-3 w-full">
+                        <span
+                          className={`w-7 h-7 rounded-lg flex items-center justify-center font-mono text-xs font-extrabold transition-colors ${
+                            isActive
+                              ? 'bg-[#D9A72E] text-slate-950 font-bold'
+                              : 'bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-[#123B73] dark:text-sky-300'
+                          }`}
+                        >
+                          {p.number}
+                        </span>
+
+                        <div
+                          className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all ${
+                            isActive
+                              ? 'bg-white/15 text-[#D9A72E]'
+                              : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 group-hover:text-[#123B73]'
+                          }`}
+                        >
+                          <Icon className="w-4 h-4" />
+                        </div>
+                      </div>
+
+                      {/* Title & Scope */}
+                      <div className="space-y-1">
+                        <div
+                          className={`text-[10px] font-mono uppercase font-bold tracking-wider truncate ${
+                            isActive ? 'text-[#D9A72E]' : 'text-slate-500 dark:text-slate-400'
+                          }`}
+                        >
+                          {p.scope}
+                        </div>
+                        <h3 className="text-xs sm:text-sm font-extrabold leading-snug truncate">
+                          {p.shortTitle}
+                        </h3>
+                      </div>
+
+                      {/* Directional Step Marker Indicator */}
+                      <div className="mt-3 pt-2.5 border-t border-slate-200/50 dark:border-slate-700/50 flex items-center justify-between text-[11px] font-semibold">
+                        <span className={isActive ? 'text-white' : 'text-slate-500 dark:text-slate-400'}>
+                          Pillar 0{p.stepNum}
+                        </span>
+                        <ChevronRight
+                          className={`w-3.5 h-3.5 transition-transform ${
+                            isActive
+                              ? 'text-[#D9A72E] translate-x-1'
+                              : 'text-slate-400 group-hover:translate-x-0.5'
+                          }`}
+                        />
+                      </div>
+                    </button>
+                  );
+                })}
               </div>
-              <span className="text-[10px] font-semibold px-2 py-0.5 rounded border border-[#DCE3EC] dark:border-slate-700 bg-white dark:bg-slate-800 text-[#123B73] dark:text-sky-400">
-                Core Model
-              </span>
             </div>
 
-            {/* 4 Pillars Grid with Central Connected Hub */}
-            <div className="flex-1 flex flex-col justify-between space-y-2 relative">
-              
-              {/* Top Row: Pillar 1 & 2 */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                {/* Pillar 1 */}
-                <div
-                  className={`p-4 rounded-xl border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xs hover:border-l-2 hover:border-l-[#123B73] dark:hover:border-l-sky-400 ${
-                    isDark ? 'bg-slate-800/80 border-slate-700' : 'bg-white border-[#DCE3EC]'
-                  }`}
-                >
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#123B73] dark:bg-sky-400" />
-                    <h4 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">
-                      1. Pre-Incubation
-                    </h4>
-                  </div>
-                  <ul className="space-y-1.5 text-xs text-slate-600 dark:text-slate-300">
-                    <li className="flex items-start gap-1.5">
-                      <span className="text-[#123B73] dark:text-sky-400 font-bold">·</span>
-                      <span><strong>Hackathons &amp; bootcamps</strong> for idea discovery</span>
-                    </li>
-                    <li className="flex items-start gap-1.5">
-                      <span className="text-[#123B73] dark:text-sky-400 font-bold">·</span>
-                      <span><strong>3–6 month cohorts</strong> with PoC micro-grants</span>
-                    </li>
-                    <li className="flex items-start gap-1.5">
-                      <span className="text-[#123B73] dark:text-sky-400 font-bold">·</span>
-                      <span><strong>Prototyping labs</strong> &amp; workstation access</span>
-                    </li>
-                    <li className="flex items-start gap-1.5">
-                      <span className="text-[#123B73] dark:text-sky-400 font-bold">·</span>
-                      <span><strong>E-Cell activation</strong> &amp; campus demo days</span>
-                    </li>
-                  </ul>
-                </div>
-
-                {/* Pillar 2 */}
-                <div
-                  className={`p-4 rounded-xl border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xs hover:border-l-2 hover:border-l-[#D9A72E] ${
-                    isDark ? 'bg-slate-800/80 border-slate-700' : 'bg-white border-[#DCE3EC]'
-                  }`}
-                >
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#D9A72E]" />
-                    <h4 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">
-                      2. Venture Incubation
-                    </h4>
-                  </div>
-                  <ul className="space-y-1.5 text-xs text-slate-600 dark:text-slate-300">
-                    <li className="flex items-start gap-1.5">
-                      <span className="text-[#D9A72E] font-bold">·</span>
-                      <span><strong>Dev-for-Equity</strong> rapid MVP engineering</span>
-                    </li>
-                    <li className="flex items-start gap-1.5">
-                      <span className="text-[#D9A72E] font-bold">·</span>
-                      <span><strong>Entity incorporation</strong> (Pvt Ltd / LLP support)</span>
-                    </li>
-                    <li className="flex items-start gap-1.5">
-                      <span className="text-[#D9A72E] font-bold">·</span>
-                      <span><strong>CXO mentoring</strong> &amp; domain guidance</span>
-                    </li>
-                    <li className="flex items-start gap-1.5">
-                      <span className="text-[#D9A72E] font-bold">·</span>
-                      <span><strong>GTM pilots</strong> &amp; angel syndication access</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              {/* Central Connecting Flow Hub */}
-              <div className="relative py-1 flex flex-col items-center justify-center">
-                {/* Thin vertical connector line from top */}
-                <div className="w-[1.5px] h-2.5 bg-gradient-to-b from-[#123B73]/30 to-[#D9A72E]/50 dark:from-sky-400/30 dark:to-[#D9A72E]/50" />
-                
-                <div
-                  className={`px-4 py-2 rounded-xl border flex items-center gap-3 transition-shadow duration-200 hover:shadow-sm ${
-                    isDark
-                      ? 'bg-slate-800 border-slate-700 text-white'
-                      : 'bg-white border-[#DCE3EC] text-slate-900 shadow-xs'
-                  }`}
-                >
-                  <NFLogo size="sm" variant={isDark ? 'light' : 'dark'} showSubtitle={false} />
-                  <div className="text-left border-l border-slate-200 dark:border-slate-700 pl-3">
-                    <div className="flex items-center gap-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#D9A72E]" />
-                      <span className="text-xs font-bold text-[#123B73] dark:text-sky-300">
-                        NF Venture Studio Engine
-                      </span>
-                    </div>
-                    <div className="text-[11px] text-slate-500 dark:text-slate-400">
-                      Co-Execution &amp; Lab-to-Market Pipeline
-                    </div>
-                  </div>
-                </div>
-
-                {/* Thin vertical connector line to bottom */}
-                <div className="w-[1.5px] h-2.5 bg-gradient-to-b from-[#D9A72E]/50 to-[#123B73]/30 dark:from-[#D9A72E]/50 dark:to-sky-400/30" />
-              </div>
-
-              {/* Bottom Row: Pillar 3 & 4 */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                {/* Pillar 3 */}
-                <div
-                  className={`p-4 rounded-xl border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xs hover:border-l-2 hover:border-l-[#123B73] dark:hover:border-l-sky-400 ${
-                    isDark ? 'bg-slate-800/80 border-slate-700' : 'bg-white border-[#DCE3EC]'
-                  }`}
-                >
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#123B73] dark:bg-sky-400" />
-                    <h4 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">
-                      3. IPR &amp; Tech Transfer
-                    </h4>
-                  </div>
-                  <ul className="space-y-1.5 text-xs text-slate-600 dark:text-slate-300">
-                    <li className="flex items-start gap-1.5">
-                      <span className="text-[#123B73] dark:text-sky-400 font-bold">·</span>
-                      <span><strong>Patent filings</strong> (provisional &amp; complete)</span>
-                    </li>
-                    <li className="flex items-start gap-1.5">
-                      <span className="text-[#123B73] dark:text-sky-400 font-bold">·</span>
-                      <span><strong>AICTE-NISP policy</strong> adoption &amp; compliance</span>
-                    </li>
-                    <li className="flex items-start gap-1.5">
-                      <span className="text-[#123B73] dark:text-sky-400 font-bold">·</span>
-                      <span><strong>TTO enablement</strong> &amp; faculty training</span>
-                    </li>
-                    <li className="flex items-start gap-1.5">
-                      <span className="text-[#123B73] dark:text-sky-400 font-bold">·</span>
-                      <span><strong>Corporate licensing</strong> &amp; spin-off models</span>
-                    </li>
-                  </ul>
-                </div>
-
-                {/* Pillar 4 */}
-                <div
-                  className={`p-4 rounded-xl border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xs hover:border-l-2 hover:border-l-emerald-600 dark:hover:border-l-emerald-400 ${
-                    isDark ? 'bg-slate-800/80 border-slate-700' : 'bg-white border-[#DCE3EC]'
-                  }`}
-                >
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 dark:bg-emerald-400" />
-                    <h4 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">
-                      4. IIC &amp; Accreditation
-                    </h4>
-                  </div>
-                  <ul className="space-y-1.5 text-xs text-slate-600 dark:text-slate-300">
-                    <li className="flex items-start gap-1.5">
-                      <span className="text-emerald-600 dark:text-emerald-400 font-bold">·</span>
-                      <span><strong>100% IIC calendar</strong> execution &amp; ratings</span>
-                    </li>
-                    <li className="flex items-start gap-1.5">
-                      <span className="text-emerald-600 dark:text-emerald-400 font-bold">·</span>
-                      <span><strong>NAAC Criterion 3</strong> documented dossiers</span>
-                    </li>
-                    <li className="flex items-start gap-1.5">
-                      <span className="text-emerald-600 dark:text-emerald-400 font-bold">·</span>
-                      <span><strong>NBA SAR evidence</strong> &amp; research score uplift</span>
-                    </li>
-                    <li className="flex items-start gap-1.5">
-                      <span className="text-emerald-600 dark:text-emerald-400 font-bold">·</span>
-                      <span><strong>NIRF &amp; ARIIA</strong> statutory compliance filing</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-          {/* ================= RIGHT BOX: 12-MONTH ROLLOUT JOURNEY ================= */}
-          <div
-            id="process"
-            className={`flex flex-col rounded-2xl border p-6 sm:p-7 shadow-xs transition-colors ${
-              isDark ? 'bg-slate-900 border-slate-800' : 'bg-[#F7F9FC] border-[#DCE3EC]'
-            }`}
-          >
-            {/* Header with Play Flow button */}
-            <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-200 dark:border-slate-800">
-              <div>
-                <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
-                  12-Month Rollout Journey
-                </h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400">Interactive Phased Implementation</p>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={handleTogglePlay}
-                  className={`text-xs font-medium px-3 py-1.5 rounded-lg border flex items-center gap-1.5 transition-all cursor-pointer ${
-                    isPlaying
-                      ? 'bg-[#123B73] text-white border-[#123B73]'
-                      : isFinished
-                        ? 'bg-emerald-50 text-emerald-800 border-emerald-300 dark:bg-emerald-950 dark:text-emerald-200'
-                        : isDark
-                          ? 'bg-slate-800 text-slate-200 border-slate-700 hover:bg-slate-700'
-                          : 'bg-white text-slate-700 border-[#DCE3EC] hover:bg-slate-50'
-                  }`}
-                >
-                  {isPlaying ? (
-                    <>
-                      <Pause className="w-3.5 h-3.5 text-white" />
-                      <span>Pause</span>
-                    </>
-                  ) : isFinished ? (
-                    <>
-                      <RotateCcw className="w-3.5 h-3.5 text-emerald-600" />
-                      <span>Replay</span>
-                    </>
-                  ) : (
-                    <>
-                      <Play className="w-3.5 h-3.5 text-[#123B73] dark:text-sky-300" />
-                      <span>Play Flow</span>
-                    </>
-                  )}
-                </button>
-
-                <span className="text-xs font-mono font-bold text-[#123B73] dark:text-sky-300">
-                  {scrollProgress}%
+            {/* Synergistic Flow Highlight Bar */}
+            <div
+              className={`p-3 rounded-xl border flex flex-col sm:flex-row items-center justify-between gap-3 text-xs transition-colors ${
+                isDark
+                  ? 'bg-slate-900/60 border-slate-800 text-slate-300'
+                  : 'bg-[#EAF1F9]/60 border-[#DCE3EC] text-slate-700'
+              }`}
+            >
+              <div className="flex items-center gap-2 font-medium">
+                <span className="p-1 rounded-md bg-[#123B73] text-[#D9A72E]">
+                  <Repeat className="w-3.5 h-3.5" />
+                </span>
+                <span>
+                  <strong className="text-slate-900 dark:text-white">Continuous Incubation Cycle: </strong>
+                  {currentPillar.feedsInto}
                 </span>
               </div>
+
+              {/* Step indicator with quick navigation */}
+              <div className="flex items-center gap-1.5 shrink-0">
+                <button
+                  type="button"
+                  onClick={() => setActivePillar((prev) => (prev - 1 + pillars.length) % pillars.length)}
+                  aria-label="Previous pillar"
+                  className="p-1.5 rounded-lg border border-slate-300 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+                >
+                  <ChevronLeft className="w-3.5 h-3.5" />
+                </button>
+                <span className="font-mono font-bold px-2 py-0.5 text-[11px] text-[#123B73] dark:text-sky-300">
+                  0{activePillar + 1} / 0{pillars.length}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setActivePillar((prev) => (prev + 1) % pillars.length)}
+                  aria-label="Next pillar"
+                  className="p-1.5 rounded-lg border border-slate-300 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+                >
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
             </div>
 
-            {/* Interactive Stage Tabs */}
-            <div className="flex sm:grid sm:grid-cols-4 gap-2 mb-3 overflow-x-auto no-scrollbar pb-1 sm:pb-0">
-              {stages.map((st, i) => {
-                const isSelected = i === activeStage;
-                const isPast = i < activeStage;
+            {/* Active Pillar Interactive Showcase Card */}
+            <div
+              className={`rounded-2xl border overflow-hidden transition-all duration-300 shadow-md ${
+                isDark ? 'bg-slate-900 border-slate-700' : 'bg-white border-[#DCE3EC]'
+              }`}
+            >
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch min-h-[380px]">
+                
+                {/* Left: Authentic Image with Contextual Graphical Overlays */}
+                <div className="lg:col-span-5 relative min-h-[240px] sm:min-h-[280px] lg:min-h-full overflow-hidden bg-slate-950">
+                  <img
+                    src={currentPillar.image}
+                    alt={`NF Venture Studio Architecture - ${currentPillar.title}`}
+                    className="w-full h-full object-cover object-center block absolute inset-0 transition-transform duration-700 ease-out hover:scale-105"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/20" />
+                  
+                  {/* Top Badges */}
+                  <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-10">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/60 backdrop-blur-md text-white border border-white/20 text-[11px] font-mono font-bold uppercase tracking-wider">
+                      <CurrentPillarIcon className="w-3.5 h-3.5 text-[#D9A72E]" />
+                      <span>{currentPillar.badge}</span>
+                    </span>
+                    <span className="inline-block px-2.5 py-1 rounded-lg bg-[#123B73]/90 text-white border border-white/20 text-[11px] font-mono font-bold">
+                      {currentPillar.scope}
+                    </span>
+                  </div>
+
+                  {/* Bottom Caption */}
+                  <div className="absolute bottom-4 left-4 right-4 text-white z-10 space-y-1">
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-[#D9A72E] font-bold block">
+                      Execution Pillar 0{currentPillar.stepNum}
+                    </span>
+                    <h4 className="text-base sm:text-lg font-bold leading-tight">
+                      {currentPillar.title}
+                    </h4>
+                    <p className="text-xs text-slate-200 line-clamp-2 font-medium">
+                      {currentPillar.role}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Right: Structured Architecture Details with Deliverable Tags */}
+                <div className="lg:col-span-7 p-6 sm:p-8 flex flex-col justify-between space-y-5">
+                  <div className="space-y-4">
+                    {/* Header */}
+                    <div className="space-y-1.5 pb-3 border-b border-slate-200 dark:border-slate-800">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#D9A72E]">
+                          Pillar 0{currentPillar.stepNum} of 04 · {currentPillar.impactTag}
+                        </span>
+                        <span className="text-[11px] font-bold px-2 py-0.5 rounded-md bg-[#EAF1F9] dark:bg-slate-800 text-[#123B73] dark:text-sky-300">
+                          {currentPillar.scope}
+                        </span>
+                      </div>
+
+                      <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-snug">
+                        {currentPillar.title}
+                      </h3>
+                      <p className="text-xs sm:text-sm font-semibold text-[#123B73] dark:text-sky-300">
+                        {currentPillar.role}
+                      </p>
+                    </div>
+
+                    {/* Concise Narrative Description */}
+                    <p className="text-xs sm:text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+                      {currentPillar.desc}
+                    </p>
+
+                    {/* Deliverables as Graphical Chips (No text-heavy clutter) */}
+                    <div className="space-y-2 pt-1">
+                      <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block">
+                        Institutional Deliverables &amp; Setup:
+                      </span>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        {currentPillar.deliverables.map((item, dIdx) => (
+                          <div
+                            key={dIdx}
+                            className={`p-2.5 rounded-xl border flex items-start gap-2 transition-colors ${
+                              isDark
+                                ? 'bg-slate-800/60 border-slate-700/80'
+                                : 'bg-slate-50 border-slate-200'
+                            }`}
+                          >
+                            <CheckCircle2 className="w-3.5 h-3.5 text-[#D9A72E] shrink-0 mt-0.5" />
+                            <span className="text-xs font-semibold text-slate-800 dark:text-slate-200 leading-snug">
+                              {item}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Actions & Next Stage Trigger */}
+                  <div className="pt-4 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <div className="flex items-center gap-1.5">
+                      {pillars.map((_, dotIdx) => (
+                        <button
+                          key={dotIdx}
+                          type="button"
+                          onClick={() => setActivePillar(dotIdx)}
+                          aria-label={`Go to pillar ${dotIdx + 1}`}
+                          className={`h-2 rounded-full transition-all duration-200 cursor-pointer ${
+                            dotIdx === activePillar
+                              ? 'w-6 bg-[#123B73] dark:bg-sky-400'
+                              : 'w-2 bg-slate-300 dark:bg-slate-700 hover:bg-slate-400'
+                          }`}
+                        />
+                      ))}
+                    </div>
+
+                    <div className="flex items-center gap-2.5 w-full sm:w-auto">
+                      {currentPillar.actionType === 'lab' ? (
+                        <button
+                          type="button"
+                          onClick={() => onOpenLabDetails('AI')}
+                          className={`flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-bold rounded-xl border transition-colors cursor-pointer ${
+                            isDark
+                              ? 'border-slate-700 bg-slate-800 text-slate-200 hover:bg-slate-700'
+                              : 'border-slate-300 bg-white text-slate-800 hover:bg-slate-50 hover:text-[#123B73]'
+                          }`}
+                        >
+                          <span>Explore Lab Hardware</span>
+                          <ExternalLink className="w-3.5 h-3.5 text-[#D9A72E]" />
+                        </button>
+                      ) : null}
+
+                      <button
+                        type="button"
+                        onClick={() => onOpenApplication('institutional')}
+                        className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-5 py-2 text-xs font-bold text-white bg-[#123B73] hover:bg-[#0B1F3A] rounded-xl transition-all shadow-xs cursor-pointer"
+                      >
+                        <span>Request Campus Dossier</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        )}
+
+        {/* View 2: 12-Month Rollout Roadmap */}
+        {activeTab === 'rollout' && (
+          <div className="space-y-6 animate-fadeIn" id="process">
+            {/* Stage Selector Tabs */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5">
+              {stages.map((stg, idx) => {
+                const Icon = stg.icon;
+                const isActive = activeStage === idx;
                 return (
                   <button
-                    key={i}
+                    key={idx}
                     type="button"
-                    onClick={() => handleStageSelect(i)}
-                    className={`py-2 px-2 rounded-xl text-center border transition-all cursor-pointer shrink-0 min-w-[100px] sm:min-w-0 ${
-                      isSelected
-                        ? isDark
-                          ? 'bg-[#123B73] border-sky-400 text-white font-bold'
-                          : 'bg-white border-[#123B73] text-[#123B73] font-bold shadow-xs'
-                        : isPast
-                          ? isDark
-                            ? 'bg-slate-800/80 border-emerald-500/40 text-emerald-300'
-                            : 'bg-emerald-50/60 border-emerald-200 text-emerald-800'
-                          : isDark
-                            ? 'bg-slate-800/40 border-slate-800 text-slate-400 hover:border-slate-700'
-                            : 'bg-white border-[#DCE3EC] text-slate-600 hover:border-slate-300'
+                    onClick={() => setActiveStage(idx)}
+                    className={`p-3 rounded-xl border transition-all duration-200 text-left cursor-pointer ${
+                      isActive
+                        ? 'bg-[#123B73] text-white border-[#123B73] shadow-xs'
+                        : isDark
+                        ? 'bg-slate-900 border-slate-700 text-slate-100 hover:bg-slate-800'
+                        : 'bg-[#F7F9FC] border-[#DCE3EC] text-slate-900 hover:bg-slate-100'
                     }`}
                   >
-                    <div className="flex items-center justify-center gap-1 text-[11px] font-semibold">
-                      {isPast ? (
-                        <Check className="w-3 h-3 text-emerald-600 shrink-0" />
-                      ) : null}
-                      <span>{st.month}</span>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className={`text-[10px] font-mono font-bold uppercase ${isActive ? 'text-[#D9A72E]' : 'text-slate-600 dark:text-slate-300'}`}>
+                        {stg.timeline}
+                      </span>
+                      <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-[#D9A72E]' : 'text-slate-500 dark:text-slate-300'}`} />
                     </div>
-                    <div className="text-[10px] text-slate-500 dark:text-slate-400 truncate mt-0.5">
-                      {st.tag}
+                    <div className="text-xs font-bold leading-tight truncate">
+                      {stg.stage}: {stg.tag}
                     </div>
                   </button>
                 );
               })}
             </div>
 
-            {/* Progress Bar */}
-            <div className="mb-4">
-              <div className="relative h-2 rounded-full overflow-hidden bg-slate-200 dark:bg-slate-800">
-                <div
-                  className="h-full rounded-full bg-gradient-to-r from-[#123B73] via-[#123B73] to-[#D9A72E] dark:from-sky-500 dark:to-[#D9A72E] transition-all duration-500 ease-out"
-                  style={{ width: `${scrollProgress}%` }}
-                />
-              </div>
-            </div>
-
-            {/* 4 Sequential Stage Cards with Timeline Indicator */}
-            <div className="flex-1 flex flex-col justify-between space-y-2.5 relative">
-              {stages.map((stage, i) => {
-                const Icon = stage.Icon;
-                const isCurrent = i === activeStage;
-                const isCompleted = i < activeStage;
-
-                return (
-                  <div
-                    key={i}
-                    onClick={() => handleStageSelect(i)}
-                    className={`p-3.5 rounded-xl border transition-all duration-200 hover:-translate-y-0.5 cursor-pointer flex items-start gap-3 ${
-                      isCurrent
-                        ? isDark
-                          ? 'bg-slate-800 border-sky-400 border-l-4 border-l-[#D9A72E] shadow-sm'
-                          : 'bg-white border-[#123B73] border-l-4 border-l-[#D9A72E] shadow-xs'
-                        : isCompleted
-                          ? isDark
-                            ? 'bg-slate-900/60 border-slate-800 border-l-4 border-l-emerald-500/80'
-                            : 'bg-white/80 border-[#DCE3EC] border-l-4 border-l-emerald-600'
-                          : isDark
-                            ? 'bg-slate-900/40 border-slate-800/80 border-l-4 border-l-transparent'
-                            : 'bg-white/60 border-slate-200 border-l-4 border-l-transparent'
-                    }`}
-                  >
-                    <div
-                      className={`w-9 h-9 rounded-lg border flex items-center justify-center shrink-0 transition-colors ${
-                        isCurrent
-                          ? 'bg-[#123B73] text-white border-transparent'
-                          : isCompleted
-                            ? 'bg-emerald-50 dark:bg-slate-800 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-slate-700'
-                            : 'bg-slate-100 dark:bg-slate-800 text-slate-500 border-slate-200 dark:border-slate-700'
-                      }`}
-                    >
-                      <Icon className="w-4 h-4" />
-                    </div>
-
-                    <div className="flex-1 min-w-0">
-                      <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between gap-1 sm:gap-2 mb-1">
-                        <div className="flex items-center gap-2">
-                          <h4 className="text-xs font-bold text-slate-900 dark:text-white leading-tight">
-                            {stage.label}
-                          </h4>
-                          <span className="text-[10px] text-slate-500 dark:text-slate-400">
-                            ({stage.month})
-                          </span>
-                        </div>
-                        <span
-                          className={`text-[10px] font-medium px-2 py-0.5 rounded flex items-center gap-1 shrink-0 ${
-                            isCompleted
-                              ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'
-                              : isCurrent
-                                ? 'bg-blue-50 text-[#123B73] dark:bg-slate-700 dark:text-sky-300 font-semibold'
-                                : 'text-slate-400'
-                          }`}
-                        >
-                          {isCompleted ? (
-                            <>
-                              <Check className="w-3 h-3 text-emerald-600 dark:text-emerald-400 inline" />
-                              <span>Completed</span>
-                            </>
-                          ) : isCurrent ? (
-                            <>
-                              <span className="w-1.5 h-1.5 rounded-full bg-[#D9A72E]" />
-                              <span>Active Stage</span>
-                            </>
-                          ) : (
-                            stage.tag
-                          )}
-                        </span>
-                      </div>
-
-                      <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-                        {stage.desc}
-                      </p>
-
-                      {isCurrent && (
-                        <div className="mt-2.5 pt-2 border-t border-slate-200 dark:border-slate-700 animate-fadeIn">
-                          <div className="text-[10px] font-semibold text-[#D9A72E] uppercase tracking-wider mb-1.5">
-                            Key Deliverables:
-                          </div>
-                          <div className="space-y-1">
-                            {stage.deliverables.map((item, dIdx) => (
-                              <div key={dIdx} className="text-xs text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
-                                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                                <span>{item}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
+            {/* Active Stage Detail Card */}
+            <div
+              className={`p-5 sm:p-7 rounded-2xl border transition-all duration-300 shadow-md ${
+                isDark ? 'bg-slate-900 border-slate-700 text-white' : 'bg-white border-[#DCE3EC] text-slate-900'
+              }`}
+            >
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                <div className="lg:col-span-7 space-y-3">
+                  <div className="flex items-center gap-2.5">
+                    <span className="px-2.5 py-0.5 rounded-md bg-[#123B73] text-white text-xs font-mono font-bold">
+                      {stages[activeStage].timeline}
+                    </span>
+                    <span className="text-xs font-bold uppercase tracking-wider text-[#D9A72E] font-mono">
+                      {stages[activeStage].stage} · Milestone
+                    </span>
                   </div>
-                );
-              })}
 
-              <div className="pt-2">
-                <button
-                  onClick={() => onOpenApplication('institutional')}
-                  className="group w-full py-3 px-4 rounded-xl text-xs font-semibold text-white bg-[#123B73] hover:bg-[#0B1F3A] transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2 cursor-pointer shadow-xs"
-                >
-                  <span>Book Institutional Readiness Assessment</span>
-                  <ArrowRight className="w-3.5 h-3.5 text-white/80 transition-transform duration-200 group-hover:translate-x-1" />
-                </button>
+                  <h3 className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white leading-tight">
+                    {stages[activeStage].title}
+                  </h3>
+
+                  <p className="text-xs sm:text-sm text-slate-800 dark:text-slate-200 leading-relaxed text-justify">
+                    {stages[activeStage].desc}
+                  </p>
+
+                  <div className="p-3 rounded-lg bg-[#F7F9FC] dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs text-slate-800 dark:text-slate-200 text-justify">
+                    <strong className="text-[#123B73] dark:text-sky-300 font-semibold">Institutional Impact: </strong>
+                    {stages[activeStage].impact}
+                  </div>
+                </div>
+
+                <div className="lg:col-span-5 p-4 rounded-xl bg-[#F7F9FC] dark:bg-slate-800 border border-slate-300 dark:border-slate-700 space-y-2.5">
+                  <div className="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white pb-1.5 border-b border-slate-200 dark:border-slate-700">
+                    Stage Deliverables
+                  </div>
+                  {stages[activeStage].milestones.map((m, mIdx) => (
+                    <div key={mIdx} className="flex items-start gap-2 text-xs text-slate-800 dark:text-slate-200 font-medium">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                      <span className="leading-snug">{m}</span>
+                    </div>
+                  ))}
+                  <div className="pt-2">
+                    <button
+                      onClick={() => onOpenApplication('institutional')}
+                      className="w-full py-2 px-3 rounded-lg text-xs font-semibold text-white bg-[#123B73] hover:bg-[#0B1F3A] transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                    >
+                      <span>Request Campus Dossier</span>
+                      <ArrowRight className="w-3 h-3" />
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
-
-          </div>
-
-        </div>
-
-        {/* Institutional Partnership Roles Matrix */}
-        <div
-          className={`mt-10 p-6 sm:p-7 rounded-2xl border transition-colors ${
-            isDark ? 'bg-slate-900 border-slate-800' : 'bg-[#F7F9FC] border-[#DCE3EC]'
-          }`}
-        >
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-5 border-b border-slate-200 dark:border-slate-800">
-            <div>
-              <div className="text-xs font-semibold text-[#D9A72E] uppercase tracking-wider mb-1">
-                Governance &amp; Responsibility Matrix
-              </div>
-              <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
-                Partnership Roles &amp; Responsibilities
-              </h3>
-            </div>
-            <span className="text-xs font-medium px-3 py-1 rounded-full border border-[#DCE3EC] dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 w-fit">
-              Turnkey Co-Execution
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-5">
-            {/* Left: What NF Venture Studio Deploys */}
-            <div
-              className={`p-5 rounded-xl border ${
-                isDark ? 'bg-slate-800/80 border-slate-700' : 'bg-white border-[#DCE3EC]'
-              }`}
-            >
-              <div className="flex items-center gap-2 mb-3">
-                <span className="w-2 h-2 rounded-full bg-[#123B73] dark:bg-sky-400" />
-                <h4 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">
-                  NF Venture Studio Deploys
-                </h4>
-              </div>
-              <ul className="space-y-2 text-xs text-slate-700 dark:text-slate-300">
-                <li className="flex items-start gap-2">
-                  <span className="text-[#123B73] dark:text-sky-400 font-bold">✓</span>
-                  <span><strong>Turnkey protocols</strong> &amp; Digital Incubation ERP portal.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#123B73] dark:text-sky-400 font-bold">✓</span>
-                  <span><strong>Venture studio engineers</strong> &amp; experienced operator mentors.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#123B73] dark:text-sky-400 font-bold">✓</span>
-                  <span><strong>Structured cohorts</strong>, hackathons, and patent drafting support.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#123B73] dark:text-sky-400 font-bold">✓</span>
-                  <span><strong>Investor networks</strong>, seed capital connections, and corporate pilots.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#123B73] dark:text-sky-400 font-bold">✓</span>
-                  <span><strong>Audit dossiers</strong> for NAAC, NBA, NIRF, and IIC submissions.</span>
-                </li>
-              </ul>
-            </div>
-
-            {/* Right: What Your Institute Provides */}
-            <div
-              className={`p-5 rounded-xl border ${
-                isDark ? 'bg-slate-800/80 border-slate-700' : 'bg-white border-[#DCE3EC]'
-              }`}
-            >
-              <div className="flex items-center gap-2 mb-3">
-                <span className="w-2 h-2 rounded-full bg-[#D9A72E]" />
-                <h4 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">
-                  Your Institute Provides
-                </h4>
-              </div>
-              <ul className="space-y-2 text-xs text-slate-700 dark:text-slate-300">
-                <li className="flex items-start gap-2">
-                  <span className="text-[#D9A72E] font-bold">✓</span>
-                  <span><strong>Campus innovation space</strong> (500–2,000+ sq. ft.).</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#D9A72E] font-bold">✓</span>
-                  <span><strong>Basic infrastructure</strong> (utilities, power, internet connectivity, and workstations).</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#D9A72E] font-bold">✓</span>
-                  <span><strong>Faculty SPOC</strong> and institutional IIC coordinator nomination.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#D9A72E] font-bold">✓</span>
-                  <span><strong>Student outreach</strong> and engagement across academic departments.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#D9A72E] font-bold">✓</span>
-                  <span><strong>Incubation Board</strong> formation and AICTE-NISP IP policy adoption.</span>
-                </li>
-              </ul>
             </div>
           </div>
-        </div>
+        )}
 
       </div>
     </section>

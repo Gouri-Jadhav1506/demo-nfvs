@@ -1,11 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
+    color-scheme: light;
     --background: 220 33% 98%;
     --foreground: 215 38% 15%;
     --primary: 216 73% 26%;
@@ -13,7 +12,8 @@
   }
 
   .dark {
-    --background: 217 68% 14%;
+    color-scheme: dark;
+    --background: 217 68% 10%;
     --foreground: 220 33% 98%;
     --primary: 216 73% 26%;
     --primary-foreground: 0 0% 100%;
@@ -32,15 +32,46 @@
     overflow-x: hidden;
     max-width: 100vw;
     background-color: #F7F9FC;
-    color: #172334;
+    color: #0F172A;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     transition: background-color 0.25s ease, color 0.25s ease;
   }
 
   .dark body, body.dark, html.dark body {
+    background-color: #081528;
+    color: #F8FAFC;
+  }
+
+  /* Justified text alignment for narrative paragraphs and descriptions */
+  p, .text-justify-interword {
+    text-align: justify;
+    text-justify: inter-word;
+  }
+
+  /* Accessible form options across themes */
+  select option {
+    background-color: #FFFFFF;
+    color: #0F172A;
+  }
+
+  .dark select option,
+  html.dark select option {
     background-color: #0B1F3A;
-    color: #F7F9FC;
+    color: #F8FAFC;
+  }
+
+  /* High contrast dark mode card readability fallbacks */
+  .dark .text-slate-600:not([class*="dark:text-"]):not([class*="bg-white"] *),
+  .dark .text-slate-500:not([class*="dark:text-"]):not([class*="bg-white"] *),
+  .dark .text-slate-400:not([class*="dark:text-"]):not([class*="bg-white"] *) {
+    color: #CBD5E1;
+  }
+
+  .dark .text-slate-700:not([class*="dark:text-"]):not([class*="bg-white"] *),
+  .dark .text-slate-800:not([class*="dark:text-"]):not([class*="bg-white"] *),
+  .dark .text-slate-900:not([class*="dark:text-"]):not([class*="bg-white"] *) {
+    color: #F8FAFC;
   }
 
   code, pre, .font-mono {
@@ -156,7 +187,7 @@
     .reveal {
       opacity: 0;
       transform: translateY(12px);
-      transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
       will-change: opacity, transform;
     }
     .reveal.in-view {
@@ -164,25 +195,84 @@
       transform: translateY(0);
     }
 
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-16px);
+      transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+    .reveal-left.in-view {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(16px);
+      transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+    .reveal-right.in-view {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .reveal-scale {
+      opacity: 0;
+      transform: scale(0.96);
+      transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+    .reveal-scale.in-view {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .cinematic-fade {
+      opacity: 0;
+      transition: opacity 0.6s ease-out;
+      will-change: opacity;
+    }
+    .cinematic-fade.in-view {
+      opacity: 1;
+    }
+
     .reveal-stagger > * {
       opacity: 0;
       transform: translateY(14px);
-      transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
       will-change: opacity, transform;
     }
-    .reveal-stagger.in-view > *:nth-child(1) { transition-delay: 0.04s; }
-    .reveal-stagger.in-view > *:nth-child(2) { transition-delay: 0.10s; }
-    .reveal-stagger.in-view > *:nth-child(3) { transition-delay: 0.16s; }
-    .reveal-stagger.in-view > *:nth-child(4) { transition-delay: 0.22s; }
-    .reveal-stagger.in-view > *:nth-child(5) { transition-delay: 0.28s; }
+    .reveal-stagger.in-view > *:nth-child(1) { transition-delay: 0.05s; }
+    .reveal-stagger.in-view > *:nth-child(2) { transition-delay: 0.12s; }
+    .reveal-stagger.in-view > *:nth-child(3) { transition-delay: 0.19s; }
+    .reveal-stagger.in-view > *:nth-child(4) { transition-delay: 0.26s; }
+    .reveal-stagger.in-view > *:nth-child(5) { transition-delay: 0.33s; }
     .reveal-stagger.in-view > * {
       opacity: 1;
       transform: translateY(0);
+    }
+
+    /* Refined cinematic hover effects */
+    .cinematic-hover {
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+      will-change: transform, box-shadow;
+    }
+    .cinematic-hover:hover {
+      transform: translateY(-2.5px);
+      box-shadow: 0 12px 28px -6px rgba(18, 59, 115, 0.12);
+    }
+    .dark .cinematic-hover:hover {
+      box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.45);
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .reveal,
+    .reveal-left,
+    .reveal-right,
+    .reveal-scale,
+    .cinematic-fade,
     .reveal-stagger > * {
       opacity: 1 !important;
       transform: none !important;
